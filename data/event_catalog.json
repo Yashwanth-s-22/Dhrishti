@@ -1,0 +1,166 @@
+[
+  {
+    "event_id": "EVT001",
+    "name": "Russia-Ukraine Conflict Escalation",
+    "description": "Full-scale invasion starting Feb 2022, disrupting Black Sea grain and oilseed trade routes",
+    "start": "2022-02",
+    "end": "2022-12",
+    "countries": [
+      "RUSSIA",
+      "UKRAINE"
+    ],
+    "hs4_codes": [
+      1001,
+      1005,
+      1006,
+      1512,
+      1507
+    ],
+    "commodity_curation_type": "manually curated event-commodity associations",
+    "event_scope": "direct",
+    "expected_direction": "supply_shock",
+    "severity": "high",
+    "severity_role": "descriptive metadata (not used in ML models)",
+    "notes": "Major disruption to Black Sea trade corridors. India experienced heightened export demand and domestic price pressures."
+  },
+  {
+    "event_id": "EVT002",
+    "name": "India Wheat Export Ban",
+    "description": "India banned commercial wheat exports in May 2022 to protect domestic supply after heatwaves",
+    "start": "2022-05",
+    "end": "2023-06",
+    "countries": [
+      "BANGLADESH",
+      "UNITED ARAB EMIRATES",
+      "SAUDI ARABIA"
+    ],
+    "hs4_codes": [
+      1001
+    ],
+    "commodity_curation_type": "manually curated event-commodity associations",
+    "event_scope": "direct",
+    "expected_direction": "export_restriction",
+    "severity": "high",
+    "severity_role": "descriptive metadata (not used in ML models)",
+    "notes": "Policy-driven export restriction by India affecting primary export destinations."
+  },
+  {
+    "event_id": "EVT003",
+    "name": "US-China Trade Tensions",
+    "description": "Tariff escalation and bilateral trade friction between major global economies",
+    "start": "2018-07",
+    "end": "2019-12",
+    "countries": [
+      "CHINA",
+      "UNITED STATES"
+    ],
+    "hs4_codes": [
+      1201,
+      1507,
+      1508,
+      904,
+      902
+    ],
+    "commodity_curation_type": "manually curated event-commodity associations",
+    "event_scope": "direct",
+    "expected_direction": "trade_diversion",
+    "severity": "moderate",
+    "severity_role": "descriptive metadata (not used in ML models)",
+    "notes": "Bilateral tariff conflict with potential third-party trade diversion effects for Indian agricultural flows."
+  },
+  {
+    "event_id": "EVT004",
+    "name": "COVID-19 Supply Chain Disruption",
+    "description": "Global pandemic causing transport bottlenecks, port closures, and widespread macro shocks",
+    "start": "2020-03",
+    "end": "2021-06",
+    "countries": [
+      "CHINA",
+      "UNITED STATES",
+      "UNITED KINGDOM",
+      "GERMANY",
+      "JAPAN",
+      "SOUTH KOREA",
+      "MALAYSIA",
+      "INDONESIA",
+      "VIETNAM"
+    ],
+    "hs4_codes": [],
+    "commodity_curation_type": "manually curated event-commodity associations (universal cross-commodity)",
+    "event_scope": "direct",
+    "expected_direction": "mixed",
+    "severity": "extreme",
+    "severity_role": "descriptive metadata (not used in ML models)",
+    "notes": "Systemic global disruption affecting freight, labor, border clearance, and consumer demand."
+  },
+  {
+    "event_id": "EVT005",
+    "name": "India-Malaysia Palm Oil Tensions",
+    "description": "Diplomatic friction temporarily altering Indian palm oil procurement patterns",
+    "start": "2020-01",
+    "end": "2020-06",
+    "countries": [
+      "MALAYSIA"
+    ],
+    "hs4_codes": [
+      1511,
+      1513,
+      1507
+    ],
+    "commodity_curation_type": "manually curated event-commodity associations",
+    "event_scope": "direct",
+    "expected_direction": "supply_shock",
+    "severity": "moderate",
+    "severity_role": "descriptive metadata (not used in ML models)",
+    "notes": "Bilateral diplomatic tension prompting temporary trade diversion toward alternative edible oil suppliers."
+  },
+  {
+    "event_id": "EVT006",
+    "name": "Sri Lanka Economic Crisis Spillover",
+    "description": "Macroeconomic instability in neighboring South Asian market; proxy country used",
+    "start": "2022-04",
+    "end": "2023-03",
+    "countries": [
+      "BANGLADESH"
+    ],
+    "hs4_codes": [
+      902,
+      904,
+      1006
+    ],
+    "commodity_curation_type": "manually curated event-commodity associations",
+    "event_scope": "proxy",
+    "expected_direction": "demand_shock",
+    "severity": "low",
+    "severity_role": "descriptive metadata (not used in ML models)",
+    "notes": "PROXY EVENT: Sri Lanka is not present in the 15-country dataset. Bangladesh is used as a South Asian regional trade proxy. Does not directly represent Sri Lanka bilateral trade."
+  },
+  {
+    "event_id": "EVT007",
+    "name": "Red Sea Shipping Crisis (Houthi Attacks)",
+    "description": "Maritime security disruptions in the Red Sea corridor forcing cargo rerouting around Africa",
+    "start": "2024-01",
+    "end": "2024-06",
+    "countries": [
+      "SAUDI ARABIA",
+      "UNITED ARAB EMIRATES",
+      "UNITED KINGDOM",
+      "GERMANY",
+      "NETHERLANDS"
+    ],
+    "hs4_codes": [
+      902,
+      904,
+      713,
+      1006,
+      303,
+      306
+    ],
+    "commodity_curation_type": "manually curated event-commodity associations",
+    "event_scope": "direct",
+    "expected_direction": "logistics_shock",
+    "severity": "moderate",
+    "severity_role": "descriptive metadata (not used in ML models)",
+    "notes": "Logistics cost surges and transit delays affecting westbound European and Middle Eastern trade routes."
+  }
+]

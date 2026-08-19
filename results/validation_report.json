@@ -1,0 +1,378 @@
+{
+  "timestamp": "2026-08-19T22:30:00.244446",
+  "summary": {
+    "passes": 83,
+    "warns": 3,
+    "infos": 5,
+    "fails": 0,
+    "total": 91,
+    "status": "PASS"
+  },
+  "notes": "Pipeline integrity checks passed. Warnings denote model-performance limitations (e.g., Inflation not beating baseline on test) and observational/provenance boundaries.",
+  "checks": [
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_a_trade.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_a_trade.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_a_rf.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_a_rf.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_a_xgb.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_a_xgb.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_a_lgb.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_a_lgb.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_b_production_yoy.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_b_production_yoy.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_b_production_risk.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_b_production_risk.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_b_yield_yoy.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_b_yield_yoy.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_c_price.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_c_price.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_d_agri_gva.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_d_agri_gva.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_d_inflation.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_d_inflation.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_a_results.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_a_predictions.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_b_results.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_b_predictions.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_c_results.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_c_predictions.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_d_results.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: cascade_results.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: event_store.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: stakeholder_advisories.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Data file exists: Drishti_Cascade_Final_With_EMDAT.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Data file exists: Crop_Production_Final.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Data file exists: crop_hs4_mapping.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Data file exists: crop_production_monthly.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Data file exists: crop_production_state_level.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Data file exists: event_catalog.json"
+    },
+    {
+      "type": "INFO",
+      "message": "Evaluating train-test performance gaps and feature schemas (performance sanity check, not a mathematical leakage proof)."
+    },
+    {
+      "type": "PASS",
+      "message": "Model A RandomForest: train R2=0.2273, test R2=0.0554, gap=0.1719 (threshold < 0.50)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model A XGBoost: train R2=0.2855, test R2=0.0261, gap=0.2594 (threshold < 0.50)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model A LightGBM: train R2=0.1489, test R2=0.0513, gap=0.0976 (threshold < 0.50)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C RandomForest: train R2=0.3076, test R2=0.0606, gap=0.2470 (threshold < 0.50)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C XGBoost: train R2=0.4457, test R2=0.0347, gap=0.4111 (threshold < 0.50)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C LightGBM: train R2=0.2228, test R2=0.0509, gap=0.1719 (threshold < 0.50)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model D excludes unsafe contemporaneous features (found 0 unsafe: [])"
+    },
+    {
+      "type": "PASS",
+      "message": "Model D includes all 13 expected lagged/exogenous features (missing: [])"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade results contain 5 demonstration cases (expected >= 5)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 1: contains all required stage predictions and trace entries (6 trace items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 2: contains all required stage predictions and trace entries (6 trace items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 3: contains all required stage predictions and trace entries (6 trace items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 4: contains all required stage predictions and trace entries (6 trace items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 5: contains all required stage predictions and trace entries (6 trace items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model A -> Model B link is CONCEPTUAL ONLY (Trade_Return_1M_Pred is NOT a trained Model B feature)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model B -> Model C link uses lagged prediction feature (Production_Growth_Pred_Lag1)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C -> Model D link uses lagged prediction feature (Price_Return_1M_Pred_Lag1)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model B predictions artifact contains Production_Growth_Pred for previous-period shift lookup"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C predictions artifact contains Price_Return_1M_Pred for previous-period shift lookup"
+    },
+    {
+      "type": "INFO",
+      "message": "Upstream prediction artifacts contain in-sample predictions. Full out-of-fold/walk-forward provenance is deferred."
+    },
+    {
+      "type": "PASS",
+      "message": "Model A (Trade RF) beats test baseline (MAE 1.0436 < 1.9591)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model A (Trade RF) test R2=0.0554 is within plausible non-trivial range [0, 0.95)"
+    },
+    {
+      "type": "WARN",
+      "message": "Model B (Agri Prod RF): beats baseline = False - Model B does not beat test baseline due to narrow crop dataset window"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C (Price RF) beats test baseline (MAE 0.4162 < 0.6073)"
+    },
+    {
+      "type": "INFO",
+      "message": "Model D Agri GVA Validation R2: N/A - single annual validation observation (2023). Mathematically undefined."
+    },
+    {
+      "type": "PASS",
+      "message": "Model D (Agri GVA RF) beats test baseline (MAE 3.1555 < 3.2970)"
+    },
+    {
+      "type": "WARN",
+      "message": "Model D Agri GVA Test R2 is negative (-1.8884); macro target variance exceeds baseline due to sparse annual observations."
+    },
+    {
+      "type": "WARN",
+      "message": "Model D (Inflation LightGBM) test MAE vs baseline (3.5600 vs 3.5237) - Model D Inflation does not beat baseline on test (model performance limitation)"
+    },
+    {
+      "type": "PASS",
+      "message": "Dedicated Task 1 formula validation report exists (results/task1_data_validation_report.txt)"
+    },
+    {
+      "type": "INFO",
+      "message": "Formula validation is performed separately in Task 1. Task 10 does not independently recompute formulas."
+    },
+    {
+      "type": "PASS",
+      "message": "Event store contains 7 curated events (expected >= 5)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT001] Russia-Ukraine Conflict Escalation: 46 rows matched (scope: direct)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT002] India Wheat Export Ban: 11 rows matched (scope: direct)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT003] US-China Trade Tensions: 288 rows matched (scope: direct)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT004] COVID-19 Supply Chain Disruption: 15,583 rows matched (scope: direct)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT005] India-Malaysia Palm Oil Tensions: 15 rows matched (scope: direct)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT006] Sri Lanka Economic Crisis Spillover: 27 rows matched (scope: proxy)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT006] explicitly labeled as proxy event (Bangladesh proxy for Sri Lanka)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT007] Red Sea Shipping Crisis (Houthi Att: 195 rows matched (scope: direct)"
+    },
+    {
+      "type": "INFO",
+      "message": "Event-window statistics describe observations during curated periods; no causal attribution is claimed."
+    },
+    {
+      "type": "PASS",
+      "message": "Stakeholder advisories generated for 5 cases"
+    },
+    {
+      "type": "PASS",
+      "message": "Advisory structure contains farmer_output_price effect entry"
+    },
+    {
+      "type": "PASS",
+      "message": "Advisory structure contains farmer_input_cost effect entry"
+    },
+    {
+      "type": "PASS",
+      "message": "Advisory structure contains consumer effect entry"
+    },
+    {
+      "type": "PASS",
+      "message": "Advisory structure contains exporter effect entry"
+    },
+    {
+      "type": "PASS",
+      "message": "Advisory structure contains importer effect entry"
+    },
+    {
+      "type": "PASS",
+      "message": "Advisory structure contains regional_production_risk effect entry"
+    },
+    {
+      "type": "PASS",
+      "message": "Advisory structure contains macro_summary effect entry"
+    },
+    {
+      "type": "PASS",
+      "message": "Stakeholder advisory rules satisfy directional consistency and trade flow applicability"
+    },
+    {
+      "type": "PASS",
+      "message": "Farmer input cost explicitly flagged as data gap (HS Ch. 31 absent)"
+    },
+    {
+      "type": "PASS",
+      "message": "Train years max = 2022 (<= 2022)"
+    },
+    {
+      "type": "PASS",
+      "message": "Validation year = 2023"
+    },
+    {
+      "type": "PASS",
+      "message": "Test years min = 2024 (>= 2024)"
+    },
+    {
+      "type": "PASS",
+      "message": "Strict separation: zero overlap between train and test years"
+    }
+  ]
+}

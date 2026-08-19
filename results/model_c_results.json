@@ -1,0 +1,188 @@
+{
+  "task": "Task 4 - Model C: Price Impact",
+  "timestamp": "2026-08-18T22:08:52.643848",
+  "features": [
+    "Lagged_Effective_Shock_1",
+    "Lagged_Effective_Shock_2",
+    "Shock_Intensity_Lag1",
+    "Shock_Intensity_Lag2",
+    "Trade_Share_Lag1",
+    "Trade_Share_Lag2",
+    "Price_Lag1",
+    "GPR",
+    "INR_USD_Rate",
+    "Trade_Return_1M_Pred",
+    "Production_Growth_Pred_Lag1"
+  ],
+  "primary_target": "Price_Return_1M",
+  "best_model": "RandomForest",
+  "baseline": {
+    "val": {
+      "label": "baseline_val",
+      "MAE": 0.667666347444928,
+      "RMSE": 1.3429696261051174,
+      "R2": -1.186938932127684
+    },
+    "test": {
+      "label": "baseline_test",
+      "MAE": 0.6072975059590785,
+      "RMSE": 1.2326174001081485,
+      "R2": -1.2936987169409968
+    }
+  },
+  "model_results": {
+    "RandomForest": {
+      "metrics": {
+        "train": {
+          "label": "RandomForest_train",
+          "MAE": 0.43934941211631673,
+          "RMSE": 0.7853976471756359,
+          "R2": 0.3076216355652974
+        },
+        "val": {
+          "label": "RandomForest_val",
+          "MAE": 0.47486086645601516,
+          "RMSE": 0.8880129169848658,
+          "R2": 0.04381298566178382
+        },
+        "test": {
+          "label": "RandomForest_test",
+          "MAE": 0.4161806687410837,
+          "RMSE": 0.7888203254652565,
+          "R2": 0.060631552736704064
+        }
+      },
+      "importances": {
+        "Price_Lag1": 0.19157351033681805,
+        "Trade_Return_1M_Pred": 0.1528156811716789,
+        "Trade_Share_Lag1": 0.10563850969218977,
+        "Lagged_Effective_Shock_2": 0.10505593727141571,
+        "Lagged_Effective_Shock_1": 0.10238992350032693,
+        "Trade_Share_Lag2": 0.09678459403454086,
+        "Shock_Intensity_Lag2": 0.06279095840514641,
+        "Shock_Intensity_Lag1": 0.0619523910200936,
+        "GPR": 0.04906670545774056,
+        "INR_USD_Rate": 0.04805458521296782,
+        "Production_Growth_Pred_Lag1": 0.02387720389708148
+      },
+      "beats_baseline_test": true
+    },
+    "XGBoost": {
+      "metrics": {
+        "train": {
+          "label": "XGBoost_train",
+          "MAE": 0.41150633320729846,
+          "RMSE": 0.7027117811673567,
+          "R2": 0.44573332708018654
+        },
+        "val": {
+          "label": "XGBoost_val",
+          "MAE": 0.4909026311055454,
+          "RMSE": 0.8997484399481667,
+          "R2": 0.018373034778127018
+        },
+        "test": {
+          "label": "XGBoost_test",
+          "MAE": 0.4349199055715839,
+          "RMSE": 0.7996544197832668,
+          "R2": 0.034650741353805525
+        }
+      },
+      "importances": {
+        "Price_Lag1": "0.107050404",
+        "Trade_Return_1M_Pred": "0.10603648",
+        "Trade_Share_Lag2": "0.10555714",
+        "Trade_Share_Lag1": "0.09741169",
+        "Production_Growth_Pred_Lag1": "0.094237946",
+        "Shock_Intensity_Lag1": "0.08741203",
+        "INR_USD_Rate": "0.08507908",
+        "GPR": "0.083724394",
+        "Lagged_Effective_Shock_2": "0.08072133",
+        "Shock_Intensity_Lag2": "0.07722108",
+        "Lagged_Effective_Shock_1": "0.07554843"
+      },
+      "beats_baseline_test": true
+    },
+    "LightGBM": {
+      "metrics": {
+        "train": {
+          "label": "LightGBM_train",
+          "MAE": 0.466714933818483,
+          "RMSE": 0.8321361527042133,
+          "R2": 0.22276369594586876
+        },
+        "val": {
+          "label": "LightGBM_val",
+          "MAE": 0.4792143317590264,
+          "RMSE": 0.8903622595632213,
+          "R2": 0.038746882692641926
+        },
+        "test": {
+          "label": "LightGBM_test",
+          "MAE": 0.4229615681538404,
+          "RMSE": 0.7929063632899245,
+          "R2": 0.05087461331348708
+        }
+      },
+      "importances": {
+        "Price_Lag1": "1465",
+        "Trade_Return_1M_Pred": "1085",
+        "Trade_Share_Lag1": "1008",
+        "Lagged_Effective_Shock_2": "999",
+        "Trade_Share_Lag2": "987",
+        "Lagged_Effective_Shock_1": "916",
+        "Shock_Intensity_Lag1": "667",
+        "INR_USD_Rate": "654",
+        "GPR": "588",
+        "Production_Growth_Pred_Lag1": "329",
+        "Shock_Intensity_Lag2": "302"
+      },
+      "beats_baseline_test": true
+    },
+    "Price_Return_3M_LightGBM": {
+      "train": {
+        "label": "LGB_train",
+        "MAE": 0.4864861384830182,
+        "RMSE": 0.8500160606397851,
+        "R2": 0.16995116912187724
+      },
+      "val": {
+        "label": "LGB_val",
+        "MAE": 0.47575406098673795,
+        "RMSE": 0.8560171724963896,
+        "R2": 0.05559841115410735
+      },
+      "test": {
+        "label": "LGB_test",
+        "MAE": 0.3801575029848289,
+        "RMSE": 0.7339032692042102,
+        "R2": 0.04858064145853147
+      }
+    },
+    "Price_Volatility_3M_LightGBM": {
+      "train": {
+        "label": "LGB_train",
+        "MAE": 12.315339825144378,
+        "RMSE": 377.8705903193022,
+        "R2": 0.2695285844430104
+      },
+      "val": {
+        "label": "LGB_val",
+        "MAE": 13.274969117725375,
+        "RMSE": 121.28665860587893,
+        "R2": 0.20145139205908602
+      },
+      "test": {
+        "label": "LGB_test",
+        "MAE": 14.640915028216623,
+        "RMSE": 536.0305900702579,
+        "R2": 0.0024497400754951437
+      }
+    }
+  },
+  "split": {
+    "train": 105673,
+    "val": 20665,
+    "test": 35290
+  }
+}

@@ -1,0 +1,542 @@
+[
+  {
+    "meta": {
+      "Country": "UNITED ARAB EMIRATES",
+      "Trade_Type": "Export",
+      "HS4": 807,
+      "Year": 2025,
+      "Month": 4
+    },
+    "effects": {
+      "farmer_output_price": {
+        "effect": 0.0009601274749189295,
+        "direction": "positive",
+        "reason": "Positive output-price effect: higher predicted commodity price improves realization for domestic producers",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": 0.009601274749189294,
+          "shock_direction": "demand_shock",
+          "dependency_level": "negligible"
+        },
+        "data_gap": false
+      },
+      "farmer_input_cost": {
+        "effect": 0.0,
+        "direction": "not_assessed",
+        "reason": "Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset)",
+        "severity": "unknown",
+        "relevant_input": {
+          "hs_chapter_31_available": false
+        },
+        "data_gap": true
+      },
+      "consumer": {
+        "effect": -0.0009601274749189295,
+        "direction": "negative",
+        "reason": "Negative consumer impact: higher predicted commodity prices increase consumer food expenditure",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": 0.009601274749189294,
+          "production_risk": "Medium"
+        },
+        "data_gap": false
+      },
+      "exporter": {
+        "effect": -0.008621058770839445,
+        "direction": "negative",
+        "reason": "Negative exporter impact: predicted export volume contraction indicates market contraction and revenue reduction",
+        "severity": "negligible",
+        "relevant_input": {
+          "trade_return_1m_pred": -0.08621058770839445,
+          "trade_position": "exporter"
+        },
+        "data_gap": false
+      },
+      "importer": {
+        "effect": 0.0,
+        "direction": "not_applicable",
+        "reason": "Not applicable: observed flow is Export (India is exporter, not importer, for this record)",
+        "severity": "not_applicable",
+        "relevant_input": {
+          "trade_return_1m_pred": -0.08621058770839445,
+          "effective_shock": 1.0207115677873884,
+          "trade_position": "exporter"
+        },
+        "data_gap": false
+      },
+      "regional_production_risk": {
+        "risk_level": "Medium",
+        "direction": "caution",
+        "reason": "Moderate production risk: producing regions should monitor seasonal trends",
+        "season": "Summer/Zaid",
+        "production_growth": 33.13893997192511,
+        "relevant_input": {
+          "production_growth_pred": 33.13893997192511,
+          "production_risk": "Medium",
+          "season": "Summer/Zaid"
+        },
+        "data_gap": false
+      },
+      "macro_summary": {
+        "gva_growth_pred": 5.322393432115,
+        "inflation_change_pred": -2.9606495075697836,
+        "trade_return_pred": -0.08621058770839445,
+        "price_return_pred": 0.009601274749189294,
+        "shock_direction": "demand_shock",
+        "trade_position": "exporter",
+        "dependency_level": "negligible"
+      }
+    },
+    "advisory": {
+      "context": "Export flow of Melons (including watermelons) and papaws (papayas); fresh with UNITED ARAB EMIRATES (2025-04)",
+      "methodology_note": "Rules-based interpretation of Model A-D cascade predictions (deterministic decision layer).",
+      "limitations": {
+        "framework": "Deterministic rules-based decision layer (not an ML model).",
+        "purpose": "Interprets predicted trade/price/agricultural/economic impacts from upstream Models A-D.",
+        "causal_attribution": "Does not establish causal attribution to specific geopolitical events unless event parameters are explicitly provided.",
+        "thresholds": "Dependency tiers and shock triggers are project-defined heuristic thresholds.",
+        "data_gaps": "Regional disaggregation is limited to national production risk proxies; fertilizer and input-cost impacts cannot be assessed due to absence of HS Chapter 31 data."
+      },
+      "stakeholder_advisories": {
+        "farmers": "Output-price effect: POSITIVE. Positive output-price effect: higher predicted commodity price improves realization for domestic producers. Partner dependency: negligible (project-defined rule). Input-cost effect: Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset).",
+        "consumers": "Consumer impact: NEGATIVE. Negative consumer impact: higher predicted commodity prices increase consumer food expenditure. Severity tier: negligible.",
+        "exporters": "Exporter impact: NEGATIVE. Negative exporter impact: predicted export volume contraction indicates market contraction and revenue reduction.",
+        "importers": "Importer impact: NOT_APPLICABLE. Not applicable: observed flow is Export (India is exporter, not importer, for this record).",
+        "regional": "Regional risk: Medium. Moderate production risk: producing regions should monitor seasonal trends. Season: Summer/Zaid. Projected national production growth: +33.1%.",
+        "government": "Macro outlook: Agri GVA growth pred = +5.32%, Inflation change pred = -2.96 pp. Trade return pred = -0.09%, Price return pred = +0.01%. Interpreted shock direction: demand_shock."
+      }
+    }
+  },
+  {
+    "meta": {
+      "Country": "INDONESIA",
+      "Trade_Type": "Import",
+      "HS4": 602,
+      "Year": 2025,
+      "Month": 2
+    },
+    "effects": {
+      "farmer_output_price": {
+        "effect": -0.007471829446469661,
+        "direction": "negative",
+        "reason": "Negative output-price effect: lower predicted commodity price reduces realization for domestic producers",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": -0.0747182944646966,
+          "shock_direction": "import_flow",
+          "dependency_level": "negligible"
+        },
+        "data_gap": false
+      },
+      "farmer_input_cost": {
+        "effect": 0.0,
+        "direction": "not_assessed",
+        "reason": "Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset)",
+        "severity": "unknown",
+        "relevant_input": {
+          "hs_chapter_31_available": false
+        },
+        "data_gap": true
+      },
+      "consumer": {
+        "effect": 0.007471829446469661,
+        "direction": "positive",
+        "reason": "Positive consumer impact: lower predicted commodity prices reduce consumer food expenditure",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": -0.0747182944646966,
+          "production_risk": "Critical"
+        },
+        "data_gap": false
+      },
+      "exporter": {
+        "effect": 0.0,
+        "direction": "not_applicable",
+        "reason": "Not applicable: observed flow is Import (India is importer, not exporter, for this record)",
+        "severity": "not_applicable",
+        "relevant_input": {
+          "trade_return_1m_pred": 0.03539105253050835,
+          "trade_position": "importer"
+        },
+        "data_gap": false
+      },
+      "importer": {
+        "effect": 0.0017695526265254177,
+        "direction": "positive",
+        "reason": "Positive importer impact: expanding import volume supports domestic supply availability",
+        "severity": "negligible",
+        "relevant_input": {
+          "trade_return_1m_pred": 0.03539105253050835,
+          "effective_shock": 0.0444707937344862,
+          "trade_position": "importer"
+        },
+        "data_gap": false
+      },
+      "regional_production_risk": {
+        "risk_level": "Critical",
+        "direction": "negative",
+        "reason": "Elevated production risk (Critical): producing regions may face output shortfalls (note: district/state disaggregation not present in trade record)",
+        "season": "Rabi",
+        "production_growth": 49.858760246202,
+        "relevant_input": {
+          "production_growth_pred": 49.858760246202,
+          "production_risk": "Critical",
+          "season": "Rabi"
+        },
+        "data_gap": false
+      },
+      "macro_summary": {
+        "gva_growth_pred": 5.762559026015007,
+        "inflation_change_pred": -2.456930467285968,
+        "trade_return_pred": 0.03539105253050835,
+        "price_return_pred": -0.0747182944646966,
+        "shock_direction": "import_flow",
+        "trade_position": "importer",
+        "dependency_level": "negligible"
+      }
+    },
+    "advisory": {
+      "context": "Import flow of Plants, live; n.e.c. in heading no. 0601, (including their roots) cuttings and slips; mushroom spawn with INDONESIA (2025-02)",
+      "methodology_note": "Rules-based interpretation of Model A-D cascade predictions (deterministic decision layer).",
+      "limitations": {
+        "framework": "Deterministic rules-based decision layer (not an ML model).",
+        "purpose": "Interprets predicted trade/price/agricultural/economic impacts from upstream Models A-D.",
+        "causal_attribution": "Does not establish causal attribution to specific geopolitical events unless event parameters are explicitly provided.",
+        "thresholds": "Dependency tiers and shock triggers are project-defined heuristic thresholds.",
+        "data_gaps": "Regional disaggregation is limited to national production risk proxies; fertilizer and input-cost impacts cannot be assessed due to absence of HS Chapter 31 data."
+      },
+      "stakeholder_advisories": {
+        "farmers": "Output-price effect: NEGATIVE. Negative output-price effect: lower predicted commodity price reduces realization for domestic producers. Partner dependency: negligible (project-defined rule). Input-cost effect: Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset).",
+        "consumers": "Consumer impact: POSITIVE. Positive consumer impact: lower predicted commodity prices reduce consumer food expenditure. Severity tier: negligible.",
+        "exporters": "Exporter impact: NOT_APPLICABLE. Not applicable: observed flow is Import (India is importer, not exporter, for this record).",
+        "importers": "Importer impact: POSITIVE. Positive importer impact: expanding import volume supports domestic supply availability.",
+        "regional": "Regional risk: Critical. Elevated production risk (Critical): producing regions may face output shortfalls (note: district/state disaggregation not present in trade record). Season: Rabi. Projected national production growth: +49.9%.",
+        "government": "Macro outlook: Agri GVA growth pred = +5.76%, Inflation change pred = -2.46 pp. Trade return pred = +0.04%, Price return pred = -0.07%. Interpreted shock direction: import_flow."
+      }
+    }
+  },
+  {
+    "meta": {
+      "Country": "UNITED STATES",
+      "Trade_Type": "Import",
+      "HS4": 1207,
+      "Year": 2024,
+      "Month": 8
+    },
+    "effects": {
+      "farmer_output_price": {
+        "effect": -0.008322434240287524,
+        "direction": "negative",
+        "reason": "Negative output-price effect: lower predicted commodity price reduces realization for domestic producers",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": -0.08322434240287524,
+          "shock_direction": "supply_shock",
+          "dependency_level": "negligible"
+        },
+        "data_gap": false
+      },
+      "farmer_input_cost": {
+        "effect": 0.0,
+        "direction": "not_assessed",
+        "reason": "Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset)",
+        "severity": "unknown",
+        "relevant_input": {
+          "hs_chapter_31_available": false
+        },
+        "data_gap": true
+      },
+      "consumer": {
+        "effect": 0.008322434240287524,
+        "direction": "positive",
+        "reason": "Positive consumer impact: lower predicted commodity prices reduce consumer food expenditure",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": -0.08322434240287524,
+          "production_risk": "Critical"
+        },
+        "data_gap": false
+      },
+      "exporter": {
+        "effect": 0.0,
+        "direction": "not_applicable",
+        "reason": "Not applicable: observed flow is Import (India is importer, not exporter, for this record)",
+        "severity": "not_applicable",
+        "relevant_input": {
+          "trade_return_1m_pred": -0.09307001840269265,
+          "trade_position": "importer"
+        },
+        "data_gap": false
+      },
+      "importer": {
+        "effect": -0.009307001840269264,
+        "direction": "negative",
+        "reason": "Negative importer impact: predicted import volume contraction signals potential supply chain tightness",
+        "severity": "negligible",
+        "relevant_input": {
+          "trade_return_1m_pred": -0.09307001840269265,
+          "effective_shock": 6.5939151422488855,
+          "trade_position": "importer"
+        },
+        "data_gap": false
+      },
+      "regional_production_risk": {
+        "risk_level": "Critical",
+        "direction": "negative",
+        "reason": "Elevated production risk (Critical): producing regions may face output shortfalls (note: district/state disaggregation not present in trade record)",
+        "season": "Kharif",
+        "production_growth": 10.709944690277737,
+        "relevant_input": {
+          "production_growth_pred": 10.709944690277737,
+          "production_risk": "Critical",
+          "season": "Kharif"
+        },
+        "data_gap": false
+      },
+      "macro_summary": {
+        "gva_growth_pred": 5.645454963695005,
+        "inflation_change_pred": -0.9175604786010476,
+        "trade_return_pred": -0.09307001840269265,
+        "price_return_pred": -0.08322434240287524,
+        "shock_direction": "supply_shock",
+        "trade_position": "importer",
+        "dependency_level": "negligible"
+      }
+    },
+    "advisory": {
+      "context": "Import flow of Oil seeds and oleaginous fruits, n.e.c. in chapter 12; whether or not broken with UNITED STATES (2024-08)",
+      "methodology_note": "Rules-based interpretation of Model A-D cascade predictions (deterministic decision layer).",
+      "limitations": {
+        "framework": "Deterministic rules-based decision layer (not an ML model).",
+        "purpose": "Interprets predicted trade/price/agricultural/economic impacts from upstream Models A-D.",
+        "causal_attribution": "Does not establish causal attribution to specific geopolitical events unless event parameters are explicitly provided.",
+        "thresholds": "Dependency tiers and shock triggers are project-defined heuristic thresholds.",
+        "data_gaps": "Regional disaggregation is limited to national production risk proxies; fertilizer and input-cost impacts cannot be assessed due to absence of HS Chapter 31 data."
+      },
+      "stakeholder_advisories": {
+        "farmers": "Output-price effect: NEGATIVE. Negative output-price effect: lower predicted commodity price reduces realization for domestic producers. Partner dependency: negligible (project-defined rule). Input-cost effect: Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset).",
+        "consumers": "Consumer impact: POSITIVE. Positive consumer impact: lower predicted commodity prices reduce consumer food expenditure. Severity tier: negligible.",
+        "exporters": "Exporter impact: NOT_APPLICABLE. Not applicable: observed flow is Import (India is importer, not exporter, for this record).",
+        "importers": "Importer impact: NEGATIVE. Negative importer impact: predicted import volume contraction signals potential supply chain tightness.",
+        "regional": "Regional risk: Critical. Elevated production risk (Critical): producing regions may face output shortfalls (note: district/state disaggregation not present in trade record). Season: Kharif. Projected national production growth: +10.7%.",
+        "government": "Macro outlook: Agri GVA growth pred = +5.65%, Inflation change pred = -0.92 pp. Trade return pred = -0.09%, Price return pred = -0.08%. Interpreted shock direction: supply_shock."
+      }
+    }
+  },
+  {
+    "meta": {
+      "Country": "UNITED KINGDOM",
+      "Trade_Type": "Export",
+      "HS4": 1105,
+      "Year": 2025,
+      "Month": 6
+    },
+    "effects": {
+      "farmer_output_price": {
+        "effect": 0.00022963618578027687,
+        "direction": "positive",
+        "reason": "Positive output-price effect: higher predicted commodity price improves realization for domestic producers",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": 0.0022963618578027687,
+          "shock_direction": "demand_shock",
+          "dependency_level": "negligible"
+        },
+        "data_gap": false
+      },
+      "farmer_input_cost": {
+        "effect": 0.0,
+        "direction": "not_assessed",
+        "reason": "Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset)",
+        "severity": "unknown",
+        "relevant_input": {
+          "hs_chapter_31_available": false
+        },
+        "data_gap": true
+      },
+      "consumer": {
+        "effect": -0.00022963618578027687,
+        "direction": "negative",
+        "reason": "Negative consumer impact: higher predicted commodity prices increase consumer food expenditure",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": 0.0022963618578027687,
+          "production_risk": "Low"
+        },
+        "data_gap": false
+      },
+      "exporter": {
+        "effect": 0.015190985206091537,
+        "direction": "positive",
+        "reason": "Positive exporter impact: predicted export volume expansion indicates favorable market access and revenue potential",
+        "severity": "negligible",
+        "relevant_input": {
+          "trade_return_1m_pred": 0.15190985206091537,
+          "trade_position": "exporter"
+        },
+        "data_gap": false
+      },
+      "importer": {
+        "effect": 0.0,
+        "direction": "not_applicable",
+        "reason": "Not applicable: observed flow is Export (India is exporter, not importer, for this record)",
+        "severity": "not_applicable",
+        "relevant_input": {
+          "trade_return_1m_pred": 0.15190985206091537,
+          "effective_shock": 0.3161643368997583,
+          "trade_position": "exporter"
+        },
+        "data_gap": false
+      },
+      "regional_production_risk": {
+        "risk_level": "Low",
+        "direction": "stable",
+        "reason": "Low production risk: producing regions show stable baseline outlook",
+        "season": "Kharif",
+        "production_growth": 32.99839606528766,
+        "relevant_input": {
+          "production_growth_pred": 32.99839606528766,
+          "production_risk": "Low",
+          "season": "Kharif"
+        },
+        "data_gap": false
+      },
+      "macro_summary": {
+        "gva_growth_pred": 5.697809440080004,
+        "inflation_change_pred": -3.0939663187349438,
+        "trade_return_pred": 0.15190985206091537,
+        "price_return_pred": 0.0022963618578027687,
+        "shock_direction": "demand_shock",
+        "trade_position": "exporter",
+        "dependency_level": "negligible"
+      }
+    },
+    "advisory": {
+      "context": "Export flow of Flour, meal, powder, flakes, granules and pellets of potatoes with UNITED KINGDOM (2025-06)",
+      "methodology_note": "Rules-based interpretation of Model A-D cascade predictions (deterministic decision layer).",
+      "limitations": {
+        "framework": "Deterministic rules-based decision layer (not an ML model).",
+        "purpose": "Interprets predicted trade/price/agricultural/economic impacts from upstream Models A-D.",
+        "causal_attribution": "Does not establish causal attribution to specific geopolitical events unless event parameters are explicitly provided.",
+        "thresholds": "Dependency tiers and shock triggers are project-defined heuristic thresholds.",
+        "data_gaps": "Regional disaggregation is limited to national production risk proxies; fertilizer and input-cost impacts cannot be assessed due to absence of HS Chapter 31 data."
+      },
+      "stakeholder_advisories": {
+        "farmers": "Output-price effect: POSITIVE. Positive output-price effect: higher predicted commodity price improves realization for domestic producers. Partner dependency: negligible (project-defined rule). Input-cost effect: Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset).",
+        "consumers": "Consumer impact: NEGATIVE. Negative consumer impact: higher predicted commodity prices increase consumer food expenditure. Severity tier: negligible.",
+        "exporters": "Exporter impact: POSITIVE. Positive exporter impact: predicted export volume expansion indicates favorable market access and revenue potential.",
+        "importers": "Importer impact: NOT_APPLICABLE. Not applicable: observed flow is Export (India is exporter, not importer, for this record).",
+        "regional": "Regional risk: Low. Low production risk: producing regions show stable baseline outlook. Season: Kharif. Projected national production growth: +33.0%.",
+        "government": "Macro outlook: Agri GVA growth pred = +5.70%, Inflation change pred = -3.09 pp. Trade return pred = +0.15%, Price return pred = +0.00%. Interpreted shock direction: demand_shock."
+      }
+    }
+  },
+  {
+    "meta": {
+      "Country": "INDONESIA",
+      "Trade_Type": "Export",
+      "HS4": 804,
+      "Year": 2024,
+      "Month": 12
+    },
+    "effects": {
+      "farmer_output_price": {
+        "effect": 0.0019035947261087675,
+        "direction": "positive",
+        "reason": "Positive output-price effect: higher predicted commodity price improves realization for domestic producers",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": 0.019035947261087673,
+          "shock_direction": "demand_shock",
+          "dependency_level": "negligible"
+        },
+        "data_gap": false
+      },
+      "farmer_input_cost": {
+        "effect": 0.0,
+        "direction": "not_assessed",
+        "reason": "Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset)",
+        "severity": "unknown",
+        "relevant_input": {
+          "hs_chapter_31_available": false
+        },
+        "data_gap": true
+      },
+      "consumer": {
+        "effect": -0.0019035947261087675,
+        "direction": "negative",
+        "reason": "Negative consumer impact: higher predicted commodity prices increase consumer food expenditure",
+        "severity": "negligible",
+        "relevant_input": {
+          "price_return_1m_pred": 0.019035947261087673,
+          "production_risk": "Low"
+        },
+        "data_gap": false
+      },
+      "exporter": {
+        "effect": 0.002724915373996657,
+        "direction": "positive",
+        "reason": "Positive exporter impact: predicted export volume expansion indicates favorable market access and revenue potential",
+        "severity": "negligible",
+        "relevant_input": {
+          "trade_return_1m_pred": 0.02724915373996657,
+          "trade_position": "exporter"
+        },
+        "data_gap": false
+      },
+      "importer": {
+        "effect": 0.0,
+        "direction": "not_applicable",
+        "reason": "Not applicable: observed flow is Export (India is exporter, not importer, for this record)",
+        "severity": "not_applicable",
+        "relevant_input": {
+          "trade_return_1m_pred": 0.02724915373996657,
+          "effective_shock": 0.3532140938789892,
+          "trade_position": "exporter"
+        },
+        "data_gap": false
+      },
+      "regional_production_risk": {
+        "risk_level": "Low",
+        "direction": "stable",
+        "reason": "Low production risk: producing regions show stable baseline outlook",
+        "season": "Rabi",
+        "production_growth": 64.73861093153768,
+        "relevant_input": {
+          "production_growth_pred": 64.73861093153768,
+          "production_risk": "Low",
+          "season": "Rabi"
+        },
+        "data_gap": false
+      },
+      "macro_summary": {
+        "gva_growth_pred": 5.883142902690008,
+        "inflation_change_pred": -1.239890465410997,
+        "trade_return_pred": 0.02724915373996657,
+        "price_return_pred": 0.019035947261087673,
+        "shock_direction": "demand_shock",
+        "trade_position": "exporter",
+        "dependency_level": "negligible"
+      }
+    },
+    "advisory": {
+      "context": "Export flow of Dates, figs, pineapples, avocados, guavas, mangoes and mangosteens; fresh or dried with INDONESIA (2024-12)",
+      "methodology_note": "Rules-based interpretation of Model A-D cascade predictions (deterministic decision layer).",
+      "limitations": {
+        "framework": "Deterministic rules-based decision layer (not an ML model).",
+        "purpose": "Interprets predicted trade/price/agricultural/economic impacts from upstream Models A-D.",
+        "causal_attribution": "Does not establish causal attribution to specific geopolitical events unless event parameters are explicitly provided.",
+        "thresholds": "Dependency tiers and shock triggers are project-defined heuristic thresholds.",
+        "data_gaps": "Regional disaggregation is limited to national production risk proxies; fertilizer and input-cost impacts cannot be assessed due to absence of HS Chapter 31 data."
+      },
+      "stakeholder_advisories": {
+        "farmers": "Output-price effect: POSITIVE. Positive output-price effect: higher predicted commodity price improves realization for domestic producers. Partner dependency: negligible (project-defined rule). Input-cost effect: Cannot assess: fertilizer and agricultural input-cost trade data absent (HS Chapter 31 absent in dataset).",
+        "consumers": "Consumer impact: NEGATIVE. Negative consumer impact: higher predicted commodity prices increase consumer food expenditure. Severity tier: negligible.",
+        "exporters": "Exporter impact: POSITIVE. Positive exporter impact: predicted export volume expansion indicates favorable market access and revenue potential.",
+        "importers": "Importer impact: NOT_APPLICABLE. Not applicable: observed flow is Export (India is exporter, not importer, for this record).",
+        "regional": "Regional risk: Low. Low production risk: producing regions show stable baseline outlook. Season: Rabi. Projected national production growth: +64.7%.",
+        "government": "Macro outlook: Agri GVA growth pred = +5.88%, Inflation change pred = -1.24 pp. Trade return pred = +0.03%, Price return pred = +0.02%. Interpreted shock direction: demand_shock."
+      }
+    }
+  }
+]

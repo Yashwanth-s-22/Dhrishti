@@ -1,0 +1,762 @@
+[
+  {
+    "row_meta": {
+      "Country": "UNITED ARAB EMIRATES",
+      "Trade_Type": "Export",
+      "HS4": 807,
+      "Year": 2025,
+      "Month": 4
+    },
+    "note": "Integration demonstration. Predictions are cascade model outputs. Actuals are historical observed values for reference only. This is not a statistical evaluation.",
+    "cascade_predictions": {
+      "exposure_features": {
+        "Year": 2025,
+        "Month": 4,
+        "Country": "UNITED ARAB EMIRATES",
+        "Trade_Type": "Export",
+        "HS4": 807,
+        "HS2": 8,
+        "Commodity": "Melons (including watermelons) and papaws (papayas); fresh",
+        "Value_USD": 482562.616,
+        "NetWeight_KG": 1212390.0,
+        "Unit_Price_USD_per_KG": 0.398,
+        "Signed_Trade_Value_USD": 482562.616,
+        "MoM_Change_Value": -0.884534276,
+        "Rolling_3M_Volatility": 35.52642538755374,
+        "Total_Event_Count": 27,
+        "Avg_Goldstein": -7.22222222222222,
+        "Avg_Tone": -2.04909569827392,
+        "Total_Mentions": 774,
+        "Total_Sources": 219,
+        "Shock_Intensity": 558.586782050362,
+        "Conflict_Event_Count": 11,
+        "Protest_Event_Count": 0,
+        "Trade_Shock_Count": 8,
+        "Sanction_Threat_Count": 8,
+        "Incoming_Shock_Count": 12,
+        "Outgoing_Shock_Count": 15,
+        "Net_Hostility": 3,
+        "Conflict_Density": 0.4074074074074074,
+        "Protest_Density": 0.0,
+        "Trade_Shock_Density": 0.2962962962962963,
+        "Total_Country_Trade_USD": 264083515.183,
+        "Trade_Share": 0.0018273106356737,
+        "Effective_Shock": 1.0207115677873884,
+        "Conflict_Exposure": 0.0007444598886078,
+        "Protest_Exposure": 0.0,
+        "Trade_Shock_Exposure": 0.0005414253735329,
+        "Incoming_Shock_Exposure": 0.0219277276280847,
+        "Outgoing_Shock_Exposure": 0.0274096595351059,
+        "Net_Hostility_Exposure": 0.0054819319070211,
+        "Log_Value_USD": 13.0868680377023,
+        "Shock_Intensity_Lag1": 558.586782050362,
+        "Shock_Intensity_Lag2": 558.586782050362,
+        "Trade_Share_Lag1": 0.008048855974138,
+        "Trade_Share_Lag2": 0.0069036404334511,
+        "Lagged_Effective_Shock_1": 4.49598455778061,
+        "Lagged_Effective_Shock_2": 3.856282294154249,
+        "CPI_Food_Index": 194.6,
+        "CPI_Food_Inflation": 1.78,
+        "INR_USD_Rate": 85.561217,
+        "Forex_Reserves_USD_Million": 688428.344,
+        "GPR": 139.72,
+        "GDP_Growth_Percent": 0.0,
+        "Agri_GVA_Growth_Percent": 0.0,
+        "Trade_Return_1M": -0.0995891092405825,
+        "Trade_Return_3M": -0.8719939085307231,
+        "Trade_Return_6M": 0.0,
+        "Price_Return_1M": -0.1285188508009784,
+        "Price_Return_3M": 0.2596547601971251,
+        "Price_Lag1": 0.427,
+        "Inflation_Change_3M": -4.11,
+        "Inflation_Lag1": 2.69,
+        "Agri_GVA_Lag1": 0.0,
+        "GDP_Lag1": 0.0,
+        "Shock_Trend_3M": 0.0,
+        "Trade_Momentum": 34.64189111155375,
+        "Trade_Type_Encoded": 1,
+        "Country_HS4": "UNITED ARAB EMIRATES_807",
+        "Weighted_Trade_Impact": -0.0015934037433008,
+        "Price_Volatility_3M": 0.0295014123955659,
+        "Country_ISO3": "ARE",
+        "Natural_Disaster_Count": 0.0,
+        "Natural_Disaster_Type_Count": 0.0,
+        "Natural_Disaster_Types": "None recorded",
+        "Natural_Disaster_Flood_Count": 0.0,
+        "Natural_Disaster_Storm_Count": 0.0,
+        "Natural_Disaster_Drought_Count": 0.0,
+        "Natural_Disaster_Earthquake_Count": 0.0,
+        "Natural_Disaster_Wildfire_Count": 0.0,
+        "Natural_Disaster_Deaths": 0.0,
+        "Natural_Disaster_Affected_Population": 0.0,
+        "Natural_Disaster_Damage_000USD": 0.0,
+        "Natural_Disaster_Deaths_Observed_Events": 0.0,
+        "Natural_Disaster_Affected_Observed_Events": 0.0,
+        "Natural_Disaster_Damage_Observed_Events": 0.0,
+        "Natural_Disaster_Occurrence": 0.0,
+        "Natural_Disaster_Severity_Index": 0.0,
+        "Natural_Disaster_Trade_Exposure_USD": 0.0
+      },
+      "trade": {
+        "Trade_Return_1M_Pred": -0.08621058770839445
+      },
+      "agriculture": {
+        "Production_Growth_Pred": 33.13893997192511,
+        "Production_Risk": "Medium"
+      },
+      "price": {
+        "Price_Return_1M_Pred": 0.009601274749189294
+      },
+      "economy": {
+        "Agri_GVA_Growth_Pred": 5.322393432115,
+        "Inflation_Change_Pred": -2.9606495075697836
+      },
+      "trace": [
+        {
+          "stage": "trade",
+          "key": "Trade_Return_1M_Pred",
+          "value": -0.08621058770839445
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Growth_Pred",
+          "value": 33.13893997192511
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Risk_Code",
+          "value": 1.0
+        },
+        {
+          "stage": "price",
+          "key": "Price_Return_1M_Pred",
+          "value": 0.009601274749189294
+        },
+        {
+          "stage": "economy",
+          "key": "Agri_GVA_Growth_Pred",
+          "value": 5.322393432115
+        },
+        {
+          "stage": "economy",
+          "key": "Inflation_Change_Pred",
+          "value": -2.9606495075697836
+        }
+      ]
+    },
+    "actuals_historical_reference": {
+      "Trade_Return_1M": -0.0995891092405825,
+      "Price_Return_1M": -0.1285188508009784,
+      "Agri_GVA_Growth_Percent": 0.0,
+      "Inflation_Change_3M": -4.11
+    }
+  },
+  {
+    "row_meta": {
+      "Country": "INDONESIA",
+      "Trade_Type": "Import",
+      "HS4": 602,
+      "Year": 2025,
+      "Month": 2
+    },
+    "note": "Integration demonstration. Predictions are cascade model outputs. Actuals are historical observed values for reference only. This is not a statistical evaluation.",
+    "cascade_predictions": {
+      "exposure_features": {
+        "Year": 2025,
+        "Month": 2,
+        "Country": "INDONESIA",
+        "Trade_Type": "Import",
+        "HS4": 602,
+        "HS2": 6,
+        "Commodity": "Plants, live; n.e.c. in heading no. 0601, (including their roots) cuttings and slips; mushroom spawn",
+        "Value_USD": 24955.459,
+        "NetWeight_KG": 27089.0,
+        "Unit_Price_USD_per_KG": 0.921,
+        "Signed_Trade_Value_USD": -24955.459,
+        "MoM_Change_Value": 2.388584231960381,
+        "Rolling_3M_Volatility": 2.977632794246939,
+        "Total_Event_Count": 35,
+        "Avg_Goldstein": -6.02285714285714,
+        "Avg_Tone": -2.74776424574476,
+        "Total_Mentions": 788,
+        "Total_Sources": 111,
+        "Shock_Intensity": 574.5483234001274,
+        "Conflict_Event_Count": 7,
+        "Protest_Event_Count": 3,
+        "Trade_Shock_Count": 12,
+        "Sanction_Threat_Count": 8,
+        "Incoming_Shock_Count": 8,
+        "Outgoing_Shock_Count": 27,
+        "Net_Hostility": 19,
+        "Conflict_Density": 0.2,
+        "Protest_Density": 0.0857142857142857,
+        "Trade_Shock_Density": 0.3428571428571428,
+        "Total_Country_Trade_USD": 322416487.85800004,
+        "Trade_Share": 7.740131147074272e-05,
+        "Effective_Shock": 0.0444707937344862,
+        "Conflict_Exposure": 1.5480262294148546e-05,
+        "Protest_Exposure": 6.634398126063661e-06,
+        "Trade_Shock_Exposure": 2.6537592504254644e-05,
+        "Incoming_Shock_Exposure": 0.0006192104917659,
+        "Outgoing_Shock_Exposure": 0.00208983540971,
+        "Net_Hostility_Exposure": 0.0014706249179441,
+        "Log_Value_USD": 10.124887945432112,
+        "Shock_Intensity_Lag1": 574.5483234001274,
+        "Shock_Intensity_Lag2": 574.5483234001274,
+        "Trade_Share_Lag1": 1.6268639644069327e-05,
+        "Trade_Share_Lag2": 4.9142538460502665e-05,
+        "Lagged_Effective_Shock_1": 0.0093471196315008,
+        "Lagged_Effective_Shock_2": 0.028234763080108,
+        "CPI_Food_Index": 196.6,
+        "CPI_Food_Inflation": 3.75,
+        "INR_USD_Rate": 87.05475,
+        "Forex_Reserves_USD_Million": 638698.405,
+        "GPR": 136.43,
+        "GDP_Growth_Percent": 0.0,
+        "Agri_GVA_Growth_Percent": 0.0,
+        "Trade_Return_1M": 0.0,
+        "Trade_Return_3M": 0.0,
+        "Trade_Return_6M": 0.0,
+        "Price_Return_1M": 0.0,
+        "Price_Return_3M": 0.0,
+        "Price_Lag1": 272.762,
+        "Inflation_Change_3M": -0.8399999999999999,
+        "Inflation_Lag1": 8.39,
+        "Agri_GVA_Lag1": 4.626329535,
+        "GDP_Lag1": 6.494765524,
+        "Shock_Trend_3M": 0.0,
+        "Trade_Momentum": 5.36621702620732,
+        "Trade_Type_Encoded": 0,
+        "Country_HS4": "INDONESIA_602",
+        "Weighted_Trade_Impact": 0.0,
+        "Price_Volatility_3M": 157.01795865547743,
+        "Country_ISO3": "IDN",
+        "Natural_Disaster_Count": 0.0,
+        "Natural_Disaster_Type_Count": 0.0,
+        "Natural_Disaster_Types": "None recorded",
+        "Natural_Disaster_Flood_Count": 0.0,
+        "Natural_Disaster_Storm_Count": 0.0,
+        "Natural_Disaster_Drought_Count": 0.0,
+        "Natural_Disaster_Earthquake_Count": 0.0,
+        "Natural_Disaster_Wildfire_Count": 0.0,
+        "Natural_Disaster_Deaths": 0.0,
+        "Natural_Disaster_Affected_Population": 0.0,
+        "Natural_Disaster_Damage_000USD": 0.0,
+        "Natural_Disaster_Deaths_Observed_Events": 0.0,
+        "Natural_Disaster_Affected_Observed_Events": 0.0,
+        "Natural_Disaster_Damage_Observed_Events": 0.0,
+        "Natural_Disaster_Occurrence": 0.0,
+        "Natural_Disaster_Severity_Index": 0.0,
+        "Natural_Disaster_Trade_Exposure_USD": 0.0
+      },
+      "trade": {
+        "Trade_Return_1M_Pred": 0.03539105253050835
+      },
+      "agriculture": {
+        "Production_Growth_Pred": 49.858760246202,
+        "Production_Risk": "Critical"
+      },
+      "price": {
+        "Price_Return_1M_Pred": -0.0747182944646966
+      },
+      "economy": {
+        "Agri_GVA_Growth_Pred": 5.762559026015007,
+        "Inflation_Change_Pred": -2.456930467285968
+      },
+      "trace": [
+        {
+          "stage": "trade",
+          "key": "Trade_Return_1M_Pred",
+          "value": 0.03539105253050835
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Growth_Pred",
+          "value": 49.858760246202
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Risk_Code",
+          "value": 3.0
+        },
+        {
+          "stage": "price",
+          "key": "Price_Return_1M_Pred",
+          "value": -0.0747182944646966
+        },
+        {
+          "stage": "economy",
+          "key": "Agri_GVA_Growth_Pred",
+          "value": 5.762559026015007
+        },
+        {
+          "stage": "economy",
+          "key": "Inflation_Change_Pred",
+          "value": -2.456930467285968
+        }
+      ]
+    },
+    "actuals_historical_reference": {
+      "Trade_Return_1M": 0.0,
+      "Price_Return_1M": 0.0,
+      "Agri_GVA_Growth_Percent": 0.0,
+      "Inflation_Change_3M": -0.8399999999999999
+    }
+  },
+  {
+    "row_meta": {
+      "Country": "UNITED STATES",
+      "Trade_Type": "Import",
+      "HS4": 1207,
+      "Year": 2024,
+      "Month": 8
+    },
+    "note": "Integration demonstration. Predictions are cascade model outputs. Actuals are historical observed values for reference only. This is not a statistical evaluation.",
+    "cascade_predictions": {
+      "exposure_features": {
+        "Year": 2024,
+        "Month": 8,
+        "Country": "UNITED STATES",
+        "Trade_Type": "Import",
+        "HS4": 1207,
+        "HS2": 12,
+        "Commodity": "Oil seeds and oleaginous fruits, n.e.c. in chapter 12; whether or not broken",
+        "Value_USD": 25612.605,
+        "NetWeight_KG": 58.2,
+        "Unit_Price_USD_per_KG": 440.079,
+        "Signed_Trade_Value_USD": -25612.605,
+        "MoM_Change_Value": -0.951395912,
+        "Rolling_3M_Volatility": 7.744699711130358,
+        "Total_Event_Count": 1239,
+        "Avg_Goldstein": -7.39063761097659,
+        "Avg_Tone": -4.69420894216469,
+        "Total_Mentions": 47376,
+        "Total_Sources": 13143,
+        "Shock_Intensity": 28380.72195799245,
+        "Conflict_Event_Count": 536,
+        "Protest_Event_Count": 58,
+        "Trade_Shock_Count": 458,
+        "Sanction_Threat_Count": 76,
+        "Incoming_Shock_Count": 603,
+        "Outgoing_Shock_Count": 636,
+        "Net_Hostility": 33,
+        "Conflict_Density": 0.4326069410815173,
+        "Protest_Density": 0.0468119451170298,
+        "Trade_Shock_Density": 0.3696529459241324,
+        "Total_Country_Trade_USD": 110238637.508,
+        "Trade_Share": 0.0002323378225546,
+        "Effective_Shock": 6.5939151422488855,
+        "Conflict_Exposure": 0.0001005109547129,
+        "Protest_Exposure": 1.0876185398038448e-05,
+        "Trade_Shock_Exposure": 8.588436055692441e-05,
+        "Incoming_Shock_Exposure": 0.1400997070004534,
+        "Outgoing_Shock_Exposure": 0.1477668551447569,
+        "Net_Hostility_Exposure": 0.0076671481443034,
+        "Log_Value_USD": 10.150878934613107,
+        "Shock_Intensity_Lag1": 28380.72195799245,
+        "Shock_Intensity_Lag2": 28380.72195799245,
+        "Trade_Share_Lag1": 0.0002321087870526,
+        "Trade_Share_Lag2": 0.0007269765759792,
+        "Lagged_Effective_Shock_1": 6.587414949348927,
+        "Lagged_Effective_Shock_2": 20.6321200728407,
+        "CPI_Food_Index": 203.4,
+        "CPI_Food_Inflation": 5.66,
+        "INR_USD_Rate": 83.89629,
+        "Forex_Reserves_USD_Million": 682230.75,
+        "GPR": 140.98,
+        "GDP_Growth_Percent": 6.494765524,
+        "Agri_GVA_Growth_Percent": 4.626329535,
+        "Trade_Return_1M": -3.1040638148869184,
+        "Trade_Return_3M": -4.492525605490459,
+        "Trade_Return_6M": 0.9774854687132288,
+        "Price_Return_1M": -4.688978390356768,
+        "Price_Return_3M": -5.993463913163158,
+        "Price_Lag1": 477.271,
+        "Inflation_Change_3M": -2.97,
+        "Inflation_Lag1": 9.36,
+        "Agri_GVA_Lag1": 4.626329535,
+        "GDP_Lag1": 6.494765524,
+        "Shock_Trend_3M": 0.0,
+        "Trade_Momentum": 6.793303799130358,
+        "Trade_Type_Encoded": 0,
+        "Country_HS4": "UNITED STATES_1207",
+        "Weighted_Trade_Impact": -0.0010437836169504,
+        "Price_Volatility_3M": 32.909778126473896,
+        "Country_ISO3": "USA",
+        "Natural_Disaster_Count": 1.0,
+        "Natural_Disaster_Type_Count": 1.0,
+        "Natural_Disaster_Types": "Storm",
+        "Natural_Disaster_Flood_Count": 0.0,
+        "Natural_Disaster_Storm_Count": 1.0,
+        "Natural_Disaster_Drought_Count": 0.0,
+        "Natural_Disaster_Earthquake_Count": 0.0,
+        "Natural_Disaster_Wildfire_Count": 0.0,
+        "Natural_Disaster_Deaths": 17.0,
+        "Natural_Disaster_Affected_Population": 0.0,
+        "Natural_Disaster_Damage_000USD": 2500000.0,
+        "Natural_Disaster_Deaths_Observed_Events": 1.0,
+        "Natural_Disaster_Affected_Observed_Events": 0.0,
+        "Natural_Disaster_Damage_Observed_Events": 1.0,
+        "Natural_Disaster_Occurrence": 1.0,
+        "Natural_Disaster_Severity_Index": 17.622173447734514,
+        "Natural_Disaster_Trade_Exposure_USD": 25612.605
+      },
+      "trade": {
+        "Trade_Return_1M_Pred": -0.09307001840269265
+      },
+      "agriculture": {
+        "Production_Growth_Pred": 10.709944690277737,
+        "Production_Risk": "Critical"
+      },
+      "price": {
+        "Price_Return_1M_Pred": -0.08322434240287524
+      },
+      "economy": {
+        "Agri_GVA_Growth_Pred": 5.645454963695005,
+        "Inflation_Change_Pred": -0.9175604786010476
+      },
+      "trace": [
+        {
+          "stage": "trade",
+          "key": "Trade_Return_1M_Pred",
+          "value": -0.09307001840269265
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Growth_Pred",
+          "value": 10.709944690277737
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Risk_Code",
+          "value": 3.0
+        },
+        {
+          "stage": "price",
+          "key": "Price_Return_1M_Pred",
+          "value": -0.08322434240287524
+        },
+        {
+          "stage": "economy",
+          "key": "Agri_GVA_Growth_Pred",
+          "value": 5.645454963695005
+        },
+        {
+          "stage": "economy",
+          "key": "Inflation_Change_Pred",
+          "value": -0.9175604786010476
+        }
+      ]
+    },
+    "actuals_historical_reference": {
+      "Trade_Return_1M": -3.1040638148869184,
+      "Price_Return_1M": -4.688978390356768,
+      "Agri_GVA_Growth_Percent": 4.626329535,
+      "Inflation_Change_3M": -2.97
+    }
+  },
+  {
+    "row_meta": {
+      "Country": "UNITED KINGDOM",
+      "Trade_Type": "Export",
+      "HS4": 1105,
+      "Year": 2025,
+      "Month": 6
+    },
+    "note": "Integration demonstration. Predictions are cascade model outputs. Actuals are historical observed values for reference only. This is not a statistical evaluation.",
+    "cascade_predictions": {
+      "exposure_features": {
+        "Year": 2025,
+        "Month": 6,
+        "Country": "UNITED KINGDOM",
+        "Trade_Type": "Export",
+        "HS4": 1105,
+        "HS2": 11,
+        "Commodity": "Flour, meal, powder, flakes, granules and pellets of potatoes",
+        "Value_USD": 5451.817,
+        "NetWeight_KG": 5320.0,
+        "Unit_Price_USD_per_KG": 1.025,
+        "Signed_Trade_Value_USD": 5451.817,
+        "MoM_Change_Value": -0.880798744,
+        "Rolling_3M_Volatility": 2.0904845322147,
+        "Total_Event_Count": 206,
+        "Avg_Goldstein": -7.59708737864077,
+        "Avg_Tone": -4.09947562806891,
+        "Total_Mentions": 7913,
+        "Total_Sources": 1822,
+        "Shock_Intensity": 4828.82174435176,
+        "Conflict_Event_Count": 100,
+        "Protest_Event_Count": 12,
+        "Trade_Shock_Count": 63,
+        "Sanction_Threat_Count": 19,
+        "Incoming_Shock_Count": 117,
+        "Outgoing_Shock_Count": 89,
+        "Net_Hostility": -28,
+        "Conflict_Density": 0.4854368932038835,
+        "Protest_Density": 0.058252427184466,
+        "Trade_Shock_Density": 0.3058252427184466,
+        "Total_Country_Trade_USD": 83266356.775,
+        "Trade_Share": 6.547442702136886e-05,
+        "Effective_Shock": 0.3161643368997583,
+        "Conflict_Exposure": 3.1783702437557696e-05,
+        "Protest_Exposure": 3.8140442925069225e-06,
+        "Trade_Shock_Exposure": 2.002373253566135e-05,
+        "Incoming_Shock_Exposure": 0.0076605079615001,
+        "Outgoing_Shock_Exposure": 0.0058272240049018,
+        "Net_Hostility_Exposure": -0.0018332839565983,
+        "Log_Value_USD": 8.6038876348544,
+        "Shock_Intensity_Lag1": 4828.82174435176,
+        "Shock_Intensity_Lag2": 4828.82174435176,
+        "Trade_Share_Lag1": 7.542545721902606e-05,
+        "Trade_Share_Lag2": 0.0006746261180229,
+        "Lagged_Effective_Shock_1": 0.3642160878969064,
+        "Lagged_Effective_Shock_2": 3.2576492680170626,
+        "CPI_Food_Index": 196.7,
+        "CPI_Food_Inflation": -1.01,
+        "INR_USD_Rate": 85.903433,
+        "Forex_Reserves_USD_Million": 698117.773,
+        "GPR": 222.2,
+        "GDP_Growth_Percent": 0.0,
+        "Agri_GVA_Growth_Percent": 0.0,
+        "Trade_Return_1M": 0.2984769061885241,
+        "Trade_Return_3M": 0.0,
+        "Trade_Return_6M": 0.0,
+        "Price_Return_1M": 0.8779047921517812,
+        "Price_Return_3M": 0.0,
+        "Price_Lag1": 0.597,
+        "Inflation_Change_3M": 5.71,
+        "Inflation_Lag1": 0.99,
+        "Agri_GVA_Lag1": 0.0,
+        "GDP_Lag1": 0.0,
+        "Shock_Trend_3M": 0.0,
+        "Trade_Momentum": 1.2096857882147,
+        "Trade_Type_Encoded": 1,
+        "Country_HS4": "UNITED KINGDOM_1105",
+        "Weighted_Trade_Impact": 0.0,
+        "Price_Volatility_3M": 0.7173990056679402,
+        "Country_ISO3": "GBR",
+        "Natural_Disaster_Count": 0.0,
+        "Natural_Disaster_Type_Count": 0.0,
+        "Natural_Disaster_Types": "None recorded",
+        "Natural_Disaster_Flood_Count": 0.0,
+        "Natural_Disaster_Storm_Count": 0.0,
+        "Natural_Disaster_Drought_Count": 0.0,
+        "Natural_Disaster_Earthquake_Count": 0.0,
+        "Natural_Disaster_Wildfire_Count": 0.0,
+        "Natural_Disaster_Deaths": 0.0,
+        "Natural_Disaster_Affected_Population": 0.0,
+        "Natural_Disaster_Damage_000USD": 0.0,
+        "Natural_Disaster_Deaths_Observed_Events": 0.0,
+        "Natural_Disaster_Affected_Observed_Events": 0.0,
+        "Natural_Disaster_Damage_Observed_Events": 0.0,
+        "Natural_Disaster_Occurrence": 0.0,
+        "Natural_Disaster_Severity_Index": 0.0,
+        "Natural_Disaster_Trade_Exposure_USD": 0.0
+      },
+      "trade": {
+        "Trade_Return_1M_Pred": 0.15190985206091537
+      },
+      "agriculture": {
+        "Production_Growth_Pred": 32.99839606528766,
+        "Production_Risk": "Low"
+      },
+      "price": {
+        "Price_Return_1M_Pred": 0.0022963618578027687
+      },
+      "economy": {
+        "Agri_GVA_Growth_Pred": 5.697809440080004,
+        "Inflation_Change_Pred": -3.0939663187349438
+      },
+      "trace": [
+        {
+          "stage": "trade",
+          "key": "Trade_Return_1M_Pred",
+          "value": 0.15190985206091537
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Growth_Pred",
+          "value": 32.99839606528766
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Risk_Code",
+          "value": 0.0
+        },
+        {
+          "stage": "price",
+          "key": "Price_Return_1M_Pred",
+          "value": 0.0022963618578027687
+        },
+        {
+          "stage": "economy",
+          "key": "Agri_GVA_Growth_Pred",
+          "value": 5.697809440080004
+        },
+        {
+          "stage": "economy",
+          "key": "Inflation_Change_Pred",
+          "value": -3.0939663187349438
+        }
+      ]
+    },
+    "actuals_historical_reference": {
+      "Trade_Return_1M": 0.2984769061885241,
+      "Price_Return_1M": 0.8779047921517812,
+      "Agri_GVA_Growth_Percent": 0.0,
+      "Inflation_Change_3M": 5.71
+    }
+  },
+  {
+    "row_meta": {
+      "Country": "INDONESIA",
+      "Trade_Type": "Export",
+      "HS4": 804,
+      "Year": 2024,
+      "Month": 12
+    },
+    "note": "Integration demonstration. Predictions are cascade model outputs. Actuals are historical observed values for reference only. This is not a statistical evaluation.",
+    "cascade_predictions": {
+      "exposure_features": {
+        "Year": 2024,
+        "Month": 12,
+        "Country": "INDONESIA",
+        "Trade_Type": "Export",
+        "HS4": 804,
+        "HS2": 8,
+        "Commodity": "Dates, figs, pineapples, avocados, guavas, mangoes and mangosteens; fresh or dried",
+        "Value_USD": 82594.66,
+        "NetWeight_KG": 201600.0,
+        "Unit_Price_USD_per_KG": 0.41,
+        "Signed_Trade_Value_USD": 82594.66,
+        "MoM_Change_Value": -0.030567036,
+        "Rolling_3M_Volatility": 0.6463188866715819,
+        "Total_Event_Count": 28,
+        "Avg_Goldstein": -7.14285714285714,
+        "Avg_Tone": -3.6465445085547,
+        "Total_Mentions": 1215,
+        "Total_Sources": 255,
+        "Shock_Intensity": 617.7282110946372,
+        "Conflict_Event_Count": 12,
+        "Protest_Event_Count": 3,
+        "Trade_Shock_Count": 10,
+        "Sanction_Threat_Count": 1,
+        "Incoming_Shock_Count": 15,
+        "Outgoing_Shock_Count": 13,
+        "Net_Hostility": -2,
+        "Conflict_Density": 0.4285714285714285,
+        "Protest_Density": 0.1071428571428571,
+        "Trade_Shock_Density": 0.3571428571428571,
+        "Total_Country_Trade_USD": 144447949.422,
+        "Trade_Share": 0.0005717953098711,
+        "Effective_Shock": 0.3532140938789892,
+        "Conflict_Exposure": 0.0002450551328019,
+        "Protest_Exposure": 6.126378320047686e-05,
+        "Trade_Shock_Exposure": 0.0002042126106682,
+        "Incoming_Shock_Exposure": 0.0085769296480667,
+        "Outgoing_Shock_Exposure": 0.0074333390283245,
+        "Net_Hostility_Exposure": -0.0011435906197422,
+        "Log_Value_USD": 11.321712415755789,
+        "Shock_Intensity_Lag1": 617.7282110946372,
+        "Shock_Intensity_Lag2": 617.7282110946372,
+        "Trade_Share_Lag1": 0.0006535157908423,
+        "Trade_Share_Lag2": 0.0007802036005258,
+        "Lagged_Effective_Shock_1": 0.403695140399141,
+        "Lagged_Effective_Shock_2": 0.4819537744424282,
+        "CPI_Food_Index": 206.7,
+        "CPI_Food_Inflation": 8.39,
+        "INR_USD_Rate": 84.986229,
+        "Forex_Reserves_USD_Million": 635701.425,
+        "GPR": 142.37,
+        "GDP_Growth_Percent": 6.494765524,
+        "Agri_GVA_Growth_Percent": 4.626329535,
+        "Trade_Return_1M": 0.2259202308812828,
+        "Trade_Return_3M": -0.8784558860606063,
+        "Trade_Return_6M": -0.1057699479616267,
+        "Price_Return_1M": 0.0024360547978811,
+        "Price_Return_3M": -0.0048899852941917,
+        "Price_Lag1": 0.411,
+        "Inflation_Change_3M": -7.4,
+        "Inflation_Lag1": 9.04,
+        "Agri_GVA_Lag1": 4.626329535,
+        "GDP_Lag1": 6.494765524,
+        "Shock_Trend_3M": 0.0,
+        "Trade_Momentum": 0.6157518506715819,
+        "Trade_Type_Encoded": 1,
+        "Country_HS4": "INDONESIA_804",
+        "Weighted_Trade_Impact": -0.0005022969555781,
+        "Price_Volatility_3M": 0.0032145502531433,
+        "Country_ISO3": "IDN",
+        "Natural_Disaster_Count": 1.0,
+        "Natural_Disaster_Type_Count": 1.0,
+        "Natural_Disaster_Types": "Flood",
+        "Natural_Disaster_Flood_Count": 1.0,
+        "Natural_Disaster_Storm_Count": 0.0,
+        "Natural_Disaster_Drought_Count": 0.0,
+        "Natural_Disaster_Earthquake_Count": 0.0,
+        "Natural_Disaster_Wildfire_Count": 0.0,
+        "Natural_Disaster_Deaths": 12.0,
+        "Natural_Disaster_Affected_Population": 10160.0,
+        "Natural_Disaster_Damage_000USD": 0.0,
+        "Natural_Disaster_Deaths_Observed_Events": 1.0,
+        "Natural_Disaster_Affected_Observed_Events": 1.0,
+        "Natural_Disaster_Damage_Observed_Events": 0.0,
+        "Natural_Disaster_Occurrence": 1.0,
+        "Natural_Disaster_Severity_Index": 11.791261498947415,
+        "Natural_Disaster_Trade_Exposure_USD": 82594.66
+      },
+      "trade": {
+        "Trade_Return_1M_Pred": 0.02724915373996657
+      },
+      "agriculture": {
+        "Production_Growth_Pred": 64.73861093153768,
+        "Production_Risk": "Low"
+      },
+      "price": {
+        "Price_Return_1M_Pred": 0.019035947261087673
+      },
+      "economy": {
+        "Agri_GVA_Growth_Pred": 5.883142902690008,
+        "Inflation_Change_Pred": -1.239890465410997
+      },
+      "trace": [
+        {
+          "stage": "trade",
+          "key": "Trade_Return_1M_Pred",
+          "value": 0.02724915373996657
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Growth_Pred",
+          "value": 64.73861093153768
+        },
+        {
+          "stage": "agriculture",
+          "key": "Production_Risk_Code",
+          "value": 0.0
+        },
+        {
+          "stage": "price",
+          "key": "Price_Return_1M_Pred",
+          "value": 0.019035947261087673
+        },
+        {
+          "stage": "economy",
+          "key": "Agri_GVA_Growth_Pred",
+          "value": 5.883142902690008
+        },
+        {
+          "stage": "economy",
+          "key": "Inflation_Change_Pred",
+          "value": -1.239890465410997
+        }
+      ]
+    },
+    "actuals_historical_reference": {
+      "Trade_Return_1M": 0.2259202308812828,
+      "Price_Return_1M": 0.0024360547978811,
+      "Agri_GVA_Growth_Percent": 4.626329535,
+      "Inflation_Change_3M": -7.4
+    }
+  }
+]

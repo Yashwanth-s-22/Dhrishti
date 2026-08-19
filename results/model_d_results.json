@@ -1,0 +1,366 @@
+{
+  "task": "Tasks 5+6 - Leakage Audit + Model D",
+  "timestamp": "2026-08-19T00:22:05.193208",
+  "leakage_audit": [
+    {
+      "feature": "Shock_Intensity_Lag1",
+      "formula_verification": "VERIFIED",
+      "match_pct": 100.0,
+      "formula_note": "139,611 rows compared",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Lag of prior period \u2014 temporally safe"
+    },
+    {
+      "feature": "Shock_Intensity_Lag2",
+      "formula_verification": "VERIFIED",
+      "match_pct": 100.0,
+      "formula_note": "139,596 rows compared",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Lag of two prior periods \u2014 temporally safe"
+    },
+    {
+      "feature": "Trade_Share_Lag1",
+      "formula_verification": "VERIFIED",
+      "match_pct": 100.0,
+      "formula_note": "136,204 rows compared",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Lag of prior period \u2014 temporally safe"
+    },
+    {
+      "feature": "Trade_Share_Lag2",
+      "formula_verification": "VERIFIED",
+      "match_pct": 100.0,
+      "formula_note": "133,182 rows compared",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Lag of two prior periods \u2014 temporally safe"
+    },
+    {
+      "feature": "Price_Lag1",
+      "formula_verification": "VERIFIED",
+      "match_pct": 100.0,
+      "formula_note": "136,204 rows compared (Task 1 confirmed 100%)",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Lag of prior period \u2014 temporally safe (Task 1: 100% confirmed)"
+    },
+    {
+      "feature": "Lagged_Effective_Shock_1",
+      "formula_verification": "VERIFIED",
+      "match_pct": 100.0,
+      "formula_note": "139,626 rows; formula = SI_Lag1 * TS_Lag1",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Product of prior-period lags \u2014 temporally safe"
+    },
+    {
+      "feature": "Lagged_Effective_Shock_2",
+      "formula_verification": "VERIFIED",
+      "match_pct": 100.0,
+      "formula_note": "139,626 rows; formula = SI_Lag2 * TS_Lag2",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Product of prior-period lags \u2014 temporally safe"
+    },
+    {
+      "feature": "Inflation_Lag1",
+      "formula_verification": "PARTIAL",
+      "match_pct": 81.25429690044217,
+      "formula_note": "138,181 rows; Jan 2018 from external source",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Lag of prior period \u2014 temporally safe; Jan 2018 from external source"
+    },
+    {
+      "feature": "Agri_GVA_Lag1",
+      "formula_verification": "PARTIAL",
+      "match_pct": 85.71428571428571,
+      "formula_note": "annual comparison",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Previous calendar year value \u2014 temporally safe"
+    },
+    {
+      "feature": "GDP_Lag1",
+      "formula_verification": "PARTIAL",
+      "match_pct": 85.71428571428571,
+      "formula_note": "annual comparison",
+      "leakage_status": "SAFE",
+      "leakage_reason": "Previous calendar year value \u2014 temporally safe"
+    },
+    {
+      "feature": "GPR",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Exogenous index \u2014 not a derived lag",
+      "leakage_status": "ASSUMED PREDETERMINED",
+      "leakage_reason": "Exogenous political risk index, assumed available at t"
+    },
+    {
+      "feature": "INR_USD_Rate",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Exogenous index \u2014 not a derived lag",
+      "leakage_status": "ASSUMED PREDETERMINED",
+      "leakage_reason": "Exchange rate, assumed available at t"
+    },
+    {
+      "feature": "Price_Return_1M_Pred_Lag1",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Lagged upstream model output",
+      "leakage_status": "TEMPORALLY SAFE BUT UPSTREAM-PROVENANCE WARNING",
+      "leakage_reason": "Lagged Model C prediction; upstream in-sample contamination possible"
+    },
+    {
+      "feature": "CPI_Food_Index",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period realized CPI \u2014 direct leakage for inflation target"
+    },
+    {
+      "feature": "CPI_Food_Inflation",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period realized inflation \u2014 target / near-proxy"
+    },
+    {
+      "feature": "GDP_Growth_Percent",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period GDP \u2014 too close to Agri_GVA target"
+    },
+    {
+      "feature": "Agri_GVA_Growth_Percent",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 this is the target",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "This IS the target \u2014 cannot use as feature"
+    },
+    {
+      "feature": "Forex_Reserves_USD_Million",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period macro variable \u2014 potential leakage"
+    },
+    {
+      "feature": "Value_USD",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period realized trade value"
+    },
+    {
+      "feature": "Trade_Return_1M",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period realized trade return"
+    },
+    {
+      "feature": "Price_Return_1M",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period realized price return"
+    },
+    {
+      "feature": "Effective_Shock",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period product; use verified lagged versions instead"
+    },
+    {
+      "feature": "Trade_Share",
+      "formula_verification": "N/A",
+      "match_pct": null,
+      "formula_note": "Not a lag \u2014 same-period realized",
+      "leakage_status": "UNSAFE",
+      "leakage_reason": "Same-period trade share \u2014 contemporaneous information"
+    }
+  ],
+  "safe_features": [
+    "Inflation_Lag1",
+    "Agri_GVA_Lag1",
+    "GDP_Lag1",
+    "Price_Lag1",
+    "Shock_Intensity_Lag1",
+    "Shock_Intensity_Lag2",
+    "Trade_Share_Lag1",
+    "Trade_Share_Lag2",
+    "Lagged_Effective_Shock_1",
+    "Lagged_Effective_Shock_2",
+    "GPR",
+    "INR_USD_Rate",
+    "Price_Return_1M_Pred_Lag1"
+  ],
+  "model_selection": {
+    "Agri_GVA_Growth_Percent": {
+      "criterion": "validation MAE",
+      "winner": "RandomForest",
+      "validation_mae": 2.233494226659992,
+      "evaluation_unit": "one annual observation per year"
+    },
+    "Inflation_Change_3M": {
+      "criterion": "validation MAE",
+      "winner": "LightGBM",
+      "validation_mae": 2.9782935241065824
+    }
+  },
+  "model_results": {
+    "Agri_GVA_Growth_Percent_RandomForest": {
+      "train": {
+        "label": "RandomForest_train",
+        "MAE": 0.42010324071874394,
+        "RMSE": 0.4492362005134805,
+        "R2": 0.7870865051552197
+      },
+      "val": {
+        "label": "RandomForest_val",
+        "MAE": 2.233494226659992,
+        "RMSE": 2.233494226659992,
+        "R2": null
+      },
+      "test": {
+        "label": "RandomForest_test",
+        "MAE": 3.155485406167501,
+        "RMSE": 3.93131704004875,
+        "R2": -1.8884376679600434
+      },
+      "baseline_train": {
+        "label": "baseline_train",
+        "MAE": 2.1184501427500004,
+        "RMSE": 2.4607468055130246,
+        "R2": -5.388333169169709
+      },
+      "baseline_val": {
+        "label": "baseline_val",
+        "MAE": 3.602341919,
+        "RMSE": 3.602341919,
+        "R2": null
+      },
+      "baseline_test": {
+        "label": "baseline_test",
+        "MAE": 3.2969824379999997,
+        "RMSE": 3.5548919675262636,
+        "R2": -1.3617812837476841
+      },
+      "beats_baseline": true
+    },
+    "Agri_GVA_Growth_Percent_LightGBM": {
+      "train": {
+        "label": "LightGBM_train",
+        "MAE": 0.9481239300000002,
+        "RMSE": 0.9735833792569443,
+        "R2": -4.440892098500626e-16
+      },
+      "val": {
+        "label": "LightGBM_val",
+        "MAE": 2.6038544910738524,
+        "RMSE": 2.6038544910738524,
+        "R2": null
+      },
+      "test": {
+        "label": "LightGBM_test",
+        "MAE": 2.9493839175738525,
+        "RMSE": 3.7482791698120104,
+        "R2": -1.6257339605486707
+      },
+      "baseline_train": {
+        "label": "baseline_train",
+        "MAE": 2.1184501427500004,
+        "RMSE": 2.4607468055130246,
+        "R2": -5.388333169169709
+      },
+      "baseline_val": {
+        "label": "baseline_val",
+        "MAE": 3.602341919,
+        "RMSE": 3.602341919,
+        "R2": null
+      },
+      "baseline_test": {
+        "label": "baseline_test",
+        "MAE": 3.2969824379999997,
+        "RMSE": 3.5548919675262636,
+        "R2": -1.3617812837476841
+      },
+      "beats_baseline": true
+    },
+    "Inflation_Change_3M_RandomForest": {
+      "train": {
+        "label": "RandomForest_train",
+        "MAE": 0.8960770649541031,
+        "RMSE": 1.5784952889907544,
+        "R2": 0.7903185495673548
+      },
+      "val": {
+        "label": "RandomForest_val",
+        "MAE": 2.988516810964944,
+        "RMSE": 3.861343367980584,
+        "R2": -0.19534544886089567
+      },
+      "test": {
+        "label": "RandomForest_test",
+        "MAE": 3.68776375818892,
+        "RMSE": 4.732430149905619,
+        "R2": -0.202996462553916
+      },
+      "baseline_val": {
+        "label": "baseline_val",
+        "MAE": 2.7385045920678723,
+        "RMSE": 3.5805402033680056,
+        "R2": -0.027812028186475546
+      },
+      "baseline_test": {
+        "label": "baseline_test",
+        "MAE": 3.5237313251253104,
+        "RMSE": 4.391569011292332,
+        "R2": -0.03594178046184804
+      },
+      "beats_baseline_val": false,
+      "beats_baseline_test": false
+    },
+    "Inflation_Change_3M_LightGBM": {
+      "train": {
+        "label": "LightGBM_train",
+        "MAE": 0.9767936458380246,
+        "RMSE": 1.6666219918908642,
+        "R2": 0.7662521373500953
+      },
+      "val": {
+        "label": "LightGBM_val",
+        "MAE": 2.9782935241065824,
+        "RMSE": 3.6836771489783517,
+        "R2": -0.08787677942210115
+      },
+      "test": {
+        "label": "LightGBM_test",
+        "MAE": 3.560045534637854,
+        "RMSE": 4.629817341357246,
+        "R2": -0.1513931456938198
+      },
+      "baseline_val": {
+        "label": "baseline_val",
+        "MAE": 2.7385045920678723,
+        "RMSE": 3.5805402033680056,
+        "R2": -0.027812028186475546
+      },
+      "baseline_test": {
+        "label": "baseline_test",
+        "MAE": 3.5237313251253104,
+        "RMSE": 4.391569011292332,
+        "R2": -0.03594178046184804
+      },
+      "beats_baseline_val": false,
+      "beats_baseline_test": false
+    }
+  }
+}

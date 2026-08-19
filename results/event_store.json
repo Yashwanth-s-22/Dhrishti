@@ -1,0 +1,897 @@
+[
+  {
+    "event": {
+      "event_id": "EVT001",
+      "name": "Russia-Ukraine Conflict Escalation",
+      "description": "Full-scale invasion starting Feb 2022, disrupting Black Sea grain and oilseed trade routes",
+      "start": "2022-02",
+      "end": "2022-12",
+      "countries": [
+        "RUSSIA",
+        "UKRAINE"
+      ],
+      "hs4_codes": [
+        1001,
+        1005,
+        1006,
+        1512,
+        1507
+      ],
+      "commodity_curation_type": "manually curated event-commodity associations",
+      "event_scope": "direct",
+      "expected_direction": "supply_shock",
+      "severity": "high",
+      "severity_role": "descriptive metadata (not used in ML models)",
+      "notes": "Major disruption to Black Sea trade corridors. India experienced heightened export demand and domestic price pressures."
+    },
+    "summary": {
+      "n_rows": 46,
+      "event_scope": "direct",
+      "countries_in_data": [
+        "RUSSIA",
+        "UKRAINE"
+      ],
+      "hs4_codes_in_data": [
+        1005,
+        1006,
+        1507,
+        1512
+      ],
+      "trade_types": {
+        "Import": 25,
+        "Export": 21
+      },
+      "observed_metrics_window": {
+        "avg_observed_trade_return_1m": 0.25115253731865944,
+        "std_observed_trade_return_1m": 2.1797130711727433,
+        "avg_observed_price_return_1m": -0.05876135717874444,
+        "std_observed_price_return_1m": 0.3834706112808775,
+        "avg_effective_shock": 66293.94811181833,
+        "max_effective_shock": 275526.9847400759,
+        "avg_trade_value_usd": 34759503.97560869,
+        "total_trade_value_usd": 1598937182.8779998,
+        "avg_shock_intensity": 133191.94652276594
+      },
+      "export_metrics": {
+        "n_rows": 21,
+        "avg_observed_trade_return_1m": -0.1060695307417258,
+        "avg_observed_price_return_1m": -0.003887282951093582,
+        "avg_value_usd": 2586283.198904762
+      },
+      "import_metrics": {
+        "n_rows": 25,
+        "avg_observed_trade_return_1m": 0.5512190744893831,
+        "avg_observed_price_return_1m": -0.10485557952997115,
+        "avg_value_usd": 61785009.42803999
+      }
+    },
+    "predictions": {
+      "avg_trade_pred": -0.04471449932086008,
+      "avg_price_pred": -0.015783656751415773,
+      "trade_pred_vs_actual": {
+        "pred_mean": -0.04471449932086008,
+        "actual_mean": 0.25115253731865944,
+        "pred_std": 0.46874929795297304,
+        "actual_std": 2.1797130711727433,
+        "prediction_error_mae": 1.0513948382645846,
+        "prediction_bias": -0.2958670366395195,
+        "directional_agreement_pct": 67.3913043478261,
+        "n_rows_evaluated": 46
+      },
+      "price_pred_vs_actual": {
+        "pred_mean": -0.015783656751415773,
+        "actual_mean": -0.05876135717874444,
+        "pred_std": 0.10849381484229265,
+        "actual_std": 0.3834706112808775,
+        "prediction_error_mae": 0.12210119305060048,
+        "prediction_bias": 0.042977700427328666,
+        "directional_agreement_pct": 56.52173913043478,
+        "n_rows_evaluated": 46,
+        "n_rows_excluded": 0,
+        "exclusion_reason": "Rows with unavailable upstream Model B Lag1 predictions excluded from Model C evaluation"
+      },
+      "lag_lookup_diagnostics": {
+        "total_event_rows": 46,
+        "matched_model_b_lags": 46,
+        "unavailable_model_b_lags": 0,
+        "rows_evaluated_model_c": 46,
+        "rows_excluded_model_c": 0,
+        "handling_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+      }
+    },
+    "methodological_notes": {
+      "observational_limitation": "Event-window statistics describe observations during the curated event period and do not establish causal attribution. HS4 mappings are manually curated event-commodity associations. Event severity is descriptive metadata and is not used as an ML predictor. Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.",
+      "provenance_notice": "Model B prediction artifacts used for the Model C event-level bridge contain upstream in-sample predictions. Therefore, event-level predictions should be treated as integration/diagnostic outputs rather than fully out-of-sample causal estimates.",
+      "model_c_exclusion_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+    }
+  },
+  {
+    "event": {
+      "event_id": "EVT002",
+      "name": "India Wheat Export Ban",
+      "description": "India banned commercial wheat exports in May 2022 to protect domestic supply after heatwaves",
+      "start": "2022-05",
+      "end": "2023-06",
+      "countries": [
+        "BANGLADESH",
+        "UNITED ARAB EMIRATES",
+        "SAUDI ARABIA"
+      ],
+      "hs4_codes": [
+        1001
+      ],
+      "commodity_curation_type": "manually curated event-commodity associations",
+      "event_scope": "direct",
+      "expected_direction": "export_restriction",
+      "severity": "high",
+      "severity_role": "descriptive metadata (not used in ML models)",
+      "notes": "Policy-driven export restriction by India affecting primary export destinations."
+    },
+    "summary": {
+      "n_rows": 11,
+      "event_scope": "direct",
+      "countries_in_data": [
+        "BANGLADESH",
+        "UNITED ARAB EMIRATES"
+      ],
+      "hs4_codes_in_data": [
+        1001
+      ],
+      "trade_types": {
+        "Export": 11
+      },
+      "observed_metrics_window": {
+        "avg_observed_trade_return_1m": -1.5058313747185066,
+        "std_observed_trade_return_1m": 3.1500930794704076,
+        "avg_observed_price_return_1m": 0.16536924450087778,
+        "std_observed_price_return_1m": 0.5392428939791186,
+        "avg_effective_shock": 130.19090903109313,
+        "max_effective_shock": 461.3444753092755,
+        "avg_trade_value_usd": 38172159.9140909,
+        "total_trade_value_usd": 419893759.05499995,
+        "avg_shock_intensity": 642.0005144879137
+      },
+      "export_metrics": {
+        "n_rows": 11,
+        "avg_observed_trade_return_1m": -1.5058313747185066,
+        "avg_observed_price_return_1m": 0.16536924450087778,
+        "avg_value_usd": 38172159.9140909
+      },
+      "import_metrics": {}
+    },
+    "predictions": {
+      "avg_trade_pred": -0.18568659748448627,
+      "avg_price_pred": 0.03601824710100036,
+      "trade_pred_vs_actual": {
+        "pred_mean": -0.18568659748448627,
+        "actual_mean": -1.5058313747185066,
+        "pred_std": 0.1594070745124843,
+        "actual_std": 3.1500930794704076,
+        "prediction_error_mae": 1.9015481584257792,
+        "prediction_bias": 1.32014477723402,
+        "directional_agreement_pct": 63.63636363636363,
+        "n_rows_evaluated": 11
+      },
+      "price_pred_vs_actual": {
+        "pred_mean": 0.03601824710100036,
+        "actual_mean": 0.16536924450087778,
+        "pred_std": 0.06514448951064913,
+        "actual_std": 0.5392428939791186,
+        "prediction_error_mae": 0.1851893362771964,
+        "prediction_bias": -0.1293509973998774,
+        "directional_agreement_pct": 45.45454545454545,
+        "n_rows_evaluated": 11,
+        "n_rows_excluded": 0,
+        "exclusion_reason": "Rows with unavailable upstream Model B Lag1 predictions excluded from Model C evaluation"
+      },
+      "lag_lookup_diagnostics": {
+        "total_event_rows": 11,
+        "matched_model_b_lags": 11,
+        "unavailable_model_b_lags": 0,
+        "rows_evaluated_model_c": 11,
+        "rows_excluded_model_c": 0,
+        "handling_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+      }
+    },
+    "methodological_notes": {
+      "observational_limitation": "Event-window statistics describe observations during the curated event period and do not establish causal attribution. HS4 mappings are manually curated event-commodity associations. Event severity is descriptive metadata and is not used as an ML predictor. Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.",
+      "provenance_notice": "Model B prediction artifacts used for the Model C event-level bridge contain upstream in-sample predictions. Therefore, event-level predictions should be treated as integration/diagnostic outputs rather than fully out-of-sample causal estimates.",
+      "model_c_exclusion_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+    }
+  },
+  {
+    "event": {
+      "event_id": "EVT003",
+      "name": "US-China Trade Tensions",
+      "description": "Tariff escalation and bilateral trade friction between major global economies",
+      "start": "2018-07",
+      "end": "2019-12",
+      "countries": [
+        "CHINA",
+        "UNITED STATES"
+      ],
+      "hs4_codes": [
+        1201,
+        1507,
+        1508,
+        904,
+        902
+      ],
+      "commodity_curation_type": "manually curated event-commodity associations",
+      "event_scope": "direct",
+      "expected_direction": "trade_diversion",
+      "severity": "moderate",
+      "severity_role": "descriptive metadata (not used in ML models)",
+      "notes": "Bilateral tariff conflict with potential third-party trade diversion effects for Indian agricultural flows."
+    },
+    "summary": {
+      "n_rows": 288,
+      "event_scope": "direct",
+      "countries_in_data": [
+        "CHINA",
+        "UNITED STATES"
+      ],
+      "hs4_codes_in_data": [
+        902,
+        904,
+        1201,
+        1507,
+        1508
+      ],
+      "trade_types": {
+        "Export": 175,
+        "Import": 113
+      },
+      "observed_metrics_window": {
+        "avg_observed_trade_return_1m": 0.016508673766660733,
+        "std_observed_trade_return_1m": 3.546939413887394,
+        "avg_observed_price_return_1m": 0.03247970147150067,
+        "std_observed_price_return_1m": 0.8824941256315599,
+        "avg_effective_shock": 277.70893022185305,
+        "max_effective_shock": 3593.84671674138,
+        "avg_trade_value_usd": 2549470.5401354167,
+        "total_trade_value_usd": 734247515.559,
+        "avg_shock_intensity": 32360.88511142458
+      },
+      "export_metrics": {
+        "n_rows": 175,
+        "avg_observed_trade_return_1m": 0.06134429002660602,
+        "avg_observed_price_return_1m": 0.01038197650530805,
+        "avg_value_usd": 4152664.9765199986
+      },
+      "import_metrics": {
+        "n_rows": 113,
+        "avg_observed_trade_return_1m": -0.0529270151314847,
+        "avg_observed_price_return_1m": 0.06670184190586978,
+        "avg_value_usd": 66647.29794690266
+      }
+    },
+    "predictions": {
+      "avg_trade_pred": -0.034880431700516766,
+      "avg_price_pred": 0.00018549529753056037,
+      "trade_pred_vs_actual": {
+        "pred_mean": -0.034880431700516766,
+        "actual_mean": 0.016508673766660733,
+        "pred_std": 2.1168135965835035,
+        "actual_std": 3.546939413887394,
+        "prediction_error_mae": 1.5851965785031146,
+        "prediction_bias": -0.05138910546717753,
+        "directional_agreement_pct": 75.34722222222221,
+        "n_rows_evaluated": 288
+      },
+      "price_pred_vs_actual": {
+        "pred_mean": 0.00018549529753056037,
+        "actual_mean": 0.030942002637689505,
+        "pred_std": 0.28230846487670175,
+        "actual_std": 0.8876203028526211,
+        "prediction_error_mae": 0.4417243381949536,
+        "prediction_bias": -0.03075650734015892,
+        "directional_agreement_pct": 71.47887323943662,
+        "n_rows_evaluated": 284,
+        "n_rows_excluded": 4,
+        "exclusion_reason": "Rows with unavailable upstream Model B Lag1 predictions excluded from Model C evaluation"
+      },
+      "lag_lookup_diagnostics": {
+        "total_event_rows": 288,
+        "matched_model_b_lags": 284,
+        "unavailable_model_b_lags": 4,
+        "rows_evaluated_model_c": 284,
+        "rows_excluded_model_c": 4,
+        "handling_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+      }
+    },
+    "methodological_notes": {
+      "observational_limitation": "Event-window statistics describe observations during the curated event period and do not establish causal attribution. HS4 mappings are manually curated event-commodity associations. Event severity is descriptive metadata and is not used as an ML predictor. Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.",
+      "provenance_notice": "Model B prediction artifacts used for the Model C event-level bridge contain upstream in-sample predictions. Therefore, event-level predictions should be treated as integration/diagnostic outputs rather than fully out-of-sample causal estimates.",
+      "model_c_exclusion_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+    }
+  },
+  {
+    "event": {
+      "event_id": "EVT004",
+      "name": "COVID-19 Supply Chain Disruption",
+      "description": "Global pandemic causing transport bottlenecks, port closures, and widespread macro shocks",
+      "start": "2020-03",
+      "end": "2021-06",
+      "countries": [
+        "CHINA",
+        "UNITED STATES",
+        "UNITED KINGDOM",
+        "GERMANY",
+        "JAPAN",
+        "SOUTH KOREA",
+        "MALAYSIA",
+        "INDONESIA",
+        "VIETNAM"
+      ],
+      "hs4_codes": [],
+      "commodity_curation_type": "manually curated event-commodity associations (universal cross-commodity)",
+      "event_scope": "direct",
+      "expected_direction": "mixed",
+      "severity": "extreme",
+      "severity_role": "descriptive metadata (not used in ML models)",
+      "notes": "Systemic global disruption affecting freight, labor, border clearance, and consumer demand."
+    },
+    "summary": {
+      "n_rows": 15583,
+      "event_scope": "direct",
+      "countries_in_data": [
+        "CHINA",
+        "GERMANY",
+        "INDONESIA",
+        "JAPAN",
+        "MALAYSIA",
+        "SOUTH KOREA",
+        "UNITED KINGDOM",
+        "UNITED STATES",
+        "VIETNAM"
+      ],
+      "hs4_codes_in_data": [
+        101,
+        102,
+        103,
+        105,
+        106,
+        202,
+        203,
+        204,
+        206,
+        207,
+        208,
+        210,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        401,
+        402,
+        403,
+        404,
+        405,
+        406,
+        407,
+        408,
+        409,
+        410,
+        501,
+        502,
+        504,
+        505,
+        506,
+        507,
+        508,
+        510,
+        511,
+        601,
+        602,
+        603,
+        604,
+        701,
+        702,
+        703,
+        704,
+        705,
+        706,
+        707,
+        708,
+        709,
+        710,
+        711,
+        712,
+        713,
+        714,
+        801,
+        802,
+        803,
+        804,
+        805,
+        806,
+        807,
+        808,
+        809,
+        810,
+        811,
+        812,
+        813,
+        814,
+        901,
+        902,
+        903,
+        904,
+        905,
+        906,
+        907,
+        908,
+        909,
+        910,
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006,
+        1007,
+        1008,
+        1101,
+        1102,
+        1103,
+        1104,
+        1105,
+        1106,
+        1107,
+        1108,
+        1109,
+        1201,
+        1202,
+        1203,
+        1204,
+        1206,
+        1207,
+        1208,
+        1209,
+        1210,
+        1211,
+        1212,
+        1213,
+        1214,
+        1301,
+        1302,
+        1401,
+        1404,
+        1502,
+        1504,
+        1505,
+        1506,
+        1507,
+        1508,
+        1509,
+        1510,
+        1511,
+        1512,
+        1513,
+        1514,
+        1515,
+        1516,
+        1517,
+        1518,
+        1520,
+        1521,
+        1522,
+        1601,
+        1602,
+        1603,
+        1604,
+        1605,
+        1701,
+        1702,
+        1703,
+        1704,
+        1801,
+        1803,
+        1804,
+        1805,
+        1806,
+        1901,
+        1902,
+        1903,
+        1904,
+        1905,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "trade_types": {
+        "Export": 11233,
+        "Import": 4350
+      },
+      "observed_metrics_window": {
+        "avg_observed_trade_return_1m": 0.018321280592653897,
+        "std_observed_trade_return_1m": 2.189554207898272,
+        "avg_observed_price_return_1m": 0.00931667923400112,
+        "std_observed_price_return_1m": 0.8879689406582997,
+        "avg_effective_shock": 161.6293965414501,
+        "max_effective_shock": 35392.38700909858,
+        "avg_trade_value_usd": 1893003.272726561,
+        "total_trade_value_usd": 29498669998.898,
+        "avg_shock_intensity": 11449.430149776475
+      },
+      "export_metrics": {
+        "n_rows": 11233,
+        "avg_observed_trade_return_1m": 0.021070695268924116,
+        "avg_observed_price_return_1m": 0.011352491213284946,
+        "avg_value_usd": 1692791.1157558982
+      },
+      "import_metrics": {
+        "n_rows": 4350,
+        "avg_observed_trade_return_1m": 0.011221470234368093,
+        "avg_observed_price_return_1m": 0.00405960429991027,
+        "avg_value_usd": 2410010.8955429886
+      }
+    },
+    "predictions": {
+      "avg_trade_pred": 0.025073701828001293,
+      "avg_price_pred": 0.006148473568365289,
+      "trade_pred_vs_actual": {
+        "pred_mean": 0.025073701828001293,
+        "actual_mean": 0.018321280592653897,
+        "pred_std": 0.8129464453373241,
+        "actual_std": 2.189554207898272,
+        "prediction_error_mae": 1.1652685656460258,
+        "prediction_bias": 0.006752421235347382,
+        "directional_agreement_pct": 66.32869152281332,
+        "n_rows_evaluated": 15583
+      },
+      "price_pred_vs_actual": {
+        "pred_mean": 0.006148473568365289,
+        "actual_mean": 0.009856376496989281,
+        "pred_std": 0.2379939703888174,
+        "actual_std": 0.8856099877039965,
+        "prediction_error_mae": 0.4365574841893184,
+        "prediction_bias": -0.003707902928623993,
+        "directional_agreement_pct": 61.368482264004655,
+        "n_rows_evaluated": 15477,
+        "n_rows_excluded": 106,
+        "exclusion_reason": "Rows with unavailable upstream Model B Lag1 predictions excluded from Model C evaluation"
+      },
+      "lag_lookup_diagnostics": {
+        "total_event_rows": 15583,
+        "matched_model_b_lags": 15477,
+        "unavailable_model_b_lags": 106,
+        "rows_evaluated_model_c": 15477,
+        "rows_excluded_model_c": 106,
+        "handling_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+      }
+    },
+    "methodological_notes": {
+      "observational_limitation": "Event-window statistics describe observations during the curated event period and do not establish causal attribution. HS4 mappings are manually curated event-commodity associations. Event severity is descriptive metadata and is not used as an ML predictor. Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.",
+      "provenance_notice": "Model B prediction artifacts used for the Model C event-level bridge contain upstream in-sample predictions. Therefore, event-level predictions should be treated as integration/diagnostic outputs rather than fully out-of-sample causal estimates.",
+      "model_c_exclusion_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+    }
+  },
+  {
+    "event": {
+      "event_id": "EVT005",
+      "name": "India-Malaysia Palm Oil Tensions",
+      "description": "Diplomatic friction temporarily altering Indian palm oil procurement patterns",
+      "start": "2020-01",
+      "end": "2020-06",
+      "countries": [
+        "MALAYSIA"
+      ],
+      "hs4_codes": [
+        1511,
+        1513,
+        1507
+      ],
+      "commodity_curation_type": "manually curated event-commodity associations",
+      "event_scope": "direct",
+      "expected_direction": "supply_shock",
+      "severity": "moderate",
+      "severity_role": "descriptive metadata (not used in ML models)",
+      "notes": "Bilateral diplomatic tension prompting temporary trade diversion toward alternative edible oil suppliers."
+    },
+    "summary": {
+      "n_rows": 15,
+      "event_scope": "direct",
+      "countries_in_data": [
+        "MALAYSIA"
+      ],
+      "hs4_codes_in_data": [
+        1511,
+        1513
+      ],
+      "trade_types": {
+        "Import": 9,
+        "Export": 6
+      },
+      "observed_metrics_window": {
+        "avg_observed_trade_return_1m": 0.1257783575316503,
+        "std_observed_trade_return_1m": 2.489512410915025,
+        "avg_observed_price_return_1m": 0.00027735828537948465,
+        "std_observed_price_return_1m": 0.3708382949102645,
+        "avg_effective_shock": 852.2263682699071,
+        "max_effective_shock": 5550.71451495332,
+        "avg_trade_value_usd": 11831460.2636,
+        "total_trade_value_usd": 177471903.954,
+        "avg_shock_intensity": 2590.506075268546
+      },
+      "export_metrics": {
+        "n_rows": 6,
+        "avg_observed_trade_return_1m": -0.10698375362661731,
+        "avg_observed_price_return_1m": 0.00784458514299762,
+        "avg_value_usd": 44279.66733333334
+      },
+      "import_metrics": {
+        "n_rows": 9,
+        "avg_observed_trade_return_1m": 0.2809530983038287,
+        "avg_observed_price_return_1m": -0.004767459619699297,
+        "avg_value_usd": 19689580.66111111
+      }
+    },
+    "predictions": {
+      "avg_trade_pred": 0.029600493367798186,
+      "avg_price_pred": -0.011517767485724549,
+      "trade_pred_vs_actual": {
+        "pred_mean": 0.029600493367798186,
+        "actual_mean": 0.1257783575316503,
+        "pred_std": 0.37567930895625073,
+        "actual_std": 2.489512410915025,
+        "prediction_error_mae": 1.555932424303212,
+        "prediction_bias": -0.09617786416385203,
+        "directional_agreement_pct": 80.0,
+        "n_rows_evaluated": 15
+      },
+      "price_pred_vs_actual": {
+        "pred_mean": -0.011517767485724549,
+        "actual_mean": 0.00027735828537948465,
+        "pred_std": 0.08540843698440993,
+        "actual_std": 0.3708382949102645,
+        "prediction_error_mae": 0.24091213121480076,
+        "prediction_bias": -0.011795125771104026,
+        "directional_agreement_pct": 73.33333333333333,
+        "n_rows_evaluated": 15,
+        "n_rows_excluded": 0,
+        "exclusion_reason": "Rows with unavailable upstream Model B Lag1 predictions excluded from Model C evaluation"
+      },
+      "lag_lookup_diagnostics": {
+        "total_event_rows": 15,
+        "matched_model_b_lags": 15,
+        "unavailable_model_b_lags": 0,
+        "rows_evaluated_model_c": 15,
+        "rows_excluded_model_c": 0,
+        "handling_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+      }
+    },
+    "methodological_notes": {
+      "observational_limitation": "Event-window statistics describe observations during the curated event period and do not establish causal attribution. HS4 mappings are manually curated event-commodity associations. Event severity is descriptive metadata and is not used as an ML predictor. Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.",
+      "provenance_notice": "Model B prediction artifacts used for the Model C event-level bridge contain upstream in-sample predictions. Therefore, event-level predictions should be treated as integration/diagnostic outputs rather than fully out-of-sample causal estimates.",
+      "model_c_exclusion_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+    }
+  },
+  {
+    "event": {
+      "event_id": "EVT006",
+      "name": "Sri Lanka Economic Crisis Spillover",
+      "description": "Macroeconomic instability in neighboring South Asian market; proxy country used",
+      "start": "2022-04",
+      "end": "2023-03",
+      "countries": [
+        "BANGLADESH"
+      ],
+      "hs4_codes": [
+        902,
+        904,
+        1006
+      ],
+      "commodity_curation_type": "manually curated event-commodity associations",
+      "event_scope": "proxy",
+      "expected_direction": "demand_shock",
+      "severity": "low",
+      "severity_role": "descriptive metadata (not used in ML models)",
+      "notes": "PROXY EVENT: Sri Lanka is not present in the 15-country dataset. Bangladesh is used as a South Asian regional trade proxy. Does not directly represent Sri Lanka bilateral trade."
+    },
+    "summary": {
+      "n_rows": 27,
+      "event_scope": "proxy",
+      "countries_in_data": [
+        "BANGLADESH"
+      ],
+      "hs4_codes_in_data": [
+        902,
+        904,
+        1006
+      ],
+      "trade_types": {
+        "Export": 26,
+        "Import": 1
+      },
+      "observed_metrics_window": {
+        "avg_observed_trade_return_1m": -0.3359727724591601,
+        "std_observed_trade_return_1m": 1.7408500211253364,
+        "avg_observed_price_return_1m": 0.10036181251448045,
+        "std_observed_price_return_1m": 0.4954920762519225,
+        "avg_effective_shock": 49.93597334192777,
+        "max_effective_shock": 205.9348624768534,
+        "avg_trade_value_usd": 15796941.46777778,
+        "total_trade_value_usd": 426517419.63000005,
+        "avg_shock_intensity": 734.7748137630588
+      },
+      "export_metrics": {
+        "n_rows": 26,
+        "avg_observed_trade_return_1m": -0.3488948021691278,
+        "avg_observed_price_return_1m": 0.10422188222657586,
+        "avg_value_usd": 16404457.354807694
+      },
+      "import_metrics": {
+        "n_rows": 1,
+        "avg_observed_trade_return_1m": 0.0,
+        "avg_observed_price_return_1m": 0.0,
+        "avg_value_usd": 1528.405
+      }
+    },
+    "predictions": {
+      "avg_trade_pred": -0.09397107316580111,
+      "avg_price_pred": 0.006085073521112088,
+      "trade_pred_vs_actual": {
+        "pred_mean": -0.09397107316580111,
+        "actual_mean": -0.3359727724591601,
+        "pred_std": 0.18936712377303347,
+        "actual_std": 1.7408500211253364,
+        "prediction_error_mae": 0.8607240973114462,
+        "prediction_bias": 0.24200169929335896,
+        "directional_agreement_pct": 51.85185185185185,
+        "n_rows_evaluated": 27
+      },
+      "price_pred_vs_actual": {
+        "pred_mean": 0.006085073521112088,
+        "actual_mean": 0.10422188222657586,
+        "pred_std": 0.015155168156371877,
+        "actual_std": 0.5048905798818408,
+        "prediction_error_mae": 0.25646203918798005,
+        "prediction_bias": -0.09813680870546378,
+        "directional_agreement_pct": 53.84615384615385,
+        "n_rows_evaluated": 26,
+        "n_rows_excluded": 1,
+        "exclusion_reason": "Rows with unavailable upstream Model B Lag1 predictions excluded from Model C evaluation"
+      },
+      "lag_lookup_diagnostics": {
+        "total_event_rows": 27,
+        "matched_model_b_lags": 26,
+        "unavailable_model_b_lags": 1,
+        "rows_evaluated_model_c": 26,
+        "rows_excluded_model_c": 1,
+        "handling_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+      }
+    },
+    "methodological_notes": {
+      "observational_limitation": "Event-window statistics describe observations during the curated event period and do not establish causal attribution. HS4 mappings are manually curated event-commodity associations. Event severity is descriptive metadata and is not used as an ML predictor. Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.",
+      "provenance_notice": "Model B prediction artifacts used for the Model C event-level bridge contain upstream in-sample predictions. Therefore, event-level predictions should be treated as integration/diagnostic outputs rather than fully out-of-sample causal estimates.",
+      "model_c_exclusion_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+    }
+  },
+  {
+    "event": {
+      "event_id": "EVT007",
+      "name": "Red Sea Shipping Crisis (Houthi Attacks)",
+      "description": "Maritime security disruptions in the Red Sea corridor forcing cargo rerouting around Africa",
+      "start": "2024-01",
+      "end": "2024-06",
+      "countries": [
+        "SAUDI ARABIA",
+        "UNITED ARAB EMIRATES",
+        "UNITED KINGDOM",
+        "GERMANY",
+        "NETHERLANDS"
+      ],
+      "hs4_codes": [
+        902,
+        904,
+        713,
+        1006,
+        303,
+        306
+      ],
+      "commodity_curation_type": "manually curated event-commodity associations",
+      "event_scope": "direct",
+      "expected_direction": "logistics_shock",
+      "severity": "moderate",
+      "severity_role": "descriptive metadata (not used in ML models)",
+      "notes": "Logistics cost surges and transit delays affecting westbound European and Middle Eastern trade routes."
+    },
+    "summary": {
+      "n_rows": 195,
+      "event_scope": "direct",
+      "countries_in_data": [
+        "GERMANY",
+        "NETHERLANDS",
+        "SAUDI ARABIA",
+        "UNITED ARAB EMIRATES",
+        "UNITED KINGDOM"
+      ],
+      "hs4_codes_in_data": [
+        303,
+        306,
+        713,
+        902,
+        904,
+        1006
+      ],
+      "trade_types": {
+        "Export": 173,
+        "Import": 22
+      },
+      "observed_metrics_window": {
+        "avg_observed_trade_return_1m": 0.11126353009295908,
+        "std_observed_trade_return_1m": 1.1338751335791812,
+        "avg_observed_price_return_1m": 0.0254936645466428,
+        "std_observed_price_return_1m": 0.4405527768701193,
+        "avg_effective_shock": 207.81618727744493,
+        "max_effective_shock": 3015.1848344941604,
+        "avg_trade_value_usd": 8599234.098123075,
+        "total_trade_value_usd": 1676850649.1339998,
+        "avg_shock_intensity": 3677.691396289244
+      },
+      "export_metrics": {
+        "n_rows": 173,
+        "avg_observed_trade_return_1m": 0.006677741897904111,
+        "avg_observed_price_return_1m": 0.014837208515937832,
+        "avg_value_usd": 9685345.831936415
+      },
+      "import_metrics": {
+        "n_rows": 22,
+        "avg_observed_trade_return_1m": 0.9336881372631644,
+        "avg_observed_price_return_1m": 0.10929215969718643,
+        "avg_value_usd": 58446.373136363625
+      }
+    },
+    "predictions": {
+      "avg_trade_pred": -0.05985107053033927,
+      "avg_price_pred": 0.0006316176156921699,
+      "trade_pred_vs_actual": {
+        "pred_mean": -0.05985107053033927,
+        "actual_mean": 0.11126353009295908,
+        "pred_std": 0.13142206760379813,
+        "actual_std": 1.1338751335791812,
+        "prediction_error_mae": 0.5790803916613091,
+        "prediction_bias": -0.17111460062329834,
+        "directional_agreement_pct": 46.666666666666664,
+        "n_rows_evaluated": 195
+      },
+      "price_pred_vs_actual": {
+        "pred_mean": 0.0006316176156921699,
+        "actual_mean": 0.0254936645466428,
+        "pred_std": 0.029272945633133162,
+        "actual_std": 0.4405527768701193,
+        "prediction_error_mae": 0.20273605086743662,
+        "prediction_bias": -0.024862046930950635,
+        "directional_agreement_pct": 48.717948717948715,
+        "n_rows_evaluated": 195,
+        "n_rows_excluded": 0,
+        "exclusion_reason": "Rows with unavailable upstream Model B Lag1 predictions excluded from Model C evaluation"
+      },
+      "lag_lookup_diagnostics": {
+        "total_event_rows": 195,
+        "matched_model_b_lags": 195,
+        "unavailable_model_b_lags": 0,
+        "rows_evaluated_model_c": 195,
+        "rows_excluded_model_c": 0,
+        "handling_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+      }
+    },
+    "methodological_notes": {
+      "observational_limitation": "Event-window statistics describe observations during the curated event period and do not establish causal attribution. HS4 mappings are manually curated event-commodity associations. Event severity is descriptive metadata and is not used as an ML predictor. Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.",
+      "provenance_notice": "Model B prediction artifacts used for the Model C event-level bridge contain upstream in-sample predictions. Therefore, event-level predictions should be treated as integration/diagnostic outputs rather than fully out-of-sample causal estimates.",
+      "model_c_exclusion_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation."
+    }
+  }
+]
