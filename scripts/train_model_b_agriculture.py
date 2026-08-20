@@ -539,18 +539,34 @@ def train_model_b(merged_df):
         bl_test = evaluate_model(y_test, np.zeros(len(y_test)), "baseline_test") if len(y_test) > 0 else None
 
         print(f"    Baseline (predict 0): Val MAE={bl_val['MAE']:.2f}, R2={bl_val['R2']:.4f}")
+        if bl_test:
+            print(f"    Baseline (predict 0): Test MAE={bl_test['MAE']:.2f}, R2={bl_test['R2']:.4f}")
 
-        # Train models
-        for ModelCls, name, params in [
-            (RandomForestRegressor, "RandomForest", dict(
+        candidate_regressors = [
+            ("RandomForest", RandomForestRegressor, dict(
                 n_estimators=200, max_depth=12, min_samples_leaf=5,
                 random_state=RANDOM_STATE, n_jobs=-1)),
-            (lgb.LGBMRegressor, "LightGBM", dict(
+            ("LightGBM_default", lgb.LGBMRegressor, dict(
                 n_estimators=200, max_depth=8, learning_rate=0.05,
                 random_state=RANDOM_STATE, n_jobs=-1, verbose=-1)),
-        ]:
+            ("LightGBM_L1", lgb.LGBMRegressor, dict(
+                objective="regression_l1", n_estimators=200, max_depth=6, learning_rate=0.03,
+                min_child_samples=30, random_state=RANDOM_STATE, n_jobs=-1, verbose=-1)),
+            ("XGBoost_L1", xgb.XGBRegressor, dict(
+                objective="reg:absoluteerror", n_estimators=200, max_depth=5, learning_rate=0.03,
+                reg_alpha=1.0, reg_lambda=2.0, random_state=RANDOM_STATE, n_jobs=-1, verbosity=0)),
+        ]
+
+        best_val_mae = float("inf")
+        selected_model_name = None
+        selected_model_obj = None
+
+        for name, ModelCls, params in candidate_regressors:
             model = ModelCls(**params)
             model.fit(X_train, y_train)
+
+            pred_train = model.predict(X_train)
+            metrics_train = evaluate_model(y_train, pred_train, f"{name}_train")
 
             pred_val = model.predict(X_val)
             metrics_val = evaluate_model(y_val, pred_val, f"{name}_val")
@@ -559,23 +575,29 @@ def train_model_b(merged_df):
             metrics_test = evaluate_model(y_test, pred_test, f"{name}_test") if len(y_test) > 0 else None
 
             beats = metrics_val["MAE"] < bl_val["MAE"]
-            print(f"    {name}: Val MAE={metrics_val['MAE']:.2f}, R2={metrics_val['R2']:.4f} " +
+            print(f"    {name:<18}: Val MAE={metrics_val['MAE']:.2f}, R2={metrics_val['R2']:.4f} " +
                   f"| {'BEATS' if beats else 'LOSES TO'} baseline")
 
             if metrics_test:
                 print(f"      Test MAE={metrics_test['MAE']:.2f}, R2={metrics_test['R2']:.4f}")
 
             results_b[f"{target1}_{name}"] = {
+                "metrics_train": metrics_train,
                 "metrics_val": metrics_val,
                 "metrics_test": metrics_test,
                 "baseline_val": bl_val,
                 "baseline_test": bl_test,
-                "beats_baseline": beats,
+                "beats_baseline_val": beats,
             }
 
-            # Save best model for this target
-            if name == "LightGBM":
-                joblib.dump(model, os.path.join(MODELS_DIR, "model_b_production_yoy.joblib"))
+            # Select model based on validation MAE
+            if metrics_val["MAE"] < best_val_mae:
+                best_val_mae = metrics_val["MAE"]
+                selected_model_name = name
+                selected_model_obj = model
+
+        print(f"    Selected for {target1} by Validation MAE: {selected_model_name} (Val MAE: {best_val_mae:.2f})")
+        joblib.dump(selected_model_obj, os.path.join(MODELS_DIR, "model_b_production_yoy.joblib"))
 
     # ---- TARGET 2: Yield_YoY_National ----
     target2 = "Yield_YoY_National"
@@ -595,18 +617,36 @@ def train_model_b(merged_df):
                   if len(test_t2) > 0 else pd.Series(dtype=float))
 
         bl_val = evaluate_model(y_val, np.zeros(len(y_val)), "baseline_val")
+        bl_test = evaluate_model(y_test, np.zeros(len(y_test)), "baseline_test") if len(y_test) > 0 else None
         print(f"    Baseline (predict 0): Val MAE={bl_val['MAE']:.2f}, R2={bl_val['R2']:.4f}")
+        if bl_test:
+            print(f"    Baseline (predict 0): Test MAE={bl_test['MAE']:.2f}, R2={bl_test['R2']:.4f}")
 
-        for ModelCls, name, params in [
-            (RandomForestRegressor, "RandomForest", dict(
+        candidate_yield_regressors = [
+            ("RandomForest", RandomForestRegressor, dict(
                 n_estimators=200, max_depth=12, min_samples_leaf=5,
                 random_state=RANDOM_STATE, n_jobs=-1)),
-            (lgb.LGBMRegressor, "LightGBM", dict(
+            ("LightGBM_default", lgb.LGBMRegressor, dict(
                 n_estimators=200, max_depth=8, learning_rate=0.05,
                 random_state=RANDOM_STATE, n_jobs=-1, verbose=-1)),
-        ]:
+            ("LightGBM_L1", lgb.LGBMRegressor, dict(
+                objective="regression_l1", n_estimators=200, max_depth=5, learning_rate=0.03,
+                min_child_samples=30, random_state=RANDOM_STATE, n_jobs=-1, verbose=-1)),
+            ("XGBoost_L1", xgb.XGBRegressor, dict(
+                objective="reg:absoluteerror", n_estimators=200, max_depth=4, learning_rate=0.03,
+                reg_alpha=2.0, reg_lambda=2.0, random_state=RANDOM_STATE, n_jobs=-1, verbosity=0)),
+        ]
+
+        best_val_mae_y = float("inf")
+        selected_model_name_y = None
+        selected_model_obj_y = None
+
+        for name, ModelCls, params in candidate_yield_regressors:
             model = ModelCls(**params)
             model.fit(X_train, y_train)
+
+            pred_train = model.predict(X_train)
+            metrics_train = evaluate_model(y_train, pred_train, f"{name}_train")
 
             pred_val = model.predict(X_val)
             metrics_val = evaluate_model(y_val, pred_val, f"{name}_val")
@@ -615,18 +655,28 @@ def train_model_b(merged_df):
             metrics_test = evaluate_model(y_test, pred_test, f"{name}_test") if len(y_test) > 0 else None
 
             beats = metrics_val["MAE"] < bl_val["MAE"]
-            print(f"    {name}: Val MAE={metrics_val['MAE']:.2f}, R2={metrics_val['R2']:.4f} " +
+            print(f"    {name:<18}: Val MAE={metrics_val['MAE']:.2f}, R2={metrics_val['R2']:.4f} " +
                   f"| {'BEATS' if beats else 'LOSES TO'} baseline")
 
+            if metrics_test:
+                print(f"      Test MAE={metrics_test['MAE']:.2f}, R2={metrics_test['R2']:.4f}")
+
             results_b[f"{target2}_{name}"] = {
+                "metrics_train": metrics_train,
                 "metrics_val": metrics_val,
                 "metrics_test": metrics_test,
                 "baseline_val": bl_val,
-                "beats_baseline": beats,
+                "baseline_test": bl_test,
+                "beats_baseline_val": beats,
             }
 
-            if name == "LightGBM":
-                joblib.dump(model, os.path.join(MODELS_DIR, "model_b_yield_yoy.joblib"))
+            if metrics_val["MAE"] < best_val_mae_y:
+                best_val_mae_y = metrics_val["MAE"]
+                selected_model_name_y = name
+                selected_model_obj_y = model
+
+        print(f"    Selected for {target2} by Validation MAE: {selected_model_name_y} (Val MAE: {best_val_mae_y:.2f})")
+        joblib.dump(selected_model_obj_y, os.path.join(MODELS_DIR, "model_b_yield_yoy.joblib"))
 
     # ---- TARGET 3: Production_Risk (Classification) ----
     target3 = "Production_Risk"
@@ -649,41 +699,83 @@ def train_model_b(merged_df):
         # Drop any rows where mapping failed
         valid_train = y_train.notna()
         valid_val = y_val.notna()
+        valid_test = y_test.notna() if len(y_test) > 0 else pd.Series()
+
         X_train, y_train = X_train[valid_train], y_train[valid_train].astype(int)
         X_val, y_val = X_val[valid_val], y_val[valid_val].astype(int)
+        if len(y_test) > 0:
+            X_test, y_test = X_test[valid_test], y_test[valid_test].astype(int)
 
         # Baseline: most frequent class
         most_frequent = y_train.mode()[0]
-        bl_acc = accuracy_score(y_val, np.full(len(y_val), most_frequent))
-        print(f"    Baseline (most frequent class={most_frequent}): Acc={bl_acc:.4f}")
+        bl_acc_val = accuracy_score(y_val, np.full(len(y_val), most_frequent))
+        bl_acc_test = accuracy_score(y_test, np.full(len(y_test), most_frequent)) if len(y_test) > 0 else None
+        print(f"    Baseline (most frequent class={most_frequent}): Val Acc={bl_acc_val:.4f}")
+        if bl_acc_test is not None:
+            print(f"    Baseline (most frequent class={most_frequent}): Test Acc={bl_acc_test:.4f}")
 
-        for ModelCls, name, params in [
-            (RandomForestClassifier, "RandomForest", dict(
+        candidate_classifiers = [
+            ("RandomForest", RandomForestClassifier, dict(
                 n_estimators=200, max_depth=12, min_samples_leaf=5,
                 random_state=RANDOM_STATE, n_jobs=-1)),
-            (lgb.LGBMClassifier, "LightGBM", dict(
+            ("LightGBM_default", lgb.LGBMClassifier, dict(
                 n_estimators=200, max_depth=8, learning_rate=0.05,
                 random_state=RANDOM_STATE, n_jobs=-1, verbose=-1)),
-        ]:
+            ("LightGBM_tuned", lgb.LGBMClassifier, dict(
+                n_estimators=300, max_depth=6, learning_rate=0.03, num_leaves=31,
+                subsample=0.8, colsample_bytree=0.8, random_state=RANDOM_STATE, n_jobs=-1, verbose=-1)),
+            ("XGBoost_regularized", xgb.XGBClassifier, dict(
+                n_estimators=250, max_depth=4, learning_rate=0.03, reg_alpha=1.0,
+                reg_lambda=2.0, subsample=0.8, random_state=RANDOM_STATE, n_jobs=-1, verbosity=0)),
+        ]
+
+        best_val_acc = -1.0
+        selected_model_name_r = None
+        selected_model_obj_r = None
+
+        for name, ModelCls, params in candidate_classifiers:
             model = ModelCls(**params)
             model.fit(X_train, y_train)
 
-            pred_val = model.predict(X_val)
-            acc = accuracy_score(y_val, pred_val)
-            f1 = f1_score(y_val, pred_val, average="macro")
+            pred_train = model.predict(X_train)
+            acc_train = accuracy_score(y_train, pred_train)
+            f1_train = f1_score(y_train, pred_train, average="weighted", zero_division=0)
 
-            beats = acc > bl_acc
-            print(f"    {name}: Acc={acc:.4f}, F1={f1:.4f} | {'BEATS' if beats else 'LOSES TO'} baseline")
+            pred_val = model.predict(X_val)
+            acc_val = accuracy_score(y_val, pred_val)
+            f1_val = f1_score(y_val, pred_val, average="weighted", zero_division=0)
+
+            if len(X_test) > 0:
+                pred_test = model.predict(X_test)
+                acc_test = accuracy_score(y_test, pred_test)
+                f1_test = f1_score(y_test, pred_test, average="weighted", zero_division=0)
+            else:
+                acc_test, f1_test = None, None
+
+            beats = acc_val > bl_acc_val
+            print(f"    {name:<20}: Val Acc={acc_val:.4f} ({acc_val*100:.1f}%), F1={f1_val:.4f} | {'BEATS' if beats else 'LOSES TO'} baseline")
+            if acc_test is not None:
+                print(f"      Test Acc={acc_test:.4f} ({acc_test*100:.1f}%), F1={f1_test:.4f}")
 
             results_b[f"{target3}_{name}"] = {
-                "accuracy": acc,
-                "f1_macro": f1,
-                "baseline_accuracy": bl_acc,
-                "beats_baseline": beats,
+                "train_accuracy": acc_train,
+                "train_f1": f1_train,
+                "val_accuracy": acc_val,
+                "val_f1": f1_val,
+                "test_accuracy": acc_test,
+                "test_f1": f1_test,
+                "baseline_val_accuracy": bl_acc_val,
+                "baseline_test_accuracy": bl_acc_test,
+                "beats_baseline_val": beats,
             }
 
-            if name == "LightGBM":
-                joblib.dump(model, os.path.join(MODELS_DIR, "model_b_production_risk.joblib"))
+            if acc_val > best_val_acc:
+                best_val_acc = acc_val
+                selected_model_name_r = name
+                selected_model_obj_r = model
+
+        print(f"    Selected for {target3} by Validation Acc: {selected_model_name_r} (Val Acc: {best_val_acc*100:.1f}%)")
+        joblib.dump(selected_model_obj_r, os.path.join(MODELS_DIR, "model_b_production_risk.joblib"))
 
     return results_b
 

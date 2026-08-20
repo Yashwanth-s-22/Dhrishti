@@ -1,5 +1,11 @@
 {
   "Production_YoY_National_RandomForest": {
+    "metrics_train": {
+      "label": "RandomForest_train",
+      "MAE": 63.63679971642566,
+      "RMSE": 99.85136239930245,
+      "R2": 0.44624530556520825
+    },
     "metrics_val": {
       "label": "RandomForest_val",
       "MAE": 49.7008960054586,
@@ -9,8 +15,8 @@
     "metrics_test": {
       "label": "RandomForest_test",
       "MAE": 45.980410852033195,
-      "RMSE": 58.32231625914775,
-      "R2": -3.7492409485819813
+      "RMSE": 58.322316259147755,
+      "R2": -3.749240948581982
     },
     "baseline_val": {
       "label": "baseline_val",
@@ -24,17 +30,23 @@
       "RMSE": 28.988278335528946,
       "R2": -0.17327420276538752
     },
-    "beats_baseline": false
+    "beats_baseline_val": false
   },
-  "Production_YoY_National_LightGBM": {
+  "Production_YoY_National_LightGBM_default": {
+    "metrics_train": {
+      "label": "LightGBM_default_train",
+      "MAE": 68.10912776346018,
+      "RMSE": 105.20295405124085,
+      "R2": 0.38529704514422225
+    },
     "metrics_val": {
-      "label": "LightGBM_val",
+      "label": "LightGBM_default_val",
       "MAE": 54.952271222590376,
       "RMSE": 81.10845749175904,
       "R2": -0.18029379188053718
     },
     "metrics_test": {
-      "label": "LightGBM_test",
+      "label": "LightGBM_default_test",
       "MAE": 39.50386063813493,
       "RMSE": 48.77939694714956,
       "R2": -2.322213436111838
@@ -51,9 +63,81 @@
       "RMSE": 28.988278335528946,
       "R2": -0.17327420276538752
     },
-    "beats_baseline": false
+    "beats_baseline_val": false
+  },
+  "Production_YoY_National_LightGBM_L1": {
+    "metrics_train": {
+      "label": "LightGBM_L1_train",
+      "MAE": 66.88530632021269,
+      "RMSE": 135.36910956851088,
+      "R2": -0.017767493083052255
+    },
+    "metrics_val": {
+      "label": "LightGBM_L1_val",
+      "MAE": 50.22030237051415,
+      "RMSE": 81.32203704988163,
+      "R2": -0.18651801408848923
+    },
+    "metrics_test": {
+      "label": "LightGBM_L1_test",
+      "MAE": 23.8875323512103,
+      "RMSE": 28.453204120600116,
+      "R2": -0.13036066300145643
+    },
+    "baseline_val": {
+      "label": "baseline_val",
+      "MAE": 38.58760246636983,
+      "RMSE": 74.86448918698117,
+      "R2": -0.005563659701838253
+    },
+    "baseline_test": {
+      "label": "baseline_test",
+      "MAE": 22.984115099585342,
+      "RMSE": 28.988278335528946,
+      "R2": -0.17327420276538752
+    },
+    "beats_baseline_val": false
+  },
+  "Production_YoY_National_XGBoost_L1": {
+    "metrics_train": {
+      "label": "XGBoost_L1_train",
+      "MAE": 67.02564336312007,
+      "RMSE": 135.74901397723428,
+      "R2": -0.023488102737496463
+    },
+    "metrics_val": {
+      "label": "XGBoost_L1_val",
+      "MAE": 43.57156544145177,
+      "RMSE": 76.2873347419476,
+      "R2": -0.04414959148187525
+    },
+    "metrics_test": {
+      "label": "XGBoost_L1_test",
+      "MAE": 23.48337987016845,
+      "RMSE": 27.777017093564854,
+      "R2": -0.07727328169747039
+    },
+    "baseline_val": {
+      "label": "baseline_val",
+      "MAE": 38.58760246636983,
+      "RMSE": 74.86448918698117,
+      "R2": -0.005563659701838253
+    },
+    "baseline_test": {
+      "label": "baseline_test",
+      "MAE": 22.984115099585342,
+      "RMSE": 28.988278335528946,
+      "R2": -0.17327420276538752
+    },
+    "beats_baseline_val": false
   },
   "Yield_YoY_National_RandomForest": {
+    "metrics_train": {
+      "label": "RandomForest_train",
+      "MAE": 22.230069577249154,
+      "RMSE": 50.09460267320177,
+      "R2": 0.2975247097965571
+    },
     "metrics_val": {
       "label": "RandomForest_val",
       "MAE": 22.743276436784964,
@@ -62,7 +146,7 @@
     },
     "metrics_test": {
       "label": "RandomForest_test",
-      "MAE": 12.036604320835133,
+      "MAE": 12.036604320835135,
       "RMSE": 14.493992775729954,
       "R2": -2.27180603153818
     },
@@ -72,17 +156,29 @@
       "RMSE": 34.96052169045456,
       "R2": -0.01608235346306497
     },
-    "beats_baseline": false
+    "baseline_test": {
+      "label": "baseline_test",
+      "MAE": 5.911823919885993,
+      "RMSE": 8.0207035620443,
+      "R2": -0.0019277347972359582
+    },
+    "beats_baseline_val": false
   },
-  "Yield_YoY_National_LightGBM": {
+  "Yield_YoY_National_LightGBM_default": {
+    "metrics_train": {
+      "label": "LightGBM_default_train",
+      "MAE": 23.52744802229964,
+      "RMSE": 49.308857786648,
+      "R2": 0.31938884209454166
+    },
     "metrics_val": {
-      "label": "LightGBM_val",
+      "label": "LightGBM_default_val",
       "MAE": 23.97077091846995,
       "RMSE": 36.39418002593488,
       "R2": -0.10112589913641146
     },
     "metrics_test": {
-      "label": "LightGBM_test",
+      "label": "LightGBM_default_test",
       "MAE": 11.346357357686161,
       "RMSE": 14.792918731431035,
       "R2": -2.4081539992257013
@@ -93,18 +189,122 @@
       "RMSE": 34.96052169045456,
       "R2": -0.01608235346306497
     },
-    "beats_baseline": false
+    "baseline_test": {
+      "label": "baseline_test",
+      "MAE": 5.911823919885993,
+      "RMSE": 8.0207035620443,
+      "R2": -0.0019277347972359582
+    },
+    "beats_baseline_val": false
+  },
+  "Yield_YoY_National_LightGBM_L1": {
+    "metrics_train": {
+      "label": "LightGBM_L1_train",
+      "MAE": 22.493638086062674,
+      "RMSE": 60.25038436283945,
+      "R2": -0.016175742120111414
+    },
+    "metrics_val": {
+      "label": "LightGBM_L1_val",
+      "MAE": 20.371476834406266,
+      "RMSE": 34.794582289506586,
+      "R2": -0.006459616646076638
+    },
+    "metrics_test": {
+      "label": "LightGBM_L1_test",
+      "MAE": 6.619735253290715,
+      "RMSE": 8.611654789177498,
+      "R2": -0.15500720128563272
+    },
+    "baseline_val": {
+      "label": "baseline_val",
+      "MAE": 20.53036208934942,
+      "RMSE": 34.96052169045456,
+      "R2": -0.01608235346306497
+    },
+    "baseline_test": {
+      "label": "baseline_test",
+      "MAE": 5.911823919885993,
+      "RMSE": 8.0207035620443,
+      "R2": -0.0019277347972359582
+    },
+    "beats_baseline_val": true
+  },
+  "Yield_YoY_National_XGBoost_L1": {
+    "metrics_train": {
+      "label": "XGBoost_L1_train",
+      "MAE": 22.64992871359973,
+      "RMSE": 60.329120356877006,
+      "R2": -0.018833381131791782
+    },
+    "metrics_val": {
+      "label": "XGBoost_L1_val",
+      "MAE": 20.35339410657429,
+      "RMSE": 34.75783122982208,
+      "R2": -0.004334635062088532
+    },
+    "metrics_test": {
+      "label": "XGBoost_L1_test",
+      "MAE": 6.523053950375994,
+      "RMSE": 8.516468477071765,
+      "R2": -0.12961526917202004
+    },
+    "baseline_val": {
+      "label": "baseline_val",
+      "MAE": 20.53036208934942,
+      "RMSE": 34.96052169045456,
+      "R2": -0.01608235346306497
+    },
+    "baseline_test": {
+      "label": "baseline_test",
+      "MAE": 5.911823919885993,
+      "RMSE": 8.0207035620443,
+      "R2": -0.0019277347972359582
+    },
+    "beats_baseline_val": true
   },
   "Production_Risk_RandomForest": {
-    "accuracy": 0.22263766145479266,
-    "f1_macro": 0.19555281890528825,
-    "baseline_accuracy": 0.03331067301155676,
-    "beats_baseline": true
+    "train_accuracy": 0.7284330985915493,
+    "train_f1": 0.7331226740297935,
+    "val_accuracy": 0.22263766145479266,
+    "val_f1": 0.2136247777230741,
+    "test_accuracy": 0.3585476550680787,
+    "test_f1": 0.33354467346116984,
+    "baseline_val_accuracy": 0.03331067301155676,
+    "baseline_test_accuracy": 0.0,
+    "beats_baseline_val": true
   },
-  "Production_Risk_LightGBM": {
-    "accuracy": 0.36233854520734193,
-    "f1_macro": 0.2738660967266851,
-    "baseline_accuracy": 0.03331067301155676,
-    "beats_baseline": true
+  "Production_Risk_LightGBM_default": {
+    "train_accuracy": 0.7880281690140845,
+    "train_f1": 0.7911865989927147,
+    "val_accuracy": 0.36233854520734193,
+    "val_f1": 0.33494142135193883,
+    "test_accuracy": 0.48411497730711045,
+    "test_f1": 0.43219305744704395,
+    "baseline_val_accuracy": 0.03331067301155676,
+    "baseline_test_accuracy": 0.0,
+    "beats_baseline_val": true
+  },
+  "Production_Risk_LightGBM_tuned": {
+    "train_accuracy": 0.7479753521126761,
+    "train_f1": 0.7522481272476242,
+    "val_accuracy": 0.4021074099252209,
+    "val_f1": 0.37188138334536797,
+    "test_accuracy": 0.491679273827534,
+    "test_f1": 0.44764950370241663,
+    "baseline_val_accuracy": 0.03331067301155676,
+    "baseline_test_accuracy": 0.0,
+    "beats_baseline_val": true
+  },
+  "Production_Risk_XGBoost_regularized": {
+    "train_accuracy": 0.6551936619718309,
+    "train_f1": 0.6627034471600923,
+    "val_accuracy": 0.3925900747790619,
+    "val_f1": 0.3525744436880973,
+    "test_accuracy": 0.39636913767019666,
+    "test_f1": 0.38787693785388844,
+    "baseline_val_accuracy": 0.03331067301155676,
+    "baseline_test_accuracy": 0.0,
+    "beats_baseline_val": true
   }
 }

@@ -87,9 +87,10 @@ FEATURES_C = [
 ]
 
 PROVENANCE_NOTE = (
-    "Model B prediction artifacts used for the Model C event-level bridge contain "
-    "upstream in-sample predictions. Therefore, event-level predictions should be "
-    "treated as integration/diagnostic outputs rather than fully out-of-sample causal estimates."
+    "Model B and Model C prediction artifacts used for the event-level bridge are generated "
+    "using expanding-window walk-forward out-of-fold models with verified temporal provenance "
+    "(Training_End_Year < Prediction_Year). Rows with unavailable upstream Model B Lag1 predictions "
+    "are marked as NaN and excluded from Model C evaluation."
 )
 
 METHODOLOGICAL_LIMITATION = (
@@ -219,20 +220,17 @@ EVENT_CATALOG = [
 def build_model_b_lag_lookup(pred_b_path):
     """
     Build previous-period Model B prediction lookup:
-    Production_Growth_Pred_Lag1 = shift(1) of Production_Growth_Pred
+    Production_Growth_Pred_Lag1 = shift(1) of Production_Growth_Pred_OOF
     grouped by (Country, Trade_Type, HS4), sorted by (Year, Month).
     """
     if not os.path.exists(pred_b_path):
         print(f"  WARNING: Model B predictions artifact not found at {pred_b_path}. Will use default NaN.")
         return {}
 
-    pred_b = pd.read_csv(
-        pred_b_path,
-        usecols=["Year", "Month", "Country", "Trade_Type", "HS4", "Production_Growth_Pred"],
-        low_memory=False,
-    )
+    pred_b = pd.read_csv(pred_b_path, low_memory=False)
+    col_name = "Production_Growth_Pred_OOF" if "Production_Growth_Pred_OOF" in pred_b.columns else "Production_Growth_Pred"
     pred_b = pred_b.sort_values(["Country", "Trade_Type", "HS4", "Year", "Month"])
-    pred_b["_prev"] = pred_b.groupby(["Country", "Trade_Type", "HS4"])["Production_Growth_Pred"].shift(1)
+    pred_b["_prev"] = pred_b.groupby(["Country", "Trade_Type", "HS4"])[col_name].shift(1)
 
     lookup = {}
     for _, r in pred_b.iterrows():
@@ -373,7 +371,13 @@ def run_cascade_for_event(event_data, model_a, model_c, model_b_lookup):
 
         price_mae = float(np.abs(price_pred - price_actual).mean())
         price_bias = float((price_pred - price_actual).mean())
-        price_dir_agree = float((np.sign(price_pred) == np.sign(price_actual)).mean() * 100)
+        # Small sample size check for directional agreement
+        if n_used_model_c >= 5:
+            price_dir_agree = float((np.sign(price_pred) == np.sign(price_actual)).mean() * 100)
+            price_dir_agree_note = "Valid"
+        else:
+            price_dir_agree = None
+            price_dir_agree_note = "N/A - insufficient sample size (n < 5)"
 
         avg_price_pred = float(price_pred.mean())
         price_pred_vs_actual = {
@@ -384,6 +388,7 @@ def run_cascade_for_event(event_data, model_a, model_c, model_b_lookup):
             "prediction_error_mae": price_mae,
             "prediction_bias": price_bias,
             "directional_agreement_pct": price_dir_agree,
+            "directional_agreement_note": price_dir_agree_note,
             "n_rows_evaluated": n_used_model_c,
             "n_rows_excluded": n_excluded_model_c,
             "exclusion_reason": "Rows with unavailable upstream Model B Lag1 predictions excluded from Model C evaluation",
@@ -398,6 +403,7 @@ def run_cascade_for_event(event_data, model_a, model_c, model_b_lookup):
             "prediction_error_mae": None,
             "prediction_bias": None,
             "directional_agreement_pct": None,
+            "directional_agreement_note": "N/A - 0 valid observations",
             "n_rows_evaluated": 0,
             "n_rows_excluded": n_excluded_model_c,
             "exclusion_reason": "All rows lacked valid upstream Model B Lag1 predictions",
@@ -408,7 +414,13 @@ def run_cascade_for_event(event_data, model_a, model_c, model_b_lookup):
     trade_pred = event_data["Trade_Return_1M_Pred"]
     trade_mae = float(np.abs(trade_pred - trade_actual).mean())
     trade_bias = float((trade_pred - trade_actual).mean())
-    trade_dir_agree = float((np.sign(trade_pred) == np.sign(trade_actual)).mean() * 100)
+    
+    if len(event_data) >= 5:
+        trade_dir_agree = float((np.sign(trade_pred) == np.sign(trade_actual)).mean() * 100)
+        trade_dir_agree_note = "Valid"
+    else:
+        trade_dir_agree = None
+        trade_dir_agree_note = "N/A - insufficient sample size (n < 5)"
 
     trade_pred_vs_actual = {
         "pred_mean": float(trade_pred.mean()),
@@ -418,23 +430,39 @@ def run_cascade_for_event(event_data, model_a, model_c, model_b_lookup):
         "prediction_error_mae": trade_mae,
         "prediction_bias": trade_bias,
         "directional_agreement_pct": trade_dir_agree,
+        "directional_agreement_note": trade_dir_agree_note,
         "n_rows_evaluated": len(event_data),
     }
+
+    # Coverage metrics
+    tot_rows = len(event_data)
+    cov_pct = (n_used_model_c / tot_rows * 100) if tot_rows > 0 else 0.0
+    if cov_pct >= 80.0:
+        cov_tier = "HIGH"
+    elif cov_pct >= 50.0:
+        cov_tier = "MODERATE"
+    elif cov_pct >= 20.0:
+        cov_tier = "LOW"
+    else:
+        cov_tier = "VERY LOW"
 
     return {
         "avg_trade_pred": float(trade_pred.mean()),
         "avg_price_pred": avg_price_pred,
         "trade_pred_vs_actual": trade_pred_vs_actual,
         "price_pred_vs_actual": price_pred_vs_actual,
-        "lag_lookup_diagnostics": {
-            "total_event_rows": len(event_data),
+        "coverage_metrics": {
+            "total_event_rows": tot_rows,
             "matched_model_b_lags": matched_count,
             "unavailable_model_b_lags": unavailable_count,
             "rows_evaluated_model_c": n_used_model_c,
             "rows_excluded_model_c": n_excluded_model_c,
+            "model_c_evaluation_coverage_pct": round(cov_pct, 2),
+            "coverage_tier": cov_tier,
+            "tier_definition_note": "Project-defined reporting thresholds: HIGH (>=80%), MODERATE (50-80%), LOW (20-50%), VERY LOW (<20%).",
             "handling_policy": "Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.",
         },
-    }, matched_count, unavailable_count, n_used_model_c, n_excluded_model_c
+    }, matched_count, unavailable_count, n_used_model_c, n_excluded_model_c, cov_pct, cov_tier
 
 
 # ============================================================
@@ -455,18 +483,26 @@ def main():
     df = pd.read_csv(MAIN_CSV)
     print(f"  Dataset: {df.shape[0]:,} rows x {df.shape[1]} columns")
 
-    # Load Model B prediction artifact for previous-period lag lookup
-    pred_b_path = os.path.join(RESULTS_DIR, "model_b_predictions.csv")
-    print("\nBuilding previous-period Model B prediction lookup...")
+    # Load Model B prediction artifact for previous-period lag lookup (prefer OOF)
+    pred_b_path = os.path.join(RESULTS_DIR, "model_b_predictions_oof.csv")
+    if not os.path.exists(pred_b_path):
+        pred_b_path = os.path.join(RESULTS_DIR, "model_b_predictions.csv")
+
+    print(f"\nBuilding previous-period Model B prediction lookup ({os.path.basename(pred_b_path)})...")
     model_b_lookup = build_model_b_lag_lookup(pred_b_path)
     print(f"  Lookup entries built: {len(model_b_lookup):,}")
 
-    # Load trained models
+    # Load trained models (prefer OOF)
     print("\nLoading trained models...")
     model_a = joblib.load(os.path.join(MODELS_DIR, "model_a_trade.joblib"))
-    model_c = joblib.load(os.path.join(MODELS_DIR, "model_c_price.joblib"))
+
+    model_c_path = os.path.join(MODELS_DIR, "model_c_price_oof.joblib")
+    if not os.path.exists(model_c_path):
+        model_c_path = os.path.join(MODELS_DIR, "model_c_price.joblib")
+    model_c = joblib.load(model_c_path)
+
     print(f"  Model A (Trade) loaded: {len(FEATURES_A)} features")
-    print(f"  Model C (Price) loaded: {len(FEATURES_C)} features (including Production_Growth_Pred_Lag1)")
+    print(f"  Model C (Price) loaded: {len(FEATURES_C)} features ({os.path.basename(model_c_path)}, including Production_Growth_Pred_Lag1)")
 
     # Process each event
     print(f"\nProcessing {len(EVENT_CATALOG)} curated events...")
@@ -500,7 +536,7 @@ def main():
             continue
 
         # Run cascade predictions with actual Model B lag lookup and explicit exclusion of unavailable rows
-        predictions, matched_lags, unavail_lags, used_c, excluded_c = run_cascade_for_event(
+        predictions, matched_lags, unavail_lags, used_c, excluded_c, cov_pct, cov_tier = run_cascade_for_event(
             event_data, model_a, model_c, model_b_lookup
         )
         total_matched_lags += matched_lags
@@ -514,14 +550,18 @@ def main():
 
         print(f"  Total matched observations in window : {summary['n_rows']:,}")
         print(f"  Model B Lag1 status                  : {matched_lags:,} matched, {unavail_lags:,} unavailable (marked NaN)")
-        print(f"  Model C rows evaluated / excluded    : {used_c:,} used, {excluded_c:,} excluded because Lag1 was unavailable")
+        print(f"  Model C rows evaluated / excluded    : {used_c:,} used, {excluded_c:,} excluded | Coverage: {cov_pct:.2f}% ({cov_tier})")
         print(f"  Observed Trade Return (avg)          : {obs_m['avg_observed_trade_return_1m']:+.4f}")
-        print(f"  Model A Trade Pred (avg)             : {predictions['avg_trade_pred']:+.4f} (MAE: {t_comp['prediction_error_mae']:.4f}, Dir Agree: {t_comp['directional_agreement_pct']:.1f}%)")
+        
+        t_dir_str = f"{t_comp['directional_agreement_pct']:.1f}%" if t_comp['directional_agreement_pct'] is not None else t_comp['directional_agreement_note']
+        print(f"  Model A Trade Pred (avg)             : {predictions['avg_trade_pred']:+.4f} (MAE: {t_comp['prediction_error_mae']:.4f}, Dir Agree: {t_dir_str})")
+        
         print(f"  Observed Price Return (avg)          : {obs_m['avg_observed_price_return_1m']:+.4f}")
         if p_comp["pred_mean"] is not None:
-            print(f"  Model C Price Pred (avg)             : {predictions['avg_price_pred']:+.4f} (MAE: {p_comp['prediction_error_mae']:.4f}, Dir Agree: {p_comp['directional_agreement_pct']:.1f}%, on {used_c:,} rows)")
+            p_dir_str = f"{p_comp['directional_agreement_pct']:.1f}%" if p_comp['directional_agreement_pct'] is not None else p_comp['directional_agreement_note']
+            print(f"  Model C Price Pred (avg)             : {predictions['avg_price_pred']:+.4f} (MAE: {p_comp['prediction_error_mae']:.4f}, Dir Agree: {p_dir_str}, on {used_c:,} rows)")
         else:
-            print(f"  Model C Price Pred                   : N/A (no valid Lag1 rows)")
+            print(f"  Model C Price Pred                   : N/A (no valid Lag1 rows in event window)")
 
         event_results.append({
             "event": event,
@@ -546,10 +586,10 @@ def main():
         json.dump(EVENT_CATALOG, f, indent=2)
     print(f"Event catalog saved: {catalog_path}")
 
-    # Summary Report
-    print("\n" + "=" * 70)
-    print("TASK 9 EVENT STORE - SUMMARY REPORT")
-    print("=" * 70)
+    # Summary Report with Structured Coverage Table
+    print("\n" + "=" * 80)
+    print("TASK 9 EVENT STORE - SUMMARY & COVERAGE REPORT")
+    print("=" * 80)
     print(f"  Total events cataloged & processed : {len(EVENT_CATALOG)}")
     print(f"  Direct scope events                : {sum(1 for e in EVENT_CATALOG if e['event_scope'] == 'direct')}")
     print(f"  Proxy scope events                 : {sum(1 for e in EVENT_CATALOG if e['event_scope'] == 'proxy')} (EVT006 Bangladesh proxy for Sri Lanka)")
@@ -558,11 +598,22 @@ def main():
     print(f"  Model B Lag1 lookups unavailable   : {total_unavailable_lags:,} (marked NaN)")
     print(f"  Model C rows evaluated             : {total_model_c_used:,}")
     print(f"  Model C rows excluded              : {total_model_c_excluded:,} (due to unavailable Model B Lag1)")
-    print("  Exclusion Policy                   : Rows with unavailable upstream Model B Lag1 predictions are excluded from Model C event-level evaluation.")
-    print("  Model C input schema verification  : PASSED (exact 11-feature schema with Production_Growth_Pred_Lag1)")
-    print("  Terminology & Limitations updated  : Confirmed observational framing without causal overclaims")
+    overall_cov = (total_model_c_used / sum(r['summary'].get('n_rows', 0) for r in event_results) * 100) if sum(r['summary'].get('n_rows', 0) for r in event_results) > 0 else 0.0
+    print(f"  Overall Model C evaluation coverage: {overall_cov:.2f}%")
+
+    print("\n" + "-" * 80)
+    print(f"{'Event ID':<8} | {'Scope':<6} | {'Total Rows':<10} | {'Evaluated':<10} | {'Excluded':<10} | {'Coverage %':<10} | {'Tier':<8}")
+    print("-" * 80)
+    for r in event_results:
+        ev = r["event"]
+        cov = r["predictions"]["coverage_metrics"] if r["predictions"] else {}
+        print(f"{ev['event_id']:<8} | {ev['event_scope'].upper():<6} | {cov.get('total_event_rows', 0):<10,d} | {cov.get('rows_evaluated_model_c', 0):<10,d} | {cov.get('rows_excluded_model_c', 0):<10,d} | {cov.get('model_c_evaluation_coverage_pct', 0.0):<9.2f}% | {cov.get('coverage_tier', 'N/A'):<8}")
+    print("-" * 80)
+    print("  Tier Definitions: HIGH (>=80%), MODERATE (50-80%), LOW (20-50%), VERY LOW (<20%).")
+    print("  Note: Project-defined reporting categories, not formal scientific thresholds.")
+    print("  Methodology: Rows with unavailable upstream Model B Lag1 are excluded to prevent zero-filling bias.")
     print("\n  TASK 9 COMPLETE")
-    print("=" * 70)
+    print("=" * 80)
 
 
 if __name__ == "__main__":

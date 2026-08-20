@@ -175,13 +175,22 @@ def compute_stakeholder_effects(cascade_state, row):
     Returns:
         dict of structured stakeholder effects
     """
-    # Extract model predictions
-    trade_pred = float(cascade_state.get("trade", {}).get("Trade_Return_1M_Pred", 0.0))
-    prod_growth = float(cascade_state.get("agriculture", {}).get("Production_Growth_Pred", 0.0))
+    # Extract model predictions (safely handling None when upstream stage is unavailable)
+    trade_raw = cascade_state.get("trade", {}).get("Trade_Return_1M_Pred", None)
+    trade_pred = float(trade_raw) if trade_raw is not None else None
+
+    prod_raw = cascade_state.get("agriculture", {}).get("Production_Growth_Pred", None)
+    prod_growth = float(prod_raw) if prod_raw is not None else None
     prod_risk = str(cascade_state.get("agriculture", {}).get("Production_Risk", "Unknown"))
-    price_pred = float(cascade_state.get("price", {}).get("Price_Return_1M_Pred", 0.0))
-    gva_pred = float(cascade_state.get("economy", {}).get("Agri_GVA_Growth_Pred", 0.0))
-    infl_pred = float(cascade_state.get("economy", {}).get("Inflation_Change_Pred", 0.0))
+
+    price_raw = cascade_state.get("price", {}).get("Price_Return_1M_Pred", None)
+    price_pred = float(price_raw) if price_raw is not None else None
+
+    gva_raw = cascade_state.get("economy", {}).get("Agri_GVA_Growth_Pred", None)
+    gva_pred = float(gva_raw) if gva_raw is not None else None
+
+    infl_raw = cascade_state.get("economy", {}).get("Inflation_Change_Pred", None)
+    infl_pred = float(infl_raw) if infl_raw is not None else None
 
     # Extract context
     trade_type = row.get("Trade_Type", "Unknown")
@@ -199,8 +208,8 @@ def compute_stakeholder_effects(cascade_state, row):
         effective_shock=effective_shock,
         incoming_shock=incoming,
         outgoing_shock=outgoing,
-        price_pred=price_pred,
-        trade_pred=trade_pred,
+        price_pred=price_pred if price_pred is not None else 0.0,
+        trade_pred=trade_pred if trade_pred is not None else 0.0,
     )
 
     # Determine seasonal calendar context
@@ -219,25 +228,27 @@ def compute_stakeholder_effects(cascade_state, row):
     # ----------------------------------------------------------
     # 1. Farmer Output-Price Effect
     # ----------------------------------------------------------
-    # Price increase -> positive output-price effect (higher realization for producers)
-    # Price decrease -> negative output-price effect (lower realization for producers)
-    # Note: Explicitly labeled as output-price effect, NOT total farm welfare.
-    farmer_output_magnitude = price_pred * dep_mult
-    if price_pred > 0:
-        farmer_output_dir = "positive"
-        if shock_dir == "supply_shock":
-            farmer_output_reason = "Positive output-price effect: import contraction / upward price pressure improves price realization for domestic producers"
+    if price_pred is not None:
+        farmer_output_magnitude = price_pred * dep_mult
+        if price_pred > 0:
+            farmer_output_dir = "positive"
+            if shock_dir == "supply_shock":
+                farmer_output_reason = "Positive output-price effect: import contraction / upward price pressure improves price realization for domestic producers"
+            else:
+                farmer_output_reason = "Positive output-price effect: higher predicted commodity price improves realization for domestic producers"
+        elif price_pred < 0:
+            farmer_output_dir = "negative"
+            if shock_dir == "demand_shock":
+                farmer_output_reason = "Negative output-price effect: export contraction / domestic oversupply pressures farmgate realization downward"
+            else:
+                farmer_output_reason = "Negative output-price effect: lower predicted commodity price reduces realization for domestic producers"
         else:
-            farmer_output_reason = "Positive output-price effect: higher predicted commodity price improves realization for domestic producers"
-    elif price_pred < 0:
-        farmer_output_dir = "negative"
-        if shock_dir == "demand_shock":
-            farmer_output_reason = "Negative output-price effect: export contraction / domestic oversupply pressures farmgate realization downward"
-        else:
-            farmer_output_reason = "Negative output-price effect: lower predicted commodity price reduces realization for domestic producers"
+            farmer_output_dir = "neutral"
+            farmer_output_reason = "Neutral output-price effect: no significant commodity price change predicted"
     else:
-        farmer_output_dir = "neutral"
-        farmer_output_reason = "Neutral output-price effect: no significant commodity price change predicted"
+        farmer_output_magnitude = 0.0
+        farmer_output_dir = "unavailable"
+        farmer_output_reason = "Cannot assess output-price effect: upstream Model C price prediction unavailable (Model B Lag1 missing/non-crop)"
 
     effects["farmer_output_price"] = {
         "effect": float(farmer_output_magnitude),
@@ -245,11 +256,11 @@ def compute_stakeholder_effects(cascade_state, row):
         "reason": farmer_output_reason,
         "severity": dependency,
         "relevant_input": {
-            "price_return_1m_pred": float(price_pred),
+            "price_return_1m_pred": price_pred,
             "shock_direction": shock_dir,
             "dependency_level": dependency,
         },
-        "data_gap": False,
+        "data_gap": price_pred is None,
     }
 
     # ----------------------------------------------------------
@@ -270,22 +281,26 @@ def compute_stakeholder_effects(cascade_state, row):
     # ----------------------------------------------------------
     # 3. Consumer Effect
     # ----------------------------------------------------------
-    # Higher price -> negative consumer impact; Lower price -> positive consumer impact
-    consumer_magnitude = -price_pred * dep_mult
-    if price_pred > 0:
-        consumer_dir = "negative"
-        consumer_reason = "Negative consumer impact: higher predicted commodity prices increase consumer food expenditure"
-    elif price_pred < 0:
-        consumer_dir = "positive"
-        consumer_reason = "Positive consumer impact: lower predicted commodity prices reduce consumer food expenditure"
-    else:
-        consumer_dir = "neutral"
-        consumer_reason = "Neutral consumer impact: no significant commodity price change predicted"
+    if price_pred is not None:
+        consumer_magnitude = -price_pred * dep_mult
+        if price_pred > 0:
+            consumer_dir = "negative"
+            consumer_reason = "Negative consumer impact: higher predicted commodity prices increase consumer food expenditure"
+        elif price_pred < 0:
+            consumer_dir = "positive"
+            consumer_reason = "Positive consumer impact: lower predicted commodity prices reduce consumer food expenditure"
+        else:
+            consumer_dir = "neutral"
+            consumer_reason = "Neutral consumer impact: no significant commodity price change predicted"
 
-    # Directional heuristic: amplify consumer risk if production risk is elevated
-    if prod_risk in ["Critical", "High"] and price_pred > 0:
-        consumer_magnitude *= 1.3
-        consumer_reason += " (amplified by elevated regional production risk; project-defined directional heuristic)"
+        # Directional heuristic: amplify consumer risk if production risk is elevated
+        if prod_risk in ["Critical", "High"] and price_pred > 0:
+            consumer_magnitude *= 1.3
+            consumer_reason += " (amplified by elevated regional production risk; project-defined directional heuristic)"
+    else:
+        consumer_magnitude = 0.0
+        consumer_dir = "unavailable"
+        consumer_reason = "Cannot assess consumer impact: upstream Model C price prediction unavailable (Model B Lag1 missing/non-crop)"
 
     effects["consumer"] = {
         "effect": float(consumer_magnitude),
@@ -293,10 +308,10 @@ def compute_stakeholder_effects(cascade_state, row):
         "reason": consumer_reason,
         "severity": dependency,
         "relevant_input": {
-            "price_return_1m_pred": float(price_pred),
+            "price_return_1m_pred": price_pred,
             "production_risk": prod_risk,
         },
-        "data_gap": False,
+        "data_gap": price_pred is None,
     }
 
     # ----------------------------------------------------------
@@ -366,11 +381,11 @@ def compute_stakeholder_effects(cascade_state, row):
         "reason": importer_reason,
         "severity": importer_severity,
         "relevant_input": {
-            "trade_return_1m_pred": float(trade_pred),
+            "trade_return_1m_pred": trade_pred,
             "effective_shock": float(effective_shock),
             "trade_position": position,
         },
-        "data_gap": False,
+        "data_gap": trade_pred is None,
     }
 
     # ----------------------------------------------------------
@@ -392,23 +407,23 @@ def compute_stakeholder_effects(cascade_state, row):
         "direction": regional_dir,
         "reason": regional_reason,
         "season": season,
-        "production_growth": float(prod_growth),
+        "production_growth": float(prod_growth) if prod_growth is not None else None,
         "relevant_input": {
-            "production_growth_pred": float(prod_growth),
+            "production_growth_pred": prod_growth,
             "production_risk": prod_risk,
             "season": season,
         },
-        "data_gap": False,
+        "data_gap": prod_growth is None,
     }
 
     # ----------------------------------------------------------
     # 7. Macro Summary
     # ----------------------------------------------------------
     effects["macro_summary"] = {
-        "gva_growth_pred": float(gva_pred),
-        "inflation_change_pred": float(infl_pred),
-        "trade_return_pred": float(trade_pred),
-        "price_return_pred": float(price_pred),
+        "gva_growth_pred": float(gva_pred) if gva_pred is not None else None,
+        "inflation_change_pred": float(infl_pred) if infl_pred is not None else None,
+        "trade_return_pred": float(trade_pred) if trade_pred is not None else None,
+        "price_return_pred": float(price_pred) if price_pred is not None else None,
         "shock_direction": shock_dir,
         "trade_position": position,
         "dependency_level": dependency,
@@ -445,10 +460,10 @@ def generate_advisory(effects, row):
     )
 
     # Consumer advisory
-    ce = effects["consumer"]
+    cons = effects["consumer"]
     advisory["stakeholder_advisories"]["consumers"] = (
-        f"Consumer impact: {ce['direction'].upper()}. {ce['reason']}. "
-        f"Severity tier: {ce['severity']}."
+        f"Consumer impact: {cons['direction'].upper()}. {cons['reason']}. "
+        f"Severity tier: {cons['severity']}."
     )
 
     # Exporter advisory
@@ -465,19 +480,23 @@ def generate_advisory(effects, row):
 
     # Regional advisory
     rp = effects["regional_production_risk"]
+    prod_growth_text = f"Projected national production growth: {rp['production_growth']:+.1f}%." if rp['production_growth'] is not None else "Production growth: N/A."
     advisory["stakeholder_advisories"]["regional"] = (
         f"Regional risk: {rp['risk_level']}. {rp['reason']}. "
-        f"Season: {rp['season']}. "
-        f"Projected national production growth: {rp['production_growth']:+.1f}%."
+        f"Season: {rp['season']}. {prod_growth_text}"
     )
 
     # Government / Macro advisory
     macro = effects["macro_summary"]
+    gva_txt = f"{macro['gva_growth_pred']:+.2f}%" if macro['gva_growth_pred'] is not None else "N/A"
+    infl_txt = f"{macro['inflation_change_pred']:+.2f} pp" if macro['inflation_change_pred'] is not None else "N/A"
+    trade_txt = f"{macro['trade_return_pred']:+.2f}%" if macro['trade_return_pred'] is not None else "N/A"
+    price_txt = f"{macro['price_return_pred']:+.2f}%" if macro['price_return_pred'] is not None else "N/A (Model B Lag1 missing)"
     advisory["stakeholder_advisories"]["government"] = (
-        f"Macro outlook: Agri GVA growth pred = {macro['gva_growth_pred']:+.2f}%, "
-        f"Inflation change pred = {macro['inflation_change_pred']:+.2f} pp. "
-        f"Trade return pred = {macro['trade_return_pred']:+.2f}%, "
-        f"Price return pred = {macro['price_return_pred']:+.2f}%. "
+        f"Macro outlook: Agri GVA growth pred = {gva_txt}, "
+        f"Inflation change pred = {infl_txt}. "
+        f"Trade return pred = {trade_txt}, "
+        f"Price return pred = {price_txt}. "
         f"Interpreted shock direction: {macro['shock_direction']}."
     )
 

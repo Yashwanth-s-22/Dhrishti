@@ -1,6 +1,6 @@
 {
   "task": "Task 2 - Model A: Trade Impact",
-  "timestamp": "2026-08-18T19:49:15.410990",
+  "timestamp": "2026-08-20T20:48:49.211738",
   "random_state": 42,
   "features": [
     "Lagged_Effective_Shock_1",
@@ -118,7 +118,7 @@
         "label": "RandomForest_val",
         "MAE": 1.2006428169741452,
         "RMSE": 1.9080115583745578,
-        "R2": 0.07524851931778798
+        "R2": 0.07524851931778787
       },
       "test": {
         "label": "RandomForest_test",
@@ -293,7 +293,7 @@
       "Target": "Trade_Return_3M",
       "Model": "RandomForest",
       "Val_MAE": 1.2006428169741452,
-      "Val_R2": 0.07524851931778798,
+      "Val_R2": 0.07524851931778787,
       "Test_MAE": 0.9707203463456504,
       "Test_R2": 0.05359127877389769,
       "Baseline_Val_MAE": 1.748618464604262,

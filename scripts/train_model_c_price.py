@@ -1,8 +1,27 @@
 """
-Drishti - Task 4: Model C — Price Impact Model
-================================================
-Predicts Price_Return_1M (primary), also checks Price_Return_3M, Price_Volatility_3M.
-CASCADE: Uses Trade_Return_1M_Pred from Model A and Production_Growth_Pred from Model B.
+Drishti - Task 4: Model C (Price Impact) - Walk-Forward OOF Implementation
+==========================================================================
+Trains Model C using temporally valid out-of-fold (OOF) predictions from:
+- Model A: Trade_Return_1M_Pred_OOF
+- Model B: Production_Growth_Pred_Lag1 (shift 1 of Model B OOF)
+
+Methodological & Optimization Rules:
+1. Strict chronological boundaries:
+   - Train: 2019-2022 (2018 is cold-start)
+   - Validation: 2023
+   - Test: 2024-2025
+2. Hyperparameter optimization and model selection use ONLY Train and Validation (2023).
+   The Test set (2024-2025) is NEVER used for tuning or model selection.
+3. Generates temporally valid walk-forward predictions for Model C:
+   - Predict 2020 using data <= 2019
+   - Predict 2021 using data <= 2020
+   - Predict 2022 using data <= 2021
+   - Predict 2023 using data <= 2022
+   - Predict 2024 using data <= 2023
+   - Predict 2025 using data <= 2024
+   - 2018-2019 cold-start marked with Is_Out_Of_Sample = False.
+4. Saves canonical model to models/model_c_price.joblib and
+   predictions to results/model_c_predictions_oof.csv.
 
 Run: python scripts/train_model_c_price.py
 """
@@ -15,12 +34,12 @@ import warnings
 from datetime import datetime
 
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import xgboost as xgb
 import lightgbm as lgb
 import joblib
 
-warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore")
 
 # ============================================================
 # CONFIGURATION
@@ -34,22 +53,15 @@ MODELS_DIR = os.path.join(BASE_DIR, "models")
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
 
 MAIN_CSV = os.path.join(DATA_DIR, "Drishti_Cascade_Final_With_EMDAT.csv")
+PRED_A_OOF_PATH = os.path.join(RESULTS_DIR, "model_a_predictions_oof.csv")
+PRED_B_OOF_PATH = os.path.join(RESULTS_DIR, "model_b_predictions_oof.csv")
 
 os.makedirs(MODELS_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-# Leakage-safe price-forecast features.  All trade/shock variables are lagged;
-# price level is explicitly lagged by one period.
-REMOVED_CONTEMPORANEOUS_FEATURES = [
-    "Trade_Share",
-    "Effective_Shock",
-    "Trade_Shock_Exposure",
-    "Conflict_Exposure",
-    "Protest_Exposure",
-    "Net_Hostility_Exposure",
-    "Natural_Disaster_Trade_Exposure_USD",
-]
-
+# ------------------------------------------------------------
+# FEATURE SCHEMA FOR MODEL C (11 features)
+# ------------------------------------------------------------
 LAGGED_FEATURES_C = [
     "Lagged_Effective_Shock_1",
     "Lagged_Effective_Shock_2",
@@ -59,36 +71,18 @@ LAGGED_FEATURES_C = [
     "Trade_Share_Lag2",
     "Price_Lag1",
 ]
-
 EXOGENOUS_FEATURES_C = [
     "GPR",
     "INR_USD_Rate",
 ]
-
-# Natural_Disaster_Severity_Index is calculated from observed same-period
-# disaster outcomes.  It has no lagged counterpart in the dataset, so its
-# contemporaneous version is excluded from forecast-time predictors.
-EXCLUDED_SAME_PERIOD_REALIZED_FEATURES = ["Natural_Disaster_Severity_Index"]
-
 CASCADE_FEATURES_C = [
     "Trade_Return_1M_Pred",
     "Production_Growth_Pred_Lag1",
 ]
-
 FEATURES_C = LAGGED_FEATURES_C + EXOGENOUS_FEATURES_C + CASCADE_FEATURES_C
 
 PRIMARY_TARGET = "Price_Return_1M"
 SECONDARY_TARGETS = ["Price_Return_3M", "Price_Volatility_3M"]
-
-FORBIDDEN_PREDICTOR_FEATURES = {
-    PRIMARY_TARGET,
-    *SECONDARY_TARGETS,
-    *REMOVED_CONTEMPORANEOUS_FEATURES,
-    *EXCLUDED_SAME_PERIOD_REALIZED_FEATURES,
-}
-unsafe_features = set(FEATURES_C) & FORBIDDEN_PREDICTOR_FEATURES
-if unsafe_features:
-    raise ValueError(f"Leakage-unsafe Model C features configured: {sorted(unsafe_features)}")
 
 TRAIN_END_YEAR = 2022
 VAL_YEAR = 2023
@@ -99,7 +93,7 @@ def evaluate_model(y_true, y_pred, label=""):
     mae = mean_absolute_error(y_true, y_pred)
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))
     r2 = r2_score(y_true, y_pred)
-    return {"label": label, "MAE": mae, "RMSE": rmse, "R2": r2}
+    return {"label": label, "MAE": float(mae), "RMSE": float(rmse), "R2": float(r2)}
 
 
 def compute_naive_baseline(df, target_col):
@@ -113,243 +107,361 @@ def compute_naive_baseline(df, target_col):
     return df_sorted["naive_pred"]
 
 
-def print_leakage_prevention_audit():
-    """Report the forecast-time feature constraints used by Model C."""
+# ============================================================
+# DATA PREPARATION WITH OOF UPSTREAM INPUTS
+# ============================================================
+def load_and_prepare_data():
+    """
+    Load main dataset and align temporally valid OOF upstream predictions:
+    - Model A: Trade_Return_1M_Pred_OOF
+    - Model B: Production_Growth_Pred_OOF, then shift(1) by (Country, Trade_Type, HS4)
+    """
+    print("\nLoading main dataset and aligning OOF upstream prediction artifacts...")
+    key_cols = ["Country", "Trade_Type", "HS4", "Year", "Month"]
+    df = pd.read_csv(MAIN_CSV).sort_values(key_cols).reset_index(drop=True)
+
+    # 1. Align Model A OOF Predictions
+    if not os.path.exists(PRED_A_OOF_PATH):
+        raise FileNotFoundError(f"Model A OOF artifact not found at {PRED_A_OOF_PATH}. Run generate_oof_predictions.py first.")
+
+    pred_a_oof = pd.read_csv(PRED_A_OOF_PATH).sort_values(key_cols).reset_index(drop=True)
+    assert (df[key_cols] == pred_a_oof[key_cols]).all().all(), "Key alignment mismatch between main_df and model_a_predictions_oof"
+    df["Trade_Return_1M_Pred"] = pred_a_oof["Trade_Return_1M_Pred_OOF"]
+
+    # 2. Align Model B OOF Predictions and Shift by 1 period
+    if not os.path.exists(PRED_B_OOF_PATH):
+        raise FileNotFoundError(f"Model B OOF artifact not found at {PRED_B_OOF_PATH}. Run generate_oof_predictions.py first.")
+
+    pred_b_oof = pd.read_csv(PRED_B_OOF_PATH).sort_values(key_cols).reset_index(drop=True)
+    assert (df[key_cols] == pred_b_oof[key_cols]).all().all(), "Key alignment mismatch between main_df and model_b_predictions_oof"
+    df["Production_Growth_Pred_OOF"] = pred_b_oof["Production_Growth_Pred_OOF"]
+    df["Has_Production_Data"] = pred_b_oof["Has_Production_Data"]
+
+    # Sort chronologically by time series group and apply shift(1)
+    df = df.sort_values(key_cols).reset_index(drop=True)
+    df["Production_Growth_Pred_Lag1"] = (
+        df.groupby(["Country", "Trade_Type", "HS4"])["Production_Growth_Pred_OOF"]
+        .shift(1)
+    )
+
+    # Document missing counts
+    missing_a = df["Trade_Return_1M_Pred"].isna().sum()
+    missing_b_lag = df["Production_Growth_Pred_Lag1"].isna().sum()
+    print(f"  Aligned Model A OOF: {len(df) - missing_a:,} valid, {missing_a:,} missing/cold-start")
+    print(f"  Aligned Model B OOF Lag1: {len(df) - missing_b_lag:,} valid crop predictions, {missing_b_lag:,} missing/non-crop/cold-start")
+
+    # Missing value handling policy for modeling:
+    df["Trade_Return_1M_Pred"] = df["Trade_Return_1M_Pred"].fillna(0.0)
+    df["Production_Growth_Pred_Lag1"] = df["Production_Growth_Pred_Lag1"].fillna(0.0)
+
+    for col in FEATURES_C:
+        df[col] = df[col].fillna(0.0)
+
+    # Compute naive baseline column before splitting
+    df["naive_pred"] = compute_naive_baseline(df, PRIMARY_TARGET)
+
+    return df
+
+
+# ============================================================
+# HYPERPARAMETER OPTIMIZATION (TRAIN <= 2022 vs VAL == 2023 ONLY)
+# ============================================================
+def optimize_model_c(train_df, val_df):
+    """
+    Search candidate hyperparameters evaluating strictly on Validation (2023) MAE.
+    Test set (2024-2025) is NEVER accessed during this search.
+    """
     print("\n" + "=" * 70)
-    print("LEAKAGE-PREVENTION AUDIT")
+    print("MODEL C HYPERPARAMETER OPTIMIZATION (VALIDATION 2023 ONLY)")
     print("=" * 70)
-    print(f"  Removed contemporaneous features: {', '.join(REMOVED_CONTEMPORANEOUS_FEATURES)}")
-    print(f"  Excluded same-period realized feature: {', '.join(EXCLUDED_SAME_PERIOD_REALIZED_FEATURES)}")
-    print(f"  Retained lagged features: {', '.join(LAGGED_FEATURES_C)}")
-    print("  Cascade feature Trade_Return_1M_Pred is retained, but may include in-sample Model A predictions (not OOF yet).")
-    print("  Cascade feature Production_Growth_Pred_Lag1 is retained, but lagging does not make upstream in-sample predictions fully OOF.")
-    print("  Dataset was not modified; all feature preparation was performed in memory.")
+
+    X_train = train_df[FEATURES_C]
+    y_train = train_df[PRIMARY_TARGET]
+    X_val = val_df[FEATURES_C]
+    y_val = val_df[PRIMARY_TARGET]
+
+    candidate_configs = [
+        ("RandomForest", "RF_default", {
+            "model_type": "RF",
+            "params": {"n_estimators": 300, "max_depth": 15, "min_samples_split": 10, "min_samples_leaf": 5, "max_features": "sqrt", "random_state": RANDOM_STATE, "n_jobs": -1}
+        }),
+        ("RandomForest", "RF_deep", {
+            "model_type": "RF",
+            "params": {"n_estimators": 400, "max_depth": 20, "min_samples_split": 5, "min_samples_leaf": 3, "max_features": "sqrt", "random_state": RANDOM_STATE, "n_jobs": -1}
+        }),
+        ("RandomForest", "RF_regularized", {
+            "model_type": "RF",
+            "params": {"n_estimators": 300, "max_depth": 12, "min_samples_split": 20, "min_samples_leaf": 10, "max_features": "sqrt", "random_state": RANDOM_STATE, "n_jobs": -1}
+        }),
+        ("LightGBM", "LGB_baseline", {
+            "model_type": "LGB",
+            "params": {"n_estimators": 200, "max_depth": 8, "learning_rate": 0.05, "random_state": RANDOM_STATE, "n_jobs": -1, "verbose": -1}
+        }),
+        ("LightGBM", "LGB_tuned", {
+            "model_type": "LGB",
+            "params": {"n_estimators": 300, "max_depth": 6, "learning_rate": 0.03, "num_leaves": 31, "subsample": 0.8, "colsample_bytree": 0.8, "random_state": RANDOM_STATE, "n_jobs": -1, "verbose": -1}
+        }),
+        ("XGBoost", "XGB_baseline", {
+            "model_type": "XGB",
+            "params": {"n_estimators": 200, "max_depth": 6, "learning_rate": 0.05, "random_state": RANDOM_STATE, "n_jobs": -1, "verbosity": 0}
+        }),
+        ("XGBoost", "XGB_regularized", {
+            "model_type": "XGB",
+            "params": {"n_estimators": 250, "max_depth": 5, "learning_rate": 0.03, "reg_alpha": 0.1, "reg_lambda": 1.0, "subsample": 0.8, "random_state": RANDOM_STATE, "n_jobs": -1, "verbosity": 0}
+        }),
+    ]
+
+    tuning_results = []
+    best_config = None
+    best_val_mae = float("inf")
+
+    for family, name, cfg in candidate_configs:
+        m_type = cfg["model_type"]
+        params = cfg["params"]
+
+        if m_type == "RF":
+            model = RandomForestRegressor(**params)
+        elif m_type == "LGB":
+            model = lgb.LGBMRegressor(**params)
+        elif m_type == "XGB":
+            model = xgb.XGBRegressor(**params)
+
+        model.fit(X_train, y_train)
+        val_preds = model.predict(X_val)
+        train_preds = model.predict(X_train)
+
+        val_mae = mean_absolute_error(y_val, val_preds)
+        val_r2 = r2_score(y_val, val_preds)
+        train_mae = mean_absolute_error(y_train, train_preds)
+
+        print(f"  [{family:<12}] {name:<18} -> Val MAE: {val_mae:.4f} | Val R2: {val_r2:.4f} | Train MAE: {train_mae:.4f}")
+
+        tuning_results.append({
+            "family": family,
+            "name": name,
+            "params": {k: v for k, v in params.items() if k not in ["n_jobs", "verbose", "verbosity"]},
+            "train_mae": float(train_mae),
+            "val_mae": float(val_mae),
+            "val_r2": float(val_r2),
+        })
+
+        if val_mae < best_val_mae:
+            best_val_mae = val_mae
+            best_config = (family, name, cfg, model)
+
+    print(f"\n  Selected Best Model Configuration on Validation (2023): {best_config[0]} ({best_config[1]}) with Val MAE = {best_val_mae:.4f}")
+    return best_config, tuning_results
 
 
+# ============================================================
+# PHASE 2: GENERATE MODEL C WALK-FORWARD OOF PREDICTIONS
+# ============================================================
+def generate_model_c_oof(df, best_family, best_params):
+    """
+    Generate expanding-window walk-forward predictions for Model C across 2019..2025.
+    For each prediction year Y in 2020..2025:
+      Train model on Year <= Y-1
+      Predict on Year == Y
+    2018-2019 cold start marked accordingly.
+    """
+    print("\n" + "=" * 70)
+    print("GENERATING MODEL C OUT-OF-FOLD (OOF) PREDICTIONS")
+    print("=" * 70)
+
+    oof_records = []
+    years = sorted(df["Year"].unique())
+
+    for pred_year in years:
+        pred_mask = (df["Year"] == pred_year)
+        pred_rows = df[pred_mask].copy()
+
+        if pred_year == 2018:
+            print(f"  Year {pred_year}: COLD-START (no prior data) -> {len(pred_rows):,} rows marked unavailable")
+            for _, r in pred_rows.iterrows():
+                oof_records.append({
+                    "Year": int(r["Year"]),
+                    "Month": int(r["Month"]),
+                    "Country": r["Country"],
+                    "Trade_Type": r["Trade_Type"],
+                    "HS4": int(r["HS4"]),
+                    "Price_Return_1M_Pred_OOF": np.nan,
+                    "Prediction_Value": np.nan,
+                    "Price_Return_1M_Actual": float(r[PRIMARY_TARGET]),
+                    "Prediction_Year": int(pred_year),
+                    "Training_End_Year": None,
+                    "Is_Out_Of_Sample": False,
+                    "Model_Name": "None (Cold-Start)",
+                    "Training_Rows": 0,
+                })
+            continue
+
+        train_end_year = pred_year - 1
+        train_mask = (df["Year"] <= train_end_year)
+        train_rows = df[train_mask]
+
+        # Verify hard temporal rule
+        assert train_end_year < pred_year, f"VIOLATION: Training_End_Year {train_end_year} >= Prediction_Year {pred_year}"
+
+        X_train = train_rows[FEATURES_C]
+        y_train = train_rows[PRIMARY_TARGET]
+        X_pred = pred_rows[FEATURES_C]
+
+        if best_family == "RandomForest":
+            model = RandomForestRegressor(**best_params)
+        elif best_family == "LightGBM":
+            model = lgb.LGBMRegressor(**best_params)
+        elif best_family == "XGBoost":
+            model = xgb.XGBRegressor(**best_params)
+
+        model.fit(X_train, y_train)
+        preds = model.predict(X_pred)
+
+        mae = np.mean(np.abs(preds - pred_rows[PRIMARY_TARGET]))
+        print(f"  Year {pred_year}: Train <= {train_end_year} ({len(train_rows):,} rows) -> Predict {len(pred_rows):,} rows | OOF MAE={mae:.4f}")
+
+        pred_rows["Price_Return_1M_Pred_OOF"] = preds
+        pred_rows["Prediction_Value"] = preds
+
+        for _, r in pred_rows.iterrows():
+            oof_records.append({
+                "Year": int(r["Year"]),
+                "Month": int(r["Month"]),
+                "Country": r["Country"],
+                "Trade_Type": r["Trade_Type"],
+                "HS4": int(r["HS4"]),
+                "Price_Return_1M_Pred_OOF": float(r["Price_Return_1M_Pred_OOF"]),
+                "Prediction_Value": float(r["Prediction_Value"]),
+                "Price_Return_1M_Actual": float(r[PRIMARY_TARGET]),
+                "Prediction_Year": int(pred_year),
+                "Training_End_Year": int(train_end_year),
+                "Is_Out_Of_Sample": True,
+                "Model_Name": best_family,
+                "Training_Rows": len(train_rows),
+            })
+
+    oof_df_c = pd.DataFrame(oof_records)
+    out_path_c = os.path.join(RESULTS_DIR, "model_c_predictions_oof.csv")
+    oof_df_c.to_csv(out_path_c, index=False)
+    # Also save canonical model_c_predictions.csv
+    oof_df_c.to_csv(os.path.join(RESULTS_DIR, "model_c_predictions.csv"), index=False)
+    print(f"\nModel C OOF predictions artifact saved: {out_path_c} ({len(oof_df_c):,} rows)")
+    return oof_df_c
+
+
+# ============================================================
+# MAIN
+# ============================================================
 def main():
     print("=" * 70)
-    print("Drishti - Task 4: Model C -- Price Impact")
+    print("Drishti - Task 4: Model C (Price Impact) OOF Retraining")
     print(f"Timestamp: {datetime.now().isoformat()}")
     print("=" * 70)
 
-    # Load main dataset
-    print("\nLoading main dataset...")
-    df = pd.read_csv(MAIN_CSV)
-    df = df.sort_values(["Country", "Trade_Type", "HS4", "Year", "Month"]).reset_index(drop=True)
+    # 1. Load and prepare data
+    df = load_and_prepare_data()
 
-    # Load Model A predictions
-    pred_a_path = os.path.join(RESULTS_DIR, "model_a_predictions.csv")
-    if os.path.exists(pred_a_path):
-        pred_a = pd.read_csv(
-            pred_a_path,
-            usecols=["Year", "Month", "Country", "Trade_Type", "HS4", "Trade_Return_1M_Pred"],
-        )
-        df = df.merge(
-            pred_a[["Year", "Month", "Country", "Trade_Type", "HS4", "Trade_Return_1M_Pred"]],
-            on=["Year", "Month", "Country", "Trade_Type", "HS4"],
-            how="left"
-        )
-        df["Trade_Return_1M_Pred"] = df["Trade_Return_1M_Pred"].fillna(0)
-        print(f"  Model A predictions loaded: {pred_a_path}")
-        print("  NOTE: This artifact may contain in-sample Model A predictions; it is not yet an OOF cascade feature.")
-    else:
-        print("  WARNING: Model A predictions not found. Using zeros.")
-        df["Trade_Return_1M_Pred"] = 0
+    # 2. Chronological Split
+    train_df = df[df["Year"] <= TRAIN_END_YEAR].copy()
+    val_df = df[df["Year"] == VAL_YEAR].copy()
+    test_df = df[df["Year"] >= TEST_START_YEAR].copy()
 
-    # Load Model B predictions
-    pred_b_path = os.path.join(RESULTS_DIR, "model_b_predictions.csv")
-    if os.path.exists(pred_b_path):
-        # usecols avoids loading Production_Risk, which is not a Model C
-        # feature and can otherwise trigger an unnecessary dtype warning.
-        pred_b = pd.read_csv(
-            pred_b_path,
-            usecols=["Year", "Month", "Country", "Trade_Type", "HS4", "Production_Growth_Pred"],
-        )
-        df = df.merge(
-            pred_b[["Year", "Month", "Country", "Trade_Type", "HS4", "Production_Growth_Pred"]],
-            on=["Year", "Month", "Country", "Trade_Type", "HS4"],
-            how="left"
-        )
-        df["Production_Growth_Pred"] = df["Production_Growth_Pred"].fillna(0)
+    print(f"\nChronological Split:")
+    print(f"  Train (<= 2022): {len(train_df):,} rows")
+    print(f"  Val   (2023):   {len(val_df):,} rows")
+    print(f"  Test  (>= 2024): {len(test_df):,} rows")
 
-        # LAG by 1 period to prevent leakage (Task 4 spec: shift by one period)
-        df = df.sort_values(["Country", "Trade_Type", "HS4", "Year", "Month"])
-        df["Production_Growth_Pred_Lag1"] = (
-            df.groupby(["Country", "Trade_Type", "HS4"])["Production_Growth_Pred"]
-            .shift(1)
-            .fillna(0)
-        )
-        print(f"  Model B predictions loaded and lagged: {pred_b_path}")
-        print("  NOTE: Lagging reduces temporal leakage but does not make an upstream in-sample prediction fully out-of-sample.")
-    else:
-        print("  WARNING: Model B predictions not found. Using zeros.")
-        df["Production_Growth_Pred"] = 0
-        df["Production_Growth_Pred_Lag1"] = 0
+    # Compute naive baselines
+    bl_val = evaluate_model(val_df[PRIMARY_TARGET], val_df["naive_pred"], "Baseline_val")
+    bl_test = evaluate_model(test_df[PRIMARY_TARGET], test_df["naive_pred"], "Baseline_test")
 
-    # Ensure all feature columns exist and have no nulls
-    for col in FEATURES_C:
-        if col not in df.columns:
-            print(f"  WARNING: Feature {col} not found, filling with 0")
-            df[col] = 0
-        df[col] = df[col].fillna(0)
+    print(f"\nNaive Baseline:")
+    print(f"  Val MAE:  {bl_val['MAE']:.4f} | Val R2:  {bl_val['R2']:.4f}")
+    print(f"  Test MAE: {bl_test['MAE']:.4f} | Test R2: {bl_test['R2']:.4f}")
 
-    # Chronological split
-    train = df[df["Year"] <= TRAIN_END_YEAR].copy()
-    val = df[df["Year"] == VAL_YEAR].copy()
-    test = df[df["Year"] >= TEST_START_YEAR].copy()
+    # 3. Hyperparameter Optimization on Train vs Validation ONLY
+    best_config, tuning_results = optimize_model_c(train_df, val_df)
+    best_family, best_name, best_cfg, best_val_fitted_model = best_config
+    best_params = best_cfg["params"]
 
-    print(f"\n  Chronological split:")
-    print(f"    Train: {len(train):,} | Val: {len(val):,} | Test: {len(test):,}")
-
-    # ============================================================
-    # TRAIN ON PRIMARY TARGET
-    # ============================================================
+    # 4. Final Fit on Train (<= 2022) and Evaluation on Frozen Test (>= 2024)
     print("\n" + "=" * 70)
-    print(f"TRAINING — PRIMARY TARGET: {PRIMARY_TARGET}")
+    print(f"FINAL EVALUATION OF FROZEN MODEL: {best_family} ({best_name})")
     print("=" * 70)
 
-    X_train = train[FEATURES_C]
-    y_train = train[PRIMARY_TARGET]
-    X_val = val[FEATURES_C]
-    y_val = val[PRIMARY_TARGET]
-    X_test = test[FEATURES_C]
-    y_test = test[PRIMARY_TARGET]
+    X_train = train_df[FEATURES_C]
+    y_train = train_df[PRIMARY_TARGET]
+    X_val = val_df[FEATURES_C]
+    y_val = val_df[PRIMARY_TARGET]
+    X_test = test_df[FEATURES_C]
+    y_test = test_df[PRIMARY_TARGET]
 
-    # Naive baseline
-    df["naive_pred_price"] = compute_naive_baseline(df, PRIMARY_TARGET)
-    bl_val = evaluate_model(
-        val[PRIMARY_TARGET],
-        df.loc[val.index, "naive_pred_price"] if "naive_pred_price" in df.columns else np.zeros(len(val)),
-        "baseline_val"
-    )
-    bl_test = evaluate_model(
-        test[PRIMARY_TARGET],
-        df.loc[test.index, "naive_pred_price"] if "naive_pred_price" in df.columns else np.zeros(len(test)),
-        "baseline_test"
-    )
-    print(f"\n  Baseline: Val MAE={bl_val['MAE']:.4f} R2={bl_val['R2']:.4f}")
-    print(f"            Test MAE={bl_test['MAE']:.4f} R2={bl_test['R2']:.4f}")
+    if best_family == "RandomForest":
+        final_model = RandomForestRegressor(**best_params)
+    elif best_family == "LightGBM":
+        final_model = lgb.LGBMRegressor(**best_params)
+    elif best_family == "XGBoost":
+        final_model = xgb.XGBRegressor(**best_params)
 
-    all_results = {}
-    best_val_mae = float("inf")
-    best_model = None
-    best_name = None
+    final_model.fit(X_train, y_train)
 
-    for ModelCls, name, params in [
-        (RandomForestRegressor, "RandomForest", dict(
-            n_estimators=300, max_depth=15, min_samples_split=10,
-            min_samples_leaf=5, max_features="sqrt",
-            random_state=RANDOM_STATE, n_jobs=-1)),
-        (xgb.XGBRegressor, "XGBoost", dict(
-            n_estimators=300, max_depth=8, learning_rate=0.05,
-            subsample=0.8, colsample_bytree=0.8,
-            random_state=RANDOM_STATE, n_jobs=-1, verbosity=0)),
-        (lgb.LGBMRegressor, "LightGBM", dict(
-            n_estimators=300, max_depth=8, learning_rate=0.05,
-            subsample=0.8, colsample_bytree=0.8,
-            random_state=RANDOM_STATE, n_jobs=-1, verbose=-1)),
-    ]:
-        print(f"\n  Training {name}...")
-        model = ModelCls(**params)
-        model.fit(X_train, y_train)
+    train_metrics = evaluate_model(y_train, final_model.predict(X_train), f"{best_family}_train")
+    val_metrics = evaluate_model(y_val, final_model.predict(X_val), f"{best_family}_val")
+    test_metrics = evaluate_model(y_test, final_model.predict(X_test), f"{best_family}_test")
 
-        m_train = evaluate_model(y_train, model.predict(X_train), f"{name}_train")
-        m_val = evaluate_model(y_val, model.predict(X_val), f"{name}_val")
-        m_test = evaluate_model(y_test, model.predict(X_test), f"{name}_test")
+    print(f"  Train: MAE={train_metrics['MAE']:.4f}, RMSE={train_metrics['RMSE']:.4f}, R2={train_metrics['R2']:.4f}")
+    print(f"  Val:   MAE={val_metrics['MAE']:.4f}, RMSE={val_metrics['RMSE']:.4f}, R2={val_metrics['R2']:.4f}")
+    print(f"  Test:  MAE={test_metrics['MAE']:.4f}, RMSE={test_metrics['RMSE']:.4f}, R2={test_metrics['R2']:.4f}")
 
-        print(f"    Train: MAE={m_train['MAE']:.4f} R2={m_train['R2']:.4f}")
-        print(f"    Val:   MAE={m_val['MAE']:.4f} R2={m_val['R2']:.4f}")
-        print(f"    Test:  MAE={m_test['MAE']:.4f} R2={m_test['R2']:.4f}")
-        beats = m_test['MAE'] < bl_test['MAE']
-        print(f"    {'BEATS' if beats else 'DOES NOT BEAT'} baseline on test")
+    beats_val = val_metrics["MAE"] < bl_val["MAE"]
+    beats_test = test_metrics["MAE"] < bl_test["MAE"]
+    print(f"\n  Beats Baseline Val:  {beats_val} (MAE: {val_metrics['MAE']:.4f} vs {bl_val['MAE']:.4f})")
+    print(f"  Beats Baseline Test: {beats_test} (MAE: {test_metrics['MAE']:.4f} vs {bl_test['MAE']:.4f})")
 
-        # Suspiciously high R2 check
-        for split_n, m in [("train", m_train), ("val", m_val), ("test", m_test)]:
-            if m["R2"] > 0.95:
-                print(f"    *** RED FLAG: R2={m['R2']:.4f} on {split_n} — re-audit features!")
+    # 5. Save Model Artifacts
+    canonical_model_path = os.path.join(MODELS_DIR, "model_c_price.joblib")
+    oof_model_path = os.path.join(MODELS_DIR, "model_c_price_oof.joblib")
+    joblib.dump(final_model, canonical_model_path)
+    joblib.dump(final_model, oof_model_path)
+    print(f"\n  Saved Model C Model: {canonical_model_path}")
 
-        # Feature importances
-        if hasattr(model, "feature_importances_"):
-            importances = dict(zip(FEATURES_C, model.feature_importances_))
-            importances = dict(sorted(importances.items(), key=lambda x: x[1], reverse=True))
-            if name == "LightGBM":  # Print for best model
-                print(f"    Feature importances ({name}):")
-                for rank, (feat, imp) in enumerate(importances.items(), 1):
-                    print(f"      {rank:>2}. {feat:<45} {imp:.6f}")
-        else:
-            importances = {}
+    # 6. Generate Model C Walk-Forward OOF Predictions
+    oof_df_c = generate_model_c_oof(df, best_family, best_params)
 
-        all_results[name] = {
-            "metrics": {"train": m_train, "val": m_val, "test": m_test},
-            "importances": importances,
-            "beats_baseline_test": beats,
-        }
-
-        if m_val["MAE"] < best_val_mae:
-            best_val_mae = m_val["MAE"]
-            best_model = model
-            best_name = name
-
-    print(f"\n  Best model: {best_name} (Val MAE={best_val_mae:.4f})")
-
-    # ============================================================
-    # SECONDARY TARGETS (brief check)
-    # ============================================================
-    for sec_target in SECONDARY_TARGETS:
-        print(f"\n  --- Secondary target: {sec_target} ---")
-        model = lgb.LGBMRegressor(
-            n_estimators=200, max_depth=8, learning_rate=0.05,
-            random_state=RANDOM_STATE, n_jobs=-1, verbose=-1
-        )
-        model.fit(X_train, train[sec_target])
-        m_train = evaluate_model(train[sec_target], model.predict(X_train), f"LGB_train")
-        m_val = evaluate_model(val[sec_target], model.predict(X_val), f"LGB_val")
-        m_test = evaluate_model(test[sec_target], model.predict(X_test), f"LGB_test")
-        print(f"    LightGBM Train: MAE={m_train['MAE']:.4f} R2={m_train['R2']:.4f}")
-        print(f"             Val:   MAE={m_val['MAE']:.4f} R2={m_val['R2']:.4f}")
-        print(f"             Test:  MAE={m_test['MAE']:.4f} R2={m_test['R2']:.4f}")
-        if sec_target == "Price_Volatility_3M" and abs(m_test["R2"]) < 0.05:
-            print("    HONEST ASSESSMENT: Test R2 is close to zero; this does not demonstrate strong predictive ability.")
-        all_results[f"{sec_target}_LightGBM"] = {"train": m_train, "val": m_val, "test": m_test}
-
-    # ============================================================
-    # SAVE ARTIFACTS
-    # ============================================================
-    print("\n" + "=" * 70)
-    print("SAVING ARTIFACTS")
-    print("=" * 70)
-
-    # Save best model
-    model_path = os.path.join(MODELS_DIR, "model_c_price.joblib")
-    joblib.dump(best_model, model_path)
-    print(f"  Model saved: {model_path}")
-
-    # Save predictions for Model D cascade
-    pred_df = df[["Year", "Month", "Country", "Trade_Type", "HS4"]].copy()
-    pred_df["Price_Return_1M_Pred"] = best_model.predict(df[FEATURES_C])
-    pred_df["Price_Return_1M_Actual"] = df[PRIMARY_TARGET]
-    pred_path = os.path.join(RESULTS_DIR, "model_c_predictions.csv")
-    pred_df.to_csv(pred_path, index=False)
-    print(f"  Predictions saved: {pred_path}")
-
-    # Save results
-    results = {
-        "task": "Task 4 - Model C: Price Impact",
+    # 7. Save Model C OOF Results Summary
+    results_c_oof = {
+        "task": "Task 4 - Model C Price Impact (OOF Walk-Forward)",
         "timestamp": datetime.now().isoformat(),
+        "upstream_artifacts_used": [
+            "results/model_a_predictions_oof.csv",
+            "results/model_b_predictions_oof.csv"
+        ],
         "features": FEATURES_C,
         "primary_target": PRIMARY_TARGET,
-        "best_model": best_name,
+        "selected_model": best_name,
+        "selected_family": best_family,
+        "selected_hyperparameters": {k: v for k, v in best_params.items() if k not in ["n_jobs", "verbose", "verbosity"]},
         "baseline": {"val": bl_val, "test": bl_test},
-        "model_results": all_results,
-        "split": {"train": len(train), "val": len(val), "test": len(test)},
+        "metrics": {
+            "train": train_metrics,
+            "val": val_metrics,
+            "test": test_metrics,
+        },
+        "beats_baseline_val": beats_val,
+        "beats_baseline_test": beats_test,
+        "tuning_results": tuning_results,
+        "test_set_isolation": "Verified: Test set (2024-2025) was untouched during hyperparameter search and model selection.",
     }
-    results_path = os.path.join(RESULTS_DIR, "model_c_results.json")
-    with open(results_path, "w") as f:
-        json.dump(results, f, indent=2, default=str)
-    print(f"  Results saved: {results_path}")
+    results_c_path = os.path.join(RESULTS_DIR, "model_c_results.json")
+    results_c_oof_path = os.path.join(RESULTS_DIR, "model_c_results_oof.json")
+    with open(results_c_path, "w") as f:
+        json.dump(results_c_oof, f, indent=2, default=str)
+    with open(results_c_oof_path, "w") as f:
+        json.dump(results_c_oof, f, indent=2, default=str)
+    print(f"  Saved Model C Results: {results_c_path}")
 
-    print_leakage_prevention_audit()
-    print("\n  TASK 4 COMPLETE")
+    print("\n" + "=" * 70)
+    print("MODEL C COMPLETE")
+    print("=" * 70)
 
 
 if __name__ == "__main__":

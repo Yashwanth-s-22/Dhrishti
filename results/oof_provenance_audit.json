@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-08-20T20:52:18.723368",
+  "phase": "Phase 1 - OOF Upstream Prediction Generation",
+  "audit_status": "PASSED",
+  "model_a_oof_rows": 139626,
+  "model_b_oof_rows": 139626,
+  "total_expected_rows": 139626,
+  "temporal_rule": "Training_End_Year < Prediction_Year",
+  "temporal_violations": 0,
+  "cold_start_year": 2018,
+  "oof_years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "artifacts_created": [
+    "results/model_a_predictions_oof.csv",
+    "results/model_b_predictions_oof.csv"
+  ]
+}

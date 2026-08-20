@@ -1,0 +1,240 @@
+{
+  "timestamp": "2026-08-20T19:54:24.593635",
+  "audit_status": "PASSED",
+  "audit_results": {
+    "Model A": {
+      "file": "C:\\Users\\yashw\\OneDrive\\Documents\\Capstone_implementation\\results\\model_a_predictions_oof.csv",
+      "total_rows": 139626,
+      "oof_rows": 121063,
+      "temporal_violations": 0,
+      "yearly_breakdown": {
+        "2018": {
+          "Total_Rows": 18563,
+          "OOF_Rows": 0,
+          "Valid_Predictions": 0,
+          "Missing_Predictions": 18563,
+          "Training_End_Years": []
+        },
+        "2019": {
+          "Total_Rows": 18472,
+          "OOF_Rows": 18472,
+          "Valid_Predictions": 18472,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2018
+          ]
+        },
+        "2020": {
+          "Total_Rows": 17329,
+          "OOF_Rows": 17329,
+          "Valid_Predictions": 17329,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2019
+          ]
+        },
+        "2021": {
+          "Total_Rows": 18380,
+          "OOF_Rows": 18380,
+          "Valid_Predictions": 18380,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2020
+          ]
+        },
+        "2022": {
+          "Total_Rows": 17995,
+          "OOF_Rows": 17995,
+          "Valid_Predictions": 17995,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2021
+          ]
+        },
+        "2023": {
+          "Total_Rows": 17953,
+          "OOF_Rows": 17953,
+          "Valid_Predictions": 17953,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2022
+          ]
+        },
+        "2024": {
+          "Total_Rows": 18451,
+          "OOF_Rows": 18451,
+          "Valid_Predictions": 18451,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2023
+          ]
+        },
+        "2025": {
+          "Total_Rows": 12483,
+          "OOF_Rows": 12483,
+          "Valid_Predictions": 12483,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2024
+          ]
+        }
+      }
+    },
+    "Model B": {
+      "file": "C:\\Users\\yashw\\OneDrive\\Documents\\Capstone_implementation\\results\\model_b_predictions_oof.csv",
+      "total_rows": 139626,
+      "oof_rows": 121063,
+      "temporal_violations": 0,
+      "yearly_breakdown": {
+        "2018": {
+          "Total_Rows": 18563,
+          "OOF_Rows": 0,
+          "Valid_Predictions": 0,
+          "Missing_Predictions": 18563,
+          "Training_End_Years": []
+        },
+        "2019": {
+          "Total_Rows": 18472,
+          "OOF_Rows": 18472,
+          "Valid_Predictions": 2914,
+          "Missing_Predictions": 15558,
+          "Training_End_Years": [
+            2018
+          ]
+        },
+        "2020": {
+          "Total_Rows": 17329,
+          "OOF_Rows": 17329,
+          "Valid_Predictions": 2905,
+          "Missing_Predictions": 14424,
+          "Training_End_Years": [
+            2019
+          ]
+        },
+        "2021": {
+          "Total_Rows": 18380,
+          "OOF_Rows": 18380,
+          "Valid_Predictions": 3028,
+          "Missing_Predictions": 15352,
+          "Training_End_Years": [
+            2020
+          ]
+        },
+        "2022": {
+          "Total_Rows": 17995,
+          "OOF_Rows": 17995,
+          "Valid_Predictions": 2897,
+          "Missing_Predictions": 15098,
+          "Training_End_Years": [
+            2021
+          ]
+        },
+        "2023": {
+          "Total_Rows": 17953,
+          "OOF_Rows": 17953,
+          "Valid_Predictions": 661,
+          "Missing_Predictions": 17292,
+          "Training_End_Years": [
+            2022
+          ]
+        },
+        "2024": {
+          "Total_Rows": 18451,
+          "OOF_Rows": 18451,
+          "Valid_Predictions": 0,
+          "Missing_Predictions": 18451,
+          "Training_End_Years": [
+            2023
+          ]
+        },
+        "2025": {
+          "Total_Rows": 12483,
+          "OOF_Rows": 12483,
+          "Valid_Predictions": 0,
+          "Missing_Predictions": 12483,
+          "Training_End_Years": [
+            2024
+          ]
+        }
+      }
+    },
+    "Model C": {
+      "file": "C:\\Users\\yashw\\OneDrive\\Documents\\Capstone_implementation\\results\\model_c_predictions_oof.csv",
+      "total_rows": 139626,
+      "oof_rows": 121063,
+      "temporal_violations": 0,
+      "yearly_breakdown": {
+        "2018": {
+          "Total_Rows": 18563,
+          "OOF_Rows": 0,
+          "Valid_Predictions": 0,
+          "Missing_Predictions": 18563,
+          "Training_End_Years": []
+        },
+        "2019": {
+          "Total_Rows": 18472,
+          "OOF_Rows": 18472,
+          "Valid_Predictions": 18472,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2018
+          ]
+        },
+        "2020": {
+          "Total_Rows": 17329,
+          "OOF_Rows": 17329,
+          "Valid_Predictions": 17329,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2019
+          ]
+        },
+        "2021": {
+          "Total_Rows": 18380,
+          "OOF_Rows": 18380,
+          "Valid_Predictions": 18380,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2020
+          ]
+        },
+        "2022": {
+          "Total_Rows": 17995,
+          "OOF_Rows": 17995,
+          "Valid_Predictions": 17995,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2021
+          ]
+        },
+        "2023": {
+          "Total_Rows": 17953,
+          "OOF_Rows": 17953,
+          "Valid_Predictions": 17953,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2022
+          ]
+        },
+        "2024": {
+          "Total_Rows": 18451,
+          "OOF_Rows": 18451,
+          "Valid_Predictions": 18451,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2023
+          ]
+        },
+        "2025": {
+          "Total_Rows": 12483,
+          "OOF_Rows": 12483,
+          "Valid_Predictions": 12483,
+          "Missing_Predictions": 0,
+          "Training_End_Years": [
+            2024
+          ]
+        }
+      }
+    }
+  }
+}

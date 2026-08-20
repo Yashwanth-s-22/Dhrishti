@@ -98,18 +98,24 @@
         "Natural_Disaster_Trade_Exposure_USD": 0.0
       },
       "trade": {
-        "Trade_Return_1M_Pred": -0.08621058770839445
+        "Trade_Return_1M_Pred": -0.08621058770839445,
+        "status": "COMPUTED"
       },
       "agriculture": {
-        "Production_Growth_Pred": 33.13893997192511,
-        "Production_Risk": "Medium"
+        "Production_Growth_Pred": 17.728134155273438,
+        "Production_Risk": "Medium",
+        "status": "COMPUTED"
       },
       "price": {
-        "Price_Return_1M_Pred": 0.009601274749189294
+        "Price_Return_1M_Pred": null,
+        "Production_Growth_Pred_Lag1_Used": null,
+        "status": "PARTIAL / UPSTREAM_LAG_UNAVAILABLE (Model B Lag1 missing/non-crop)"
       },
       "economy": {
-        "Agri_GVA_Growth_Pred": 5.322393432115,
-        "Inflation_Change_Pred": -2.9606495075697836
+        "Agri_GVA_Growth_Pred": 4.635821342468262,
+        "Inflation_Change_Pred": -2.66804575920105,
+        "Price_Return_1M_Pred_Lag1_Used": 0.0124328432674201,
+        "status": "COMPUTED"
       },
       "trace": [
         {
@@ -120,7 +126,7 @@
         {
           "stage": "agriculture",
           "key": "Production_Growth_Pred",
-          "value": 33.13893997192511
+          "value": 17.728134155273438
         },
         {
           "stage": "agriculture",
@@ -129,18 +135,18 @@
         },
         {
           "stage": "price",
-          "key": "Price_Return_1M_Pred",
-          "value": 0.009601274749189294
+          "key": "Status",
+          "value": "UPSTREAM_LAG_UNAVAILABLE"
         },
         {
           "stage": "economy",
           "key": "Agri_GVA_Growth_Pred",
-          "value": 5.322393432115
+          "value": 4.635821342468262
         },
         {
           "stage": "economy",
           "key": "Inflation_Change_Pred",
-          "value": -2.9606495075697836
+          "value": -2.66804575920105
         }
       ]
     },
@@ -250,29 +256,35 @@
         "Natural_Disaster_Trade_Exposure_USD": 0.0
       },
       "trade": {
-        "Trade_Return_1M_Pred": 0.03539105253050835
+        "Trade_Return_1M_Pred": 0.03539105253050834,
+        "status": "COMPUTED"
       },
       "agriculture": {
-        "Production_Growth_Pred": 49.858760246202,
-        "Production_Risk": "Critical"
+        "Production_Growth_Pred": 8.741220474243164,
+        "Production_Risk": "Critical",
+        "status": "COMPUTED"
       },
       "price": {
-        "Price_Return_1M_Pred": -0.0747182944646966
+        "Price_Return_1M_Pred": null,
+        "Production_Growth_Pred_Lag1_Used": null,
+        "status": "PARTIAL / UPSTREAM_LAG_UNAVAILABLE (Model B Lag1 missing/non-crop)"
       },
       "economy": {
-        "Agri_GVA_Growth_Pred": 5.762559026015007,
-        "Inflation_Change_Pred": -2.456930467285968
+        "Agri_GVA_Growth_Pred": 4.5627946853637695,
+        "Inflation_Change_Pred": -2.5912632942199707,
+        "Price_Return_1M_Pred_Lag1_Used": -0.0220073750653222,
+        "status": "COMPUTED"
       },
       "trace": [
         {
           "stage": "trade",
           "key": "Trade_Return_1M_Pred",
-          "value": 0.03539105253050835
+          "value": 0.03539105253050834
         },
         {
           "stage": "agriculture",
           "key": "Production_Growth_Pred",
-          "value": 49.858760246202
+          "value": 8.741220474243164
         },
         {
           "stage": "agriculture",
@@ -281,18 +293,18 @@
         },
         {
           "stage": "price",
-          "key": "Price_Return_1M_Pred",
-          "value": -0.0747182944646966
+          "key": "Status",
+          "value": "UPSTREAM_LAG_UNAVAILABLE"
         },
         {
           "stage": "economy",
           "key": "Agri_GVA_Growth_Pred",
-          "value": 5.762559026015007
+          "value": 4.5627946853637695
         },
         {
           "stage": "economy",
           "key": "Inflation_Change_Pred",
-          "value": -2.456930467285968
+          "value": -2.5912632942199707
         }
       ]
     },
@@ -402,18 +414,24 @@
         "Natural_Disaster_Trade_Exposure_USD": 25612.605
       },
       "trade": {
-        "Trade_Return_1M_Pred": -0.09307001840269265
+        "Trade_Return_1M_Pred": -0.09307001840269265,
+        "status": "COMPUTED"
       },
       "agriculture": {
-        "Production_Growth_Pred": 10.709944690277737,
-        "Production_Risk": "Critical"
+        "Production_Growth_Pred": 14.241240501403809,
+        "Production_Risk": "Low",
+        "status": "COMPUTED"
       },
       "price": {
-        "Price_Return_1M_Pred": -0.08322434240287524
+        "Price_Return_1M_Pred": null,
+        "Production_Growth_Pred_Lag1_Used": null,
+        "status": "PARTIAL / UPSTREAM_LAG_UNAVAILABLE (Model B Lag1 missing/non-crop)"
       },
       "economy": {
-        "Agri_GVA_Growth_Pred": 5.645454963695005,
-        "Inflation_Change_Pred": -0.9175604786010476
+        "Agri_GVA_Growth_Pred": 4.5627946853637695,
+        "Inflation_Change_Pred": -1.2652002573013306,
+        "Price_Return_1M_Pred_Lag1_Used": 0.1817907213819735,
+        "status": "COMPUTED"
       },
       "trace": [
         {
@@ -424,27 +442,27 @@
         {
           "stage": "agriculture",
           "key": "Production_Growth_Pred",
-          "value": 10.709944690277737
+          "value": 14.241240501403809
         },
         {
           "stage": "agriculture",
           "key": "Production_Risk_Code",
-          "value": 3.0
+          "value": 0.0
         },
         {
           "stage": "price",
-          "key": "Price_Return_1M_Pred",
-          "value": -0.08322434240287524
+          "key": "Status",
+          "value": "UPSTREAM_LAG_UNAVAILABLE"
         },
         {
           "stage": "economy",
           "key": "Agri_GVA_Growth_Pred",
-          "value": 5.645454963695005
+          "value": 4.5627946853637695
         },
         {
           "stage": "economy",
           "key": "Inflation_Change_Pred",
-          "value": -0.9175604786010476
+          "value": -1.2652002573013306
         }
       ]
     },
@@ -554,18 +572,24 @@
         "Natural_Disaster_Trade_Exposure_USD": 0.0
       },
       "trade": {
-        "Trade_Return_1M_Pred": 0.15190985206091537
+        "Trade_Return_1M_Pred": 0.15190985206091537,
+        "status": "COMPUTED"
       },
       "agriculture": {
-        "Production_Growth_Pred": 32.99839606528766,
-        "Production_Risk": "Low"
+        "Production_Growth_Pred": 14.59107494354248,
+        "Production_Risk": "Low",
+        "status": "COMPUTED"
       },
       "price": {
-        "Price_Return_1M_Pred": 0.0022963618578027687
+        "Price_Return_1M_Pred": null,
+        "Production_Growth_Pred_Lag1_Used": null,
+        "status": "PARTIAL / UPSTREAM_LAG_UNAVAILABLE (Model B Lag1 missing/non-crop)"
       },
       "economy": {
-        "Agri_GVA_Growth_Pred": 5.697809440080004,
-        "Inflation_Change_Pred": -3.0939663187349438
+        "Agri_GVA_Growth_Pred": 4.635821342468262,
+        "Inflation_Change_Pred": -2.69791579246521,
+        "Price_Return_1M_Pred_Lag1_Used": -0.0238874508041948,
+        "status": "COMPUTED"
       },
       "trace": [
         {
@@ -576,7 +600,7 @@
         {
           "stage": "agriculture",
           "key": "Production_Growth_Pred",
-          "value": 32.99839606528766
+          "value": 14.59107494354248
         },
         {
           "stage": "agriculture",
@@ -585,18 +609,18 @@
         },
         {
           "stage": "price",
-          "key": "Price_Return_1M_Pred",
-          "value": 0.0022963618578027687
+          "key": "Status",
+          "value": "UPSTREAM_LAG_UNAVAILABLE"
         },
         {
           "stage": "economy",
           "key": "Agri_GVA_Growth_Pred",
-          "value": 5.697809440080004
+          "value": 4.635821342468262
         },
         {
           "stage": "economy",
           "key": "Inflation_Change_Pred",
-          "value": -3.0939663187349438
+          "value": -2.69791579246521
         }
       ]
     },
@@ -706,29 +730,35 @@
         "Natural_Disaster_Trade_Exposure_USD": 82594.66
       },
       "trade": {
-        "Trade_Return_1M_Pred": 0.02724915373996657
+        "Trade_Return_1M_Pred": 0.027249153739966562,
+        "status": "COMPUTED"
       },
       "agriculture": {
-        "Production_Growth_Pred": 64.73861093153768,
-        "Production_Risk": "Low"
+        "Production_Growth_Pred": 14.29958438873291,
+        "Production_Risk": "Low",
+        "status": "COMPUTED"
       },
       "price": {
-        "Price_Return_1M_Pred": 0.019035947261087673
+        "Price_Return_1M_Pred": null,
+        "Production_Growth_Pred_Lag1_Used": null,
+        "status": "PARTIAL / UPSTREAM_LAG_UNAVAILABLE (Model B Lag1 missing/non-crop)"
       },
       "economy": {
-        "Agri_GVA_Growth_Pred": 5.883142902690008,
-        "Inflation_Change_Pred": -1.239890465410997
+        "Agri_GVA_Growth_Pred": 4.5627946853637695,
+        "Inflation_Change_Pred": -1.2168140411376953,
+        "Price_Return_1M_Pred_Lag1_Used": 0.0070099501164776,
+        "status": "COMPUTED"
       },
       "trace": [
         {
           "stage": "trade",
           "key": "Trade_Return_1M_Pred",
-          "value": 0.02724915373996657
+          "value": 0.027249153739966562
         },
         {
           "stage": "agriculture",
           "key": "Production_Growth_Pred",
-          "value": 64.73861093153768
+          "value": 14.29958438873291
         },
         {
           "stage": "agriculture",
@@ -737,18 +767,18 @@
         },
         {
           "stage": "price",
-          "key": "Price_Return_1M_Pred",
-          "value": 0.019035947261087673
+          "key": "Status",
+          "value": "UPSTREAM_LAG_UNAVAILABLE"
         },
         {
           "stage": "economy",
           "key": "Agri_GVA_Growth_Pred",
-          "value": 5.883142902690008
+          "value": 4.5627946853637695
         },
         {
           "stage": "economy",
           "key": "Inflation_Change_Pred",
-          "value": -1.239890465410997
+          "value": -1.2168140411376953
         }
       ]
     },

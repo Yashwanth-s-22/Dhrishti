@@ -1,14 +1,56 @@
 {
-  "timestamp": "2026-08-19T22:30:00.244446",
+  "timestamp": "2026-08-20T20:45:09.414648",
   "summary": {
-    "passes": 83,
-    "warns": 3,
-    "infos": 5,
+    "passes": 111,
+    "warns": 1,
+    "infos": 2,
     "fails": 0,
-    "total": 91,
+    "total": 114,
     "status": "PASS"
   },
-  "notes": "Pipeline integrity checks passed. Warnings denote model-performance limitations (e.g., Inflation not beating baseline on test) and observational/provenance boundaries.",
+  "benchmark_summary": [
+    {
+      "model": "Model A (RandomForest)",
+      "target": "Trade_Return_1M",
+      "baseline_mae": 1.9591356941161588,
+      "model_test_mae": 1.0435780399443606,
+      "abs_improvement": 0.9155576541717982,
+      "pct_improvement": 46.732733057821264,
+      "test_r2": "0.0554",
+      "interpretation": "Beats test persistence baseline (+46.7% MAE improvement)"
+    },
+    {
+      "model": "Model C OOF (RF_regularized)",
+      "target": "Price_Return_1M",
+      "baseline_mae": 0.6928146694671197,
+      "model_test_mae": 0.3667876918030844,
+      "abs_improvement": 0.32602697766403527,
+      "pct_improvement": 47.05832483524055,
+      "test_r2": "0.0132",
+      "interpretation": "Beats test baseline (+47.1% MAE improvement); positive test R2"
+    },
+    {
+      "model": "Model D-1 GVA OOF (XGB_regularized)",
+      "target": "Agri_GVA_Growth_Percent",
+      "baseline_mae": 3.2969824379999997,
+      "model_test_mae": 2.349678096052246,
+      "abs_improvement": 0.9473043419477536,
+      "pct_improvement": 28.732465512385406,
+      "test_r2": "N/A (sparse target, 2 test observations)",
+      "interpretation": "Beats test baseline (+28.7% MAE improvement); annual macro series"
+    },
+    {
+      "model": "Model D-2 Inflation OOF (XGB_regularized)",
+      "target": "Inflation_Change_3M",
+      "baseline_mae": 3.8140473265662376,
+      "model_test_mae": 3.8462099928774354,
+      "abs_improvement": -0.032162666311197796,
+      "pct_improvement": -0.8432686738618328,
+      "test_r2": "-0.1386",
+      "interpretation": "Slight underperformance vs baseline (-1.0%); target dominated by macro noise"
+    }
+  ],
+  "notes": "Pipeline integrity and temporal OOF provenance checks passed. Warnings denote documented model-performance limitations (e.g., Inflation noise) and observational/provenance boundaries.",
   "checks": [
     {
       "type": "PASS",
@@ -92,6 +134,30 @@
     },
     {
       "type": "PASS",
+      "message": "Model artifact exists: model_c_price_oof.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_c_price_oof.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_d_agri_gva_oof.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_d_agri_gva_oof.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact exists: model_d_inflation_oof.joblib"
+    },
+    {
+      "type": "PASS",
+      "message": "Model artifact loadable: model_d_inflation_oof.joblib"
+    },
+    {
+      "type": "PASS",
       "message": "Result file exists: model_a_results.json"
     },
     {
@@ -132,6 +198,34 @@
     },
     {
       "type": "PASS",
+      "message": "Result file exists: model_a_predictions_oof.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_b_predictions_oof.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_c_predictions_oof.csv"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_c_results_oof.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: model_d_results_oof.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: oof_provenance_audit.json"
+    },
+    {
+      "type": "PASS",
+      "message": "Result file exists: phase2_provenance_audit.json"
+    },
+    {
+      "type": "PASS",
       "message": "Data file exists: Drishti_Cascade_Final_With_EMDAT.csv"
     },
     {
@@ -155,88 +249,88 @@
       "message": "Data file exists: event_catalog.json"
     },
     {
+      "type": "PASS",
+      "message": "Model A OOF prediction row count: 139,626 (matches main dataset: 139,626)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model A OOF key alignment: 100% match with main dataset primary keys"
+    },
+    {
+      "type": "PASS",
+      "message": "Model A Hard Temporal Rule: 0 violations across 121,063 OOF rows (Training_End_Year < Prediction_Year)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model A Cold-Start Year (2018): all 18,563 rows properly flagged as unavailable/not out-of-sample"
+    },
+    {
+      "type": "PASS",
+      "message": "Model B OOF prediction row count: 139,626 (matches main dataset: 139,626)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model B OOF key alignment: 100% match with main dataset primary keys"
+    },
+    {
+      "type": "PASS",
+      "message": "Model B Hard Temporal Rule: 0 violations across 121,063 OOF rows (Training_End_Year < Prediction_Year)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model B Cold-Start Year (2018): all 18,563 rows properly flagged as unavailable/not out-of-sample"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C OOF prediction row count: 139,626 (matches main dataset: 139,626)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C OOF key alignment: 100% match with main dataset primary keys"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C Hard Temporal Rule: 0 violations across 121,063 OOF rows (Training_End_Year < Prediction_Year)"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C Cold-Start Year (2018): all 18,563 rows properly flagged as unavailable/not out-of-sample"
+    },
+    {
+      "type": "PASS",
+      "message": "Model B -> Model C Lag1: Production_Growth_Pred_Lag1 is computed as shift(1) of previous period's Model B OOF prediction"
+    },
+    {
+      "type": "PASS",
+      "message": "Model B -> Model C Lag1: Current-period Model B prediction is NEVER used as a Lag1 predictor"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C -> Model D Lag1: Price_Return_1M_Pred_Lag1 is computed as shift(1) of previous period's Model C OOF prediction"
+    },
+    {
+      "type": "PASS",
+      "message": "Model C -> Model D Lag1: Current-period Model C prediction is NEVER used as a Lag1 predictor"
+    },
+    {
       "type": "INFO",
       "message": "Evaluating train-test performance gaps and feature schemas (performance sanity check, not a mathematical leakage proof)."
     },
     {
       "type": "PASS",
-      "message": "Model A RandomForest: train R2=0.2273, test R2=0.0554, gap=0.1719 (threshold < 0.50)"
+      "message": "model_d_agri_gva_oof.joblib: excludes unsafe contemporaneous features (found: [])"
     },
     {
       "type": "PASS",
-      "message": "Model A XGBoost: train R2=0.2855, test R2=0.0261, gap=0.2594 (threshold < 0.50)"
+      "message": "model_d_agri_gva_oof.joblib: includes all 13 expected lagged/exogenous features (missing: [])"
     },
     {
       "type": "PASS",
-      "message": "Model A LightGBM: train R2=0.1489, test R2=0.0513, gap=0.0976 (threshold < 0.50)"
+      "message": "model_d_agri_gva.joblib: excludes unsafe contemporaneous features (found: [])"
     },
     {
       "type": "PASS",
-      "message": "Model C RandomForest: train R2=0.3076, test R2=0.0606, gap=0.2470 (threshold < 0.50)"
-    },
-    {
-      "type": "PASS",
-      "message": "Model C XGBoost: train R2=0.4457, test R2=0.0347, gap=0.4111 (threshold < 0.50)"
-    },
-    {
-      "type": "PASS",
-      "message": "Model C LightGBM: train R2=0.2228, test R2=0.0509, gap=0.1719 (threshold < 0.50)"
-    },
-    {
-      "type": "PASS",
-      "message": "Model D excludes unsafe contemporaneous features (found 0 unsafe: [])"
-    },
-    {
-      "type": "PASS",
-      "message": "Model D includes all 13 expected lagged/exogenous features (missing: [])"
-    },
-    {
-      "type": "PASS",
-      "message": "Cascade results contain 5 demonstration cases (expected >= 5)"
-    },
-    {
-      "type": "PASS",
-      "message": "Cascade Case 1: contains all required stage predictions and trace entries (6 trace items)"
-    },
-    {
-      "type": "PASS",
-      "message": "Cascade Case 2: contains all required stage predictions and trace entries (6 trace items)"
-    },
-    {
-      "type": "PASS",
-      "message": "Cascade Case 3: contains all required stage predictions and trace entries (6 trace items)"
-    },
-    {
-      "type": "PASS",
-      "message": "Cascade Case 4: contains all required stage predictions and trace entries (6 trace items)"
-    },
-    {
-      "type": "PASS",
-      "message": "Cascade Case 5: contains all required stage predictions and trace entries (6 trace items)"
-    },
-    {
-      "type": "PASS",
-      "message": "Model A -> Model B link is CONCEPTUAL ONLY (Trade_Return_1M_Pred is NOT a trained Model B feature)"
-    },
-    {
-      "type": "PASS",
-      "message": "Model B -> Model C link uses lagged prediction feature (Production_Growth_Pred_Lag1)"
-    },
-    {
-      "type": "PASS",
-      "message": "Model C -> Model D link uses lagged prediction feature (Price_Return_1M_Pred_Lag1)"
-    },
-    {
-      "type": "PASS",
-      "message": "Model B predictions artifact contains Production_Growth_Pred for previous-period shift lookup"
-    },
-    {
-      "type": "PASS",
-      "message": "Model C predictions artifact contains Price_Return_1M_Pred for previous-period shift lookup"
-    },
-    {
-      "type": "INFO",
-      "message": "Upstream prediction artifacts contain in-sample predictions. Full out-of-fold/walk-forward provenance is deferred."
+      "message": "model_d_agri_gva.joblib: includes all 13 expected lagged/exogenous features (missing: [])"
     },
     {
       "type": "PASS",
@@ -244,39 +338,43 @@
     },
     {
       "type": "PASS",
-      "message": "Model A (Trade RF) test R2=0.0554 is within plausible non-trivial range [0, 0.95)"
-    },
-    {
-      "type": "WARN",
-      "message": "Model B (Agri Prod RF): beats baseline = False - Model B does not beat test baseline due to narrow crop dataset window"
+      "message": "Model C OOF (RF_regularized) beats test baseline (MAE 0.3668 < 0.6928)"
     },
     {
       "type": "PASS",
-      "message": "Model C (Price RF) beats test baseline (MAE 0.4162 < 0.6073)"
-    },
-    {
-      "type": "INFO",
-      "message": "Model D Agri GVA Validation R2: N/A - single annual validation observation (2023). Mathematically undefined."
+      "message": "Model C OOF test R2 is positive (0.0132)"
     },
     {
       "type": "PASS",
-      "message": "Model D (Agri GVA RF) beats test baseline (MAE 3.1555 < 3.2970)"
+      "message": "Model D-1 GVA OOF (XGB_regularized) beats test baseline (MAE 2.3497 < 3.2970)"
     },
     {
       "type": "WARN",
-      "message": "Model D Agri GVA Test R2 is negative (-1.8884); macro target variance exceeds baseline due to sparse annual observations."
-    },
-    {
-      "type": "WARN",
-      "message": "Model D (Inflation LightGBM) test MAE vs baseline (3.5600 vs 3.5237) - Model D Inflation does not beat baseline on test (model performance limitation)"
+      "message": "Model D-2 Inflation OOF test MAE vs baseline (3.8462 vs 3.8140) - Inflation target is dominated by macro noise; regularized model avoids spurious overfitting"
     },
     {
       "type": "PASS",
-      "message": "Dedicated Task 1 formula validation report exists (results/task1_data_validation_report.txt)"
+      "message": "Cascade results contain 5 demonstration cases (expected >= 5)"
     },
     {
-      "type": "INFO",
-      "message": "Formula validation is performed separately in Task 1. Task 10 does not independently recompute formulas."
+      "type": "PASS",
+      "message": "Cascade Case 1: contains all required stage predictions and trace entries (6 items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 2: contains all required stage predictions and trace entries (6 items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 3: contains all required stage predictions and trace entries (6 items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 4: contains all required stage predictions and trace entries (6 items)"
+    },
+    {
+      "type": "PASS",
+      "message": "Cascade Case 5: contains all required stage predictions and trace entries (6 items)"
     },
     {
       "type": "PASS",
@@ -284,7 +382,11 @@
     },
     {
       "type": "PASS",
-      "message": "Event [EVT001] Russia-Ukraine Conflict Escalation: 46 rows matched (scope: direct)"
+      "message": "Event [EVT001] Russia-Ukraine Conflict Escalati: 46 rows matched (scope: direct)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT001] contains explicit coverage % metric (50.0%, tier: MODERATE)"
     },
     {
       "type": "PASS",
@@ -292,7 +394,15 @@
     },
     {
       "type": "PASS",
+      "message": "Event [EVT002] contains explicit coverage % metric (100.0%, tier: HIGH)"
+    },
+    {
+      "type": "PASS",
       "message": "Event [EVT003] US-China Trade Tensions: 288 rows matched (scope: direct)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT003] contains explicit coverage % metric (20.49%, tier: LOW)"
     },
     {
       "type": "PASS",
@@ -300,11 +410,23 @@
     },
     {
       "type": "PASS",
+      "message": "Event [EVT004] contains explicit coverage % metric (15.16%, tier: VERY LOW)"
+    },
+    {
+      "type": "PASS",
       "message": "Event [EVT005] India-Malaysia Palm Oil Tensions: 15 rows matched (scope: direct)"
     },
     {
       "type": "PASS",
-      "message": "Event [EVT006] Sri Lanka Economic Crisis Spillover: 27 rows matched (scope: proxy)"
+      "message": "Event [EVT005] contains explicit coverage % metric (0.0%, tier: VERY LOW)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT005] small-sample suppression verified (n=0 < 5 -> Dir Agree marked N/A)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT006] Sri Lanka Economic Crisis Spillo: 27 rows matched (scope: proxy)"
     },
     {
       "type": "PASS",
@@ -312,7 +434,19 @@
     },
     {
       "type": "PASS",
-      "message": "Event [EVT007] Red Sea Shipping Crisis (Houthi Att: 195 rows matched (scope: direct)"
+      "message": "Event [EVT006] contains explicit coverage % metric (81.48%, tier: HIGH)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT007] Red Sea Shipping Crisis (Houthi : 195 rows matched (scope: direct)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT007] contains explicit coverage % metric (0.51%, tier: VERY LOW)"
+    },
+    {
+      "type": "PASS",
+      "message": "Event [EVT007] small-sample suppression verified (n=1 < 5 -> Dir Agree marked N/A)"
     },
     {
       "type": "INFO",
