@@ -1,5 +1,5 @@
 """
-Drishti Agent: Event Intelligence Agent
+Drishti Agent: Event Intelligence  Agent
 
 =======================================
 Extracts, structures, and validates geopolitical and agricultural trade shock events.
