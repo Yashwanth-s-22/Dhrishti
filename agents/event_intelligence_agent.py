@@ -1,5 +1,6 @@
 """
 Drishti Agent: Event Intelligence Agent
+
 =======================================
 Extracts, structures, and validates geopolitical and agricultural trade shock events.
 Queries the GDELT DOC 2.0 API via MCP for live/recent news context, resolves commodity
